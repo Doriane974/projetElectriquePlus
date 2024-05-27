@@ -9,31 +9,93 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @DisplayName("Tests sur la classe Client")
 public class ClientTest {
 
-    // Ici le but est de faire un test aux limites : il faudrait tester que un tableau d'une taille trop grande revoie bien une ecxeption
-//    @DisplayName("Test de somme nombre très grand negatif")
-//    @Test
-//    public void testEnormeSommeSansRetenue() {
-//        var ln = new ListesNumeriques();
-//        List<Integer> nb1 = new ArrayList<>(Integer.MAX_VALUE );
-//        List<Integer> nb2 = new ArrayList<>(Integer.MAX_VALUE );
-//
-//        assertThat(res).isEqualTo(ln.ajoute(nb1, nb2));
-//   }
-
-    @DisplayName("dummy test")
+    @DisplayName("Test création d'un client avec des informations valides")
     @Test
-    public void DummyTest() {
-        int un = 1;
-        int deux = 3-2;
-        assertThat(un).isEqualTo(deux);
-
+    public void testClientValide() {
+        Adresse adresse = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Client client = new Client("Dupont", "Jean", adresse, 1234567890L, "jean.dupont@example.com", "1234567812345678");
+        assertThat(client.getNom()).isEqualTo("Dupont");
+        assertThat(client.getPrenom()).isEqualTo("Jean");
+        assertThat(client.getAdresse()).isEqualTo(adresse);
+        assertThat(client.getNumeroTelephone()).isEqualTo(1234567890L);
+        assertThat(client.getEmail()).isEqualTo("jean.dupont@example.com");
+        assertThat(client.getNumeroCarteDebit()).isEqualTo("1234567812345678");
     }
 
+    @DisplayName("Test création d'un client avec un nom vide")
+    @Test
+    public void testClientCreationNomVide() {
+        Adresse adresse = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Client("", "Jean", adresse, 1234567890L, "jean.dupont@example.com", "1234567812345678");
+        });
+        assertThat(exception.getMessage()).isEqualTo("Aucun champ ne doit être vide");
+    }
+
+    @DisplayName("Test création d'un client avec un prénom vide")
+    @Test
+    public void testClientCreationPrenomVide() {
+        Adresse adresse = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Client("Dupont", "", adresse, 1234567890L, "jean.dupont@example.com", "1234567812345678");
+        });
+        assertThat(exception.getMessage()).isEqualTo("Aucun champ ne doit être vide");
+    }
+
+    @DisplayName("Test création d'un client avec une adresse nulle")
+    @Test
+    public void testClientCreationAdresseNull() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Client("Dupont", "Jean", null, 1234567890L, "jean.dupont@example.com", "1234567812345678");
+        });
+        assertThat(exception.getMessage()).isEqualTo("Aucun champ ne doit être vide");
+    }
+
+    @DisplayName("Test création d'un client avec un email vide")
+    @Test
+    public void testClientCreationEmailVide() {
+        Adresse adresse = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Client("Dupont", "Jean", adresse, 1234567890L, "", "1234567812345678");
+        });
+        assertThat(exception.getMessage()).isEqualTo("Aucun champ ne doit être vide");
+    }
+
+    @DisplayName("Test création d'un client avec un numéro de carte de débit vide")
+    @Test
+    public void testClientCreationCBVide() {
+        Adresse adresse = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Client("Dupont", "Jean", adresse, 1234567890L, "jean.dupont@example.com", "");
+        });
+        assertThat(exception.getMessage()).isEqualTo("Aucun champ ne doit être vide");
+    }
+
+    @DisplayName("Test création d'un client avec un numéro de téléphone invalide")
+    @Test
+    public void testClientCreationNumeroTelephoneInvalide() {
+        Adresse adresse = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Client("Dupont", "Jean", adresse, 123456789L, "jean.dupont@example.com", "1234567812345678");
+        });
+        assertThat(exception.getMessage()).isEqualTo("Le numéro de téléphone doit contenir 10 chiffres");
+    }
+
+    @DisplayName("Test création d'un client avec un email invalide")
+    @Test
+    public void testClientEmailInvalide() {
+        Adresse adresse = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Client("Dupont", "Jean", adresse, 1234567890L, "jean.dupont", "1234567812345678");
+        });
+        assertThat(exception.getMessage()).isEqualTo("Adresse mail invalide");
+    }
 
 }
 
