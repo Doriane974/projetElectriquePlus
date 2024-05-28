@@ -2,8 +2,7 @@ package org.m1.electriquePlus;
 
 import java.io.IOException;
 
-import static org.m1.electriquePlus.FileManagement.checkStatus;
-import static org.m1.electriquePlus.FileManagement.generateFile;
+import static org.m1.electriquePlus.FileManagement.*;
 
 public class Borne {
     private int numero;
@@ -57,5 +56,21 @@ public class Borne {
             System.out.println("Erreur dans la lecture du fichier "+this.timetableFileName+" : "+e.getMessage());
         }
         return dispos;
+    }
+
+    public int changeStatusBorne(String date, String hour, String status){
+        try{
+            if (status.equals("DISPONIBLE")||status.equals("INDISPONIBLE")||status.equals("RESERVE")||status.equals("OCCUPE")) {
+                changeStatus("" + status.charAt(0), date, hour, this.timetableFileName);
+                return 0;
+            }
+            else{
+                System.out.println("Le status "+status+" n'est pas reconnu");
+                return 1;
+            }
+        }catch(IOException e){
+            System.out.println("Errreur dans la modification du status de la borne "+this.numero+" : "+e.getMessage());
+        }
+        return 1;
     }
 }

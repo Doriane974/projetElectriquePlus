@@ -20,7 +20,7 @@ public class Parc {
         this.bornes = bornes;
     }
 
-    public void addBorne(Borne borneAAjouter){ //TODO a tester
+    public void addBorne(Borne borneAAjouter){
         this.getBornes().add(borneAAjouter);
     }
 
