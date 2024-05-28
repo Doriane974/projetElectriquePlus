@@ -60,4 +60,16 @@ public class Client {
 	public String getNumeroCarteDebit() {
 		return numeroCarteDebit;
 	}
+
+	@Override
+	public String toString() {
+		return "Client{" +
+				"nom='" + nom + '\'' +
+				", prenom='" + prenom + '\'' +
+				", adresse=" + adresse +
+				", numeroTelephone=" + numeroTelephone +
+				", email='" + email + '\'' +
+				", numeroCarteDebit='" + numeroCarteDebit + '\'' +
+				'}';
+	}
 }
