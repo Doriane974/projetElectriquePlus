@@ -14,8 +14,9 @@ public class Client {
 	private long numeroTelephone; //long car il est plus grand que int et on a besoin d'un int avec 10 chiffres
 	private String email;
 	private String numeroCarteDebit;
+	private Vehicule vehicule;
 
-	public Client(String nom, String prenom, Adresse adresse, long numeroTelephone, String email, String numeroCarteDebit) {
+	public Client(String nom, String prenom, Adresse adresse, long numeroTelephone, String email, String numeroCarteDebit, Vehicule vehicule) {
 		if (nom == null || nom.isEmpty() || prenom == null || prenom.isEmpty() || adresse == null ||
 				email == null || email.isEmpty() || numeroCarteDebit == null || numeroCarteDebit.isEmpty()) {
 			throw new IllegalArgumentException("Aucun champ ne doit être vide");
@@ -35,6 +36,7 @@ public class Client {
 		this.numeroTelephone = numeroTelephone;
 		this.email = email;
 		this.numeroCarteDebit = numeroCarteDebit;
+		this.vehicule = vehicule;
 	}
 
 	public String getNom() {
@@ -59,5 +61,9 @@ public class Client {
 
 	public String getNumeroCarteDebit() {
 		return numeroCarteDebit;
+	}
+
+	public Vehicule getVehicule() {
+		return this.vehicule;
 	}
 }
