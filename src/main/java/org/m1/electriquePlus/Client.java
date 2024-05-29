@@ -1,5 +1,8 @@
 package org.m1.electriquePlus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.lang.Math.abs;
 
 
@@ -13,6 +16,7 @@ public class Client {
 	//on ne peux pas mettre de long car cela ne prend pas en compte le 0 de début
 	private String email;
 	private String numeroCarteDebit;
+	private Vehicule vehicule;
 
 	public Client(String nom, String prenom, Adresse adresse, String numeroTelephone, String email, String numeroCarteDebit) {
 		if (nom == null || nom.isEmpty() || prenom == null || prenom.isEmpty() || adresse == null ||
@@ -35,6 +39,7 @@ public class Client {
 		this.numeroTelephone = numeroTelephone;
 		this.email = email;
 		this.numeroCarteDebit = numeroCarteDebit;
+		this.vehicule = vehicule;
 	}
 
 	public String getNom() {
@@ -72,4 +77,10 @@ public class Client {
 				", numeroCarteDebit='" + numeroCarteDebit + '\'' +
 				'}';
 	}
+	
+		public Vehicule getVehicule() {
+		return this.vehicule;
+		{
+	
+	
 }

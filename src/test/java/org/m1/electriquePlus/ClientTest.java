@@ -19,6 +19,7 @@ public class ClientTest {
     @Test
     public void testClientValide() {
         Adresse adresse = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Vehicule vehicule = new Vehicule("AB-123-CD","marque","modele",2022);
         Client client = new Client("Dupont", "Jean", adresse, "1234567890", "jean.dupont@example.com", "1234567812345678");
         assertThat(client.getNom()).isEqualTo("Dupont");
         assertThat(client.getPrenom()).isEqualTo("Jean");
@@ -32,8 +33,9 @@ public class ClientTest {
     @Test
     public void testClientCreationNomVide() {
         Adresse adresse = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Vehicule vehicule = new Vehicule("AB-123-CD","marque","modele",2022);
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Client("", "Jean", adresse, "1234567890", "jean.dupont@example.com", "1234567812345678");
+            new Client("", "Jean", adresse, "1234567890", "jean.dupont@example.com", "1234567812345678", vehicule);
         });
         assertThat(exception.getMessage()).isEqualTo("Aucun champ ne doit être vide");
     }
@@ -42,8 +44,9 @@ public class ClientTest {
     @Test
     public void testClientCreationPrenomVide() {
         Adresse adresse = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Vehicule vehicule = new Vehicule("AB-123-CD","marque","modele",2022);
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Client("Dupont", "", adresse, "1234567890", "jean.dupont@example.com", "1234567812345678");
+            new Client("Dupont", "", adresse, "1234567890", "jean.dupont@example.com", "1234567812345678", vehicule);
         });
         assertThat(exception.getMessage()).isEqualTo("Aucun champ ne doit être vide");
     }
@@ -51,8 +54,9 @@ public class ClientTest {
     @DisplayName("Test création d'un client avec une adresse nulle")
     @Test
     public void testClientCreationAdresseNull() {
+        Vehicule vehicule = new Vehicule("AB-123-CD","marque","modele",2022);
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Client("Dupont", "Jean", null, "1234567890", "jean.dupont@example.com", "1234567812345678");
+            new Client("Dupont", "Jean", null, "1234567890", "jean.dupont@example.com", "1234567812345678", vehicule);
         });
         assertThat(exception.getMessage()).isEqualTo("Aucun champ ne doit être vide");
     }
@@ -61,8 +65,9 @@ public class ClientTest {
     @Test
     public void testClientCreationEmailVide() {
         Adresse adresse = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Vehicule vehicule = new Vehicule("AB-123-CD","marque","modele",2022);
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Client("Dupont", "Jean", adresse, "1234567890", "", "1234567812345678");
+            new Client("Dupont", "Jean", adresse, "1234567890", "", "1234567812345678", vehicule);
         });
         assertThat(exception.getMessage()).isEqualTo("Aucun champ ne doit être vide");
     }
@@ -71,8 +76,9 @@ public class ClientTest {
     @Test
     public void testClientCreationCBVide() {
         Adresse adresse = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Vehicule vehicule = new Vehicule("AB-123-CD","marque","modele",2022);
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Client("Dupont", "Jean", adresse, "1234567890", "jean.dupont@example.com", "");
+            new Client("Dupont", "Jean", adresse, "1234567890", "jean.dupont@example.com", "", vehicule);
         });
         assertThat(exception.getMessage()).isEqualTo("Aucun champ ne doit être vide");
     }
@@ -81,8 +87,9 @@ public class ClientTest {
     @Test
     public void testClientCreationNumeroTelephoneInvalide() {
         Adresse adresse = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Vehicule vehicule = new Vehicule("AB-123-CD","marque","modele",2022);
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Client("Dupont", "Jean", adresse, "123456789", "jean.dupont@example.com", "1234567812345678");
+            new Client("Dupont", "Jean", adresse, "123456789", "jean.dupont@example.com", "1234567812345678", vehicule);
         });
         assertThat(exception.getMessage()).isEqualTo("Le numéro de téléphone doit contenir 10 chiffres");
     }
@@ -91,8 +98,9 @@ public class ClientTest {
     @Test
     public void testClientEmailInvalide() {
         Adresse adresse = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Vehicule vehicule = new Vehicule("AB-123-CD","marque","modele",2022);
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Client("Dupont", "Jean", adresse, "1234567890", "jean.dupont", "1234567812345678");
+            new Client("Dupont", "Jean", adresse, "1234567890", "jean.dupont", "1234567812345678", vehicule);
         });
         assertThat(exception.getMessage()).isEqualTo("Adresse mail invalide");
     }
