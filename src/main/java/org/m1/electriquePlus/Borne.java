@@ -38,7 +38,7 @@ public class Borne {
                 case 'R':
                     status = "Reserve";
                     break;
-                case 'i':
+                case 'I':
                     status = "Indisponible";
                     break;
                 case 'O':
