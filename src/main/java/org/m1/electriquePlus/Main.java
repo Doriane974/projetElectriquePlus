@@ -16,7 +16,8 @@ public class Main {
 
         //création d'un client lambda
         Adresse adressePaul = new Adresse(71, "Rue du bois", 54000, "Nancy", "France" );
-        Client paul = new Client("Dupont", "Paul", adressePaul, "0601020304", "Dupont.Fred@ElectriquePlus.fr", "1234567890");
+        Vehicule vehicule = new Vehicule("AB-123-CD","marque","modele",2022);
+        Client paul = new Client("Dupont", "Paul", adressePaul, "0601020304", "Dupont.Fred@ElectriquePlus.fr", "1234567890", vehicule);
         clients.add(paul);
 
         //création de l'application en ligne de commande

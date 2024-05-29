@@ -24,7 +24,10 @@ public class Borne {
 
     public void setNumero(int numero) {
         this.numero = numero;
+    }
 
+    public char checkDisponibilites(String date, String hour){
+        char dispos = '_';
         try {
             dispos = checkStatus(date, hour, this.timetableFileName);
             String status ="";

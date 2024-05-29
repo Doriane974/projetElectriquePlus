@@ -15,7 +15,7 @@ public class Client {
 	private String numeroCarteDebit;
 	private Vehicule vehicule;
 
-	public Client(String nom, String prenom, Adresse adresse, String numeroTelephone, String email, String numeroCarteDebit) {
+	public Client(String nom, String prenom, Adresse adresse, String numeroTelephone, String email, String numeroCarteDebit, Vehicule vehicule) {
 		if (nom == null || nom.isEmpty() || prenom == null || prenom.isEmpty() || adresse == null ||
 				email == null || email.isEmpty() || numeroCarteDebit == null || numeroCarteDebit.isEmpty() ||
 				numeroTelephone == null || numeroTelephone.isEmpty()) {
@@ -76,8 +76,8 @@ public class Client {
 	}
 	
 		public Vehicule getVehicule() {
-		return this.vehicule;
-		{
-	
-	
+			return this.vehicule;
+		}
+
+
 }
