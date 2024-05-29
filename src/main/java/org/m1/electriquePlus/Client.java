@@ -1,8 +1,5 @@
 package org.m1.electriquePlus;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static java.lang.Math.abs;
 
 
