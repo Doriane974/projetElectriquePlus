@@ -57,4 +57,15 @@ public class Adresse {
     public String getNomVille() {
         return nomVille;
     }
+
+    @Override
+    public String toString() {
+        return "Adresse{" +
+                "numeroHabitation=" + numeroHabitation +
+                ", nomRue='" + nomRue + '\'' +
+                ", codePostal=" + codePostal +
+                ", nomVille='" + nomVille + '\'' +
+                ", nomPays='" + nomPays + '\'' +
+                '}';
+    }
 }

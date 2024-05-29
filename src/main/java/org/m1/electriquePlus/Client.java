@@ -1,8 +1,5 @@
 package org.m1.electriquePlus;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static java.lang.Math.abs;
 
 
@@ -11,17 +8,20 @@ public class Client {
 	private String nom;
 	private String prenom;
 	private Adresse adresse;
-	private long numeroTelephone; //long car il est plus grand que int et on a besoin d'un int avec 10 chiffres
+	private String numeroTelephone;
+	//on ne peux pas mettre de int avec 10 chiffres
+	//on ne peux pas mettre de long car cela ne prend pas en compte le 0 de début
 	private String email;
 	private String numeroCarteDebit;
 
-	public Client(String nom, String prenom, Adresse adresse, long numeroTelephone, String email, String numeroCarteDebit) {
+	public Client(String nom, String prenom, Adresse adresse, String numeroTelephone, String email, String numeroCarteDebit) {
 		if (nom == null || nom.isEmpty() || prenom == null || prenom.isEmpty() || adresse == null ||
-				email == null || email.isEmpty() || numeroCarteDebit == null || numeroCarteDebit.isEmpty()) {
+				email == null || email.isEmpty() || numeroCarteDebit == null || numeroCarteDebit.isEmpty() ||
+				numeroTelephone == null || numeroTelephone.isEmpty()) {
 			throw new IllegalArgumentException("Aucun champ ne doit être vide");
 		}
 
-		if (String.valueOf(numeroTelephone).length() != 10) {
+		if (!numeroTelephone.matches("\\d{10}")) {
 			throw new IllegalArgumentException("Le numéro de téléphone doit contenir 10 chiffres");
 		}
 
@@ -49,7 +49,7 @@ public class Client {
 		return adresse;
 	}
 
-	public long getNumeroTelephone() {
+	public String getNumeroTelephone() {
 		return numeroTelephone;
 	}
 
@@ -66,7 +66,7 @@ public class Client {
 		return "Client{" +
 				"nom='" + nom + '\'' +
 				", prenom='" + prenom + '\'' +
-				", adresse=" + adresse +
+				", adresse=" + adresse.toString() +
 				", numeroTelephone=" + numeroTelephone +
 				", email='" + email + '\'' +
 				", numeroCarteDebit='" + numeroCarteDebit + '\'' +

@@ -9,14 +9,14 @@ public class Main {
     private static List<Gestionnaire> gestionnaires = new ArrayList<>();
     private static List<Client> clients = new ArrayList<>();
 
-    public static void main(String args){
+    public static void main(String[] args){
         //creation de fred, le gestionnaire
         Gestionnaire fred = new Gestionnaire("Dupont", "fred");
         gestionnaires.add(fred);
 
         //création d'un client lambda
         Adresse adressePaul = new Adresse(71, "Rue du bois", 54000, "Nancy", "France" );
-        Client paul = new Client("Dupont", "Paul", adressePaul, 0601020304, "Dupont.Fred@ElectriquePlus.fr", "1234567890");
+        Client paul = new Client("Dupont", "Paul", adressePaul, "0601020304", "Dupont.Fred@ElectriquePlus.fr", "1234567890");
         clients.add(paul);
 
         //création de l'application en ligne de commande
@@ -67,7 +67,7 @@ public class Main {
         System.out.println("Bienvenue, " + gestionnaire.getNom() + " " + gestionnaire.getPrenom());
         System.out.println("Voici la liste des clients inscrit dans le parc:");
         for (Client c : clients) {
-            c.toString();
+            System.out.println(c.toString());
         }
     }
 
