@@ -10,33 +10,35 @@ public class Main {
     public static List<Client> clients = new ArrayList<>();
     public static Client clientConnecté;
 
-    public static void main(String[] args){
-        //creation de fred, le gestionnaire
-        Gestionnaire fred = new Gestionnaire("Dupont", "fred");
+    public static void main(String[] args) {
+        // création de Fred, le gestionnaire
+        Gestionnaire fred = new Gestionnaire("Dupont", "Fred");
         gestionnaires.add(fred);
 
-        //création d'un client lambda
-        Adresse adressePaul = new Adresse(71, "Rue du bois", 54000, "Nancy", "France" );
-        Vehicule vehicule = new Vehicule("AB-123-CD","marque","modele",2022);
+        // création d'un client lambda
+        Adresse adressePaul = new Adresse(71, "Rue du bois", 54000, "Nancy", "France");
+        Vehicule vehicule = new Vehicule("AB-123-CD", "marque", "modele", 2022);
         Client paul = new Client("Dupont", "Paul", adressePaul, "0601020304", "Dupont.Fred@ElectriquePlus.fr", "1234567890", vehicule);
         clients.add(paul);
 
-        //création de l'application en ligne de commande
-
+        // création de l'application en ligne de commande
         while (true) {
+            System.out.println("____________MENU PRINCIPAL______________");
             System.out.println("1. Se connecter en tant que gestionnaire");
             System.out.println("2. Se connecter en tant que client");
             System.out.println("3. Quitter");
-            int choix = scanner.nextInt();
-            scanner.nextLine();
+            System.out.println("_________________________________________");
+
+
+            int choix = verifChoix(1, 3);
 
             switch (choix) {
-                case 1: //le gestionnaire
+                case 1: // le gestionnaire
                     if (verifGestionnaire()) {
                         menuGestionnaire();
                     }
                     break;
-                case 2: //le client
+                case 2: // le client
                     menuClient();
                     break;
                 case 3:
@@ -59,7 +61,7 @@ public class Main {
             switch (choix) {
                 case 1:
                     if (verifClient() == null){
-                        incrireClient();
+                        inscrireClient();
                     }
                     break;
                 case 2:
@@ -75,29 +77,132 @@ public class Main {
         }
     }
 
-    private static void incrireClient() {
-        System.out.println("Nom:");
-        String nom = scanner.nextLine();
-        System.out.println("Prénom:");
-        String prenom = scanner.nextLine();
-        System.out.println("Numéro d'habitation:");
-        int numeroHabitation = scanner.nextInt();
-        scanner.nextLine();
-        System.out.println("Nom de la rue:");
-        String nomRue = scanner.nextLine();
-        System.out.println("Code postal:");
-        int codePostal = scanner.nextInt();
-        scanner.nextLine();
-        System.out.println("Nom de la ville:");
-        String nomVille = scanner.nextLine();
-        System.out.println("Nom du pays:");
-        String nomPays = scanner.nextLine();
-        System.out.println("Numéro de téléphone: par exemple 0607080901");
-        String numeroTelephone = scanner.nextLine();
-        System.out.println("Email: par exemple jean@gmail.com");
-        String email = scanner.nextLine();
-        System.out.println("Numéro de carte de débit: par exemple 1234567890");
-        String numeroCarteDebit = scanner.nextLine();
+    private static void inscrireClient() {
+        String nom = "";
+        String prenom = "";
+        int numeroHabitation = 0;
+        String nomRue = "";
+        int codePostal = 0;
+        String nomVille = "";
+        String nomPays = "";
+        String numeroTelephone = "";
+        String email = "";
+        String numeroCarteDebit = "";
+        boolean valid;
+
+        // Saisie et validation du nom
+        do {
+            System.out.println("Nom:");
+            nom = scanner.nextLine();
+            valid = nom != null && !nom.isEmpty() && nom.matches("[a-zA-Z\\s]+");
+            if (!valid) {
+                System.out.println("Le nom ne doit pas être vide et ne doit contenir que des lettres. Veuillez réessayer.");
+            }
+        } while (!valid);
+
+        // Saisie et validation du prénom
+        do {
+            System.out.println("Prénom:");
+            prenom = scanner.nextLine();
+            valid = prenom != null && !prenom.isEmpty() && prenom.matches("[a-zA-Z\\s]+");
+            if (!valid) {
+                System.out.println("Le prénom ne doit pas être vide et ne doit contenir que des lettres. Veuillez réessayer.");
+            }
+        } while (!valid);
+
+        // Saisie et validation du numéro d'habitation
+        do {
+            System.out.println("Numéro d'habitation:");
+            if (scanner.hasNextInt()) {
+                numeroHabitation = scanner.nextInt();
+                scanner.nextLine(); // Consomme la nouvelle ligne
+                valid = numeroHabitation > 0;
+                if (!valid) {
+                    System.out.println("Le numéro d'habitation doit être supérieur à 0. Veuillez réessayer.");
+                }
+            } else {
+                System.out.println("Veuillez entrer un numéro valide.");
+                valid = false;
+                scanner.next(); // Consomme l'entrée invalide
+            }
+        } while (!valid);
+
+        // Saisie et validation du nom de la rue
+        do {
+            System.out.println("Nom de la rue:");
+            nomRue = scanner.nextLine();
+            valid = nomRue != null && !nomRue.isEmpty();
+            if (!valid) {
+                System.out.println("Le nom de la rue ne doit pas être vide. Veuillez réessayer.");
+            }
+        } while (!valid);
+
+        // Saisie et validation du code postal
+        do {
+            System.out.println("Code postal:");
+            if (scanner.hasNextInt()) {
+                codePostal = scanner.nextInt();
+                scanner.nextLine(); // Consomme la nouvelle ligne
+                valid = String.valueOf(codePostal).length() == 5;
+                if (!valid) {
+                    System.out.println("Le code postal doit contenir 5 chiffres. Veuillez réessayer.");
+                }
+            } else {
+                System.out.println("Veuillez entrer un code postal valide.");
+                valid = false;
+                scanner.next(); // Consomme l'entrée invalide
+            }
+        } while (!valid);
+
+        // Saisie et validation du nom de la ville
+        do {
+            System.out.println("Nom de la ville:");
+            nomVille = scanner.nextLine();
+            valid = nomVille != null && !nomVille.isEmpty() && nomVille.matches("[a-zA-Z\\s]+");
+            if (!valid) {
+                System.out.println("Le nom de la ville ne doit pas être vide et ne doit contenir que des lettres. Veuillez réessayer.");
+            }
+        } while (!valid);
+
+        // Saisie et validation du nom du pays
+        do {
+            System.out.println("Nom du pays:");
+            nomPays = scanner.nextLine();
+            valid = nomPays != null && !nomPays.isEmpty() && nomPays.matches("[a-zA-Z\\s]+");
+            if (!valid) {
+                System.out.println("Le nom du pays ne doit pas être vide et ne doit contenir que des lettres. Veuillez réessayer.");
+            }
+        } while (!valid);
+
+        // Saisie et validation du numéro de téléphone
+        do {
+            System.out.println("Numéro de téléphone: par exemple 0607080901");
+            numeroTelephone = scanner.nextLine();
+            valid = numeroTelephone.length() == 10 && numeroTelephone.matches("\\d+");
+            if (!valid) {
+                System.out.println("Le numéro de téléphone doit contenir 10 chiffres. Veuillez réessayer.");
+            }
+        } while (!valid);
+
+        // Saisie et validation de l'email
+        do {
+            System.out.println("Email: par exemple jean@gmail.com");
+            email = scanner.nextLine();
+            valid = email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
+            if (!valid) {
+                System.out.println("Adresse mail invalide. Veuillez réessayer.");
+            }
+        } while (!valid);
+
+        // Saisie et validation du numéro de carte de débit
+        do {
+            System.out.println("Numéro de carte de débit: par exemple 1234567890");
+            numeroCarteDebit = scanner.nextLine();
+            valid = numeroCarteDebit.matches("\\d+");
+            if (!valid) {
+                System.out.println("Le numéro de carte de débit ne doit pas être vide et doit contenir uniquement des chiffres. Veuillez réessayer.");
+            }
+        } while (!valid);
 
         Adresse adresse = new Adresse(numeroHabitation, nomRue, codePostal, nomVille, nomPays);
         Client client = new Client(nom, prenom, adresse, numeroTelephone, email, numeroCarteDebit);
@@ -107,13 +212,15 @@ public class Main {
     }
 
 
+
     private static void menuGestionnaire() {
         while (true) {
+            System.out.println("______MENU DU GESTIONNAIRE_____________");
             System.out.println("1. Afficher la liste des clients");
             System.out.println("2. ...");
             System.out.println("3. Retour au menu principal");
-            int choix = scanner.nextInt();
-            scanner.nextLine();
+
+            int choix = verifChoix(1, 3);
 
             switch (choix) {
                 case 1:
@@ -130,8 +237,26 @@ public class Main {
         }
     }
 
+    public static int verifChoix(int choixmin, int choixmax){ //verifie si le choix est entre les deux bornes
+        int choix = -1;
+        do {
+            System.out.print("Veuillez entrer votre choix (entre " + choixmin + " et " + choixmax + ")");
+            if (scanner.hasNextInt()) {
+                choix = scanner.nextInt();
+                scanner.nextLine();
+                if (choix < choixmin || choix > choixmax) {
+                    System.out.println("Choix invalide. Veuillez réessayer.");
+                }
+            } else {
+                System.out.println("Entrée non valide. Veuillez entrer un chiffre.");
+                scanner.next();
+            }
+        } while (choix < choixmin || choix > choixmax);
+        return choix;
+    }
 
-    private static boolean  verifGestionnaire() {
+    private static boolean verifGestionnaire() {
+        System.out.println("________VERIFICATION DE L'IDENTITE______");
         System.out.println("Nom du gestionnaire:");
         String nom = scanner.nextLine();
         System.out.println("Prénom du gestionnaire:");
