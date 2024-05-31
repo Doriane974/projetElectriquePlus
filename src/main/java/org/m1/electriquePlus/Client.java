@@ -15,14 +15,37 @@ public class Client {
 	private String numeroCarteDebit;
 	private Vehicule vehicule;
 
+
+	//constructeur sans vehicule
+	public Client(String nom, String prenom, Adresse adresse, String numeroTelephone, String email, String numeroCarteDebit) {
+
+		if(verifierClient(nom, prenom, adresse, numeroTelephone, email, numeroCarteDebit)){
+			this.nom = nom;
+			this.prenom = prenom;
+			this.adresse = adresse;
+			this.numeroTelephone = numeroTelephone;
+			this.email = email;
+			this.numeroCarteDebit = numeroCarteDebit;
+		}else {
+			throw new IllegalArgumentException("Les données saisies ne permettent pas de créer un client");
+		}
+	}
+
+	//constructeur avec vehicule
 	public Client(String nom, String prenom, Adresse adresse, String numeroTelephone, String email, String numeroCarteDebit, Vehicule vehicule) {
+		this(nom, prenom, adresse, numeroTelephone, email, numeroCarteDebit);
+		if (vehicule != null){
+			this.vehicule = vehicule;
+		}
+	}
+
+	private boolean verifierClient(String nom, String prenom, Adresse adresse, String numeroTelephone, String email, String numeroCarteDebit) {
 		if (nom == null || nom.isEmpty() || prenom == null || prenom.isEmpty() || adresse == null ||
-				email == null || email.isEmpty() || numeroCarteDebit == null || numeroCarteDebit.isEmpty() ||
-				numeroTelephone == null || numeroTelephone.isEmpty()) {
+				email == null || email.isEmpty() || numeroCarteDebit == null || numeroCarteDebit.isEmpty()) {
 			throw new IllegalArgumentException("Aucun champ ne doit être vide");
 		}
 
-		if (!numeroTelephone.matches("\\d{10}")) {
+		if (numeroTelephone.length() != 10) {
 			throw new IllegalArgumentException("Le numéro de téléphone doit contenir 10 chiffres");
 		}
 
@@ -30,13 +53,7 @@ public class Client {
 			throw new IllegalArgumentException("Adresse mail invalide");
 		}
 
-		this.nom = nom;
-		this.prenom = prenom;
-		this.adresse = adresse;
-		this.numeroTelephone = numeroTelephone;
-		this.email = email;
-		this.numeroCarteDebit = numeroCarteDebit;
-		this.vehicule = vehicule;
+		return true;
 	}
 
 	public String getNom() {
@@ -79,5 +96,14 @@ public class Client {
 			return this.vehicule;
 		}
 
+	public void setVehicule(Vehicule vehicule) {
+		this.vehicule = vehicule;
+	}
 
+	/*
+	public void declarerUnVehicule(String plaque, String marque, String modele, int anneeFabrication){
+		//Immatriculation plaqueClient = new Immatriculation("plaque");
+		Vehicule vehiculeClient = new Vehicule(plaque, marque, modele, anneeFabrication);
+		this.vehicule = vehiculeClient;
+	}*/
 }
