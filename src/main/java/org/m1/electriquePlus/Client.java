@@ -1,10 +1,13 @@
 package org.m1.electriquePlus;
 
+import java.util.Objects;
+
 import static java.lang.Math.abs;
 
 
 public class Client {
 
+	private int Id;
 	private String nom;
 	private String prenom;
 	private Adresse adresse;
@@ -37,6 +40,20 @@ public class Client {
 		this.email = email;
 		this.numeroCarteDebit = numeroCarteDebit;
 		this.vehicule = vehicule;
+	}
+
+	@Override
+	public boolean equals(Object o) {//TODO : a tester
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Client client = (Client) o;
+		return nom.equals(client.nom) &&
+				Objects.equals(prenom, client.prenom) &&
+				Objects.equals(adresse, client.adresse) &&
+				Objects.equals(numeroTelephone, client.numeroTelephone) &&
+				Objects.equals(email, client.email) &&
+				Objects.equals(numeroCarteDebit, client.numeroCarteDebit) &&
+				Objects.equals(vehicule, client.vehicule);
 	}
 
 	public String getNom() {

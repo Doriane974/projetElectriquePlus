@@ -12,7 +12,7 @@ public class Borne {
         this.numero = numero;
         this.timetableFileName = "timeTableBorne"+numero;
         try {
-            generateFile(timetableFileName);
+            generateFileBorne(timetableFileName);
         }catch (IOException e){
             System.out.println("Erreur dans la generation de l'emploi du temps de la borne "+numero+" : "+e.getMessage());
         }

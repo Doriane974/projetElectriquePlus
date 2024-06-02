@@ -1,5 +1,7 @@
 package org.m1.electriquePlus;
 
+import java.util.Objects;
+
 public class Immatriculation {
 
     private String lettresAvant;
@@ -16,6 +18,16 @@ public class Immatriculation {
         this.lettresAvant = parties[0];
         this.chiffres = Integer.parseInt(parties[1]);
         this.lettresApres = parties[2];
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Immatriculation plaque = (Immatriculation) o;
+        return lettresAvant.equals(plaque.lettresAvant) &&
+                lettresApres.equals((plaque.lettresApres)) &&
+                chiffres == plaque.chiffres;
     }
 
     @Override

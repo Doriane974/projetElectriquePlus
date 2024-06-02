@@ -13,8 +13,7 @@ import java.util.stream.Collectors;
 
 public class FileManagement {
 
-
-    public static void generateFile(String filename) throws IOException {
+    public static void generateFileBorne(String filename) throws IOException {
         LocalDate startDate = LocalDate.now();
         LocalDate endDate = startDate.plusMonths(3);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
@@ -30,6 +29,24 @@ public class FileManagement {
             }
         }
     }
+
+    public static void loadFileClient(String filename){}
+
+    public static void generateFileVehicule(String filename){}
+    public static void loadFileVehicule(){}
+
+    public static void generateFileReservation(String filename){}
+    public static void loadFileReservation(){}
+
+    public static void generateFileAddresse(){}
+    public static void loadFileAddresse(){}
+
+
+
+
+
+
+
 
     public static void changeStatus(String statusToChange, String date, String hour, String filename) throws IOException {
         // Lire toutes les lignes du fichier

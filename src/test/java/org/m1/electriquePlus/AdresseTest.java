@@ -65,5 +65,21 @@ public class AdresseTest {
         });
         assertThat(exception.getMessage()).isEqualTo("Le pays ne doit pas être vide");
     }
+
+    @Test
+    public void testEquals_SameValues() {
+        Adresse adresse1 = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Adresse adresse2 = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+
+        assertThat(adresse1).isEqualTo(adresse2);
+    }
+
+    @Test
+    public void testEquals_DifferentValues() {
+        Adresse adresse1 = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Adresse adresse2 = new Adresse(124, "Avenue des Champs-Élysées", 75008, "Paris", "France");
+
+        assertThat(adresse1).isNotEqualTo(adresse2);
+    }
 }
 
