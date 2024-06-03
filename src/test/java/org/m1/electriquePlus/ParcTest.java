@@ -155,12 +155,12 @@ public class ParcTest {
             parc.loadFileAdresses();
             parc.setAdresses(new ArrayList<>());
         } catch (IOException e){
-            System.out.println("Probleme dans la creation du fichier "+parc.getFilenameClients()+" : "+e.getMessage());
+            System.out.println("Probleme dans la creation du fichier "+parc.getFilenameAdresses()+" : "+e.getMessage());
         }
         try {
             parc.getAdressesFromFile();
         } catch (IOException e){
-            System.out.println("Probleme dans la creation du fichier "+parc.getFilenameClients()+" : "+e.getMessage());
+            System.out.println("Probleme dans la creation du fichier "+parc.getFilenameAdresses()+" : "+e.getMessage());
         }
 
         assert(parc.getAdresses().get(0).getNumeroHabitation() == adresses.get(0).getNumeroHabitation());
@@ -194,12 +194,12 @@ public class ParcTest {
             parc.loadFileImmatriculations();
             parc.setImmatriculations(new ArrayList<>());
         } catch (IOException e){
-            System.out.println("Probleme dans la creation du fichier "+parc.getFilenameClients()+" : "+e.getMessage());
+            System.out.println("Probleme dans la creation du fichier "+parc.getFilenameImmatriculations()+" : "+e.getMessage());
         }
         try {
             parc.getImmatriculationsFromFile();
         } catch (IOException e){
-            System.out.println("Probleme dans la creation du fichier "+parc.getFilenameClients()+" : "+e.getMessage());
+            System.out.println("Probleme dans la creation du fichier "+parc.getFilenameImmatriculations()+" : "+e.getMessage());
         }
 
 
@@ -215,7 +215,42 @@ public class ParcTest {
 
     }
 
+    @DisplayName("Test de getImmatriculationsFromFile")
+    @Test
+    public void testGetVehiculeFromFile(){
+        Parc parc = new Parc();
+        //Immatriculation i1 = new Immatriculation("AA-838-DQ");
+        Immatriculation i2 = new Immatriculation("EA-176-SS");
+        Vehicule v1 = new Vehicule("AA-838-DQ", "Pontiac","Firebird",1967);
+        Vehicule v2 = new Vehicule("EA-176-SS", "Honda","Nsx",2015);
+
+        ArrayList<Vehicule> vehicules = new ArrayList<>();
+        vehicules.add(v1);
+        vehicules.add(v2);
+        parc.setVehicules(vehicules);
+        try {
+            System.out.println("On load le fichier vehicules");
+            parc.loadFileVehicules();
+            parc.setVehicules(new ArrayList<>());
+        } catch (IOException e){
+            System.out.println("Probleme dans la creation du fichier "+parc.getFilenameVehicules()+" : "+e.getMessage());
+        }
+        try {
+            parc.getVehiculesFromFile();
+        } catch (IOException e){
+            System.out.println("Probleme dans la creation du fichier "+parc.getFilenameVehicules()+" : "+e.getMessage());
+        }
 
 
+        assert(parc.getVehicules().get(0).getPlaque().equals(vehicules.get(0).getPlaque()));
+        assert(parc.getVehicules().get(0).getModele().equals(vehicules.get(0).getModele()));
+        assert(parc.getVehicules().get(0).getMarque().equals(vehicules.get(0).getMarque()));
+        assert(parc.getVehicules().get(0).getAnneeFabrication() == vehicules.get(0).getAnneeFabrication());
 
+        assert(parc.getVehicules().get(1).getPlaque().equals(vehicules.get(1).getPlaque()));
+        assert(parc.getVehicules().get(1).getModele().equals(vehicules.get(1).getModele()));
+        assert(parc.getVehicules().get(1).getMarque().equals(vehicules.get(1).getMarque()));
+        assert(parc.getVehicules().get(1).getAnneeFabrication() == vehicules.get(1).getAnneeFabrication());
+
+    }
 }

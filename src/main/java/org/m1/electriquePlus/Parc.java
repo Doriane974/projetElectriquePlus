@@ -329,8 +329,8 @@ public class Parc {
                 int chiffres = Integer.parseInt(parts[2]);
                 String lettresApres = parts[3];
                 String marque = parts[4];
-                String modele = parts[4];
-                int anneeFabrication = Integer.parseInt(parts[4]);
+                String modele = parts[5];
+                int anneeFabrication = Integer.parseInt(parts[6]);
 
 
                 // Créez un objet Immatriculation
