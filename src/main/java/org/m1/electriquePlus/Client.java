@@ -2,7 +2,6 @@ package org.m1.electriquePlus;
 
 import java.util.Objects;
 
-import static java.lang.Math.abs;
 
 
 public class Client {

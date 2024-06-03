@@ -48,21 +48,21 @@ public class Parc {
     public void setFilenameAdresses(String filenameAdresses){
         this.filenameAdresses = filenameAdresses;
     }
-    public void setAdresses(ArrayList<Adresse> adresses){this.adresses=adresses;};
+    public void setAdresses(ArrayList<Adresse> adresses){this.adresses=adresses;}
     public ArrayList<Adresse> getAdresses(){ return this.adresses;}
 
     public String getFilenameImmatriculations(){ return  this.filenameImmatriculations;}
     public void setFilenameImmatriculations(String filenameImmatriculations){
         this.filenameImmatriculations = filenameImmatriculations;
     }
-    public void setImmatriculations(ArrayList<Immatriculation> immatriculations){this.immatriculations=immatriculations;};
+    public void setImmatriculations(ArrayList<Immatriculation> immatriculations){this.immatriculations=immatriculations;}
     public ArrayList<Immatriculation> getImmatriculations(){ return this.immatriculations;}
 
     public String getFilenameVehicules(){ return  this.filenameVehicules;}
     public void setFilenameVehicules(String filenameVehicules){
         this.filenameVehicules = filenameVehicules;
     }
-    public void setVehicules(ArrayList<Vehicule> vehicules){this.vehicules=vehicules;};
+    public void setVehicules(ArrayList<Vehicule> vehicules){this.vehicules=vehicules;}
     public ArrayList<Vehicule> getVehicules(){ return this.vehicules;}
 
 

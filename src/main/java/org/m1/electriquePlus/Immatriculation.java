@@ -1,6 +1,5 @@
 package org.m1.electriquePlus;
 
-import java.util.Objects;
 
 public class Immatriculation {
 
