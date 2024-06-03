@@ -163,15 +163,11 @@ public class ParcTest {
             System.out.println("Probleme dans la creation du fichier "+parc.getFilenameClients()+" : "+e.getMessage());
         }
 
-
         assert(parc.getAdresses().get(0).getNumeroHabitation() == adresses.get(0).getNumeroHabitation());
         assert(parc.getAdresses().get(0).getCodePostal()  == adresses.get(0).getCodePostal());
         assert(parc.getAdresses().get(0).getNomPays().equals(adresses.get(0).getNomPays()));
         assert(parc.getAdresses().get(0).getNomRue().equals(adresses.get(0).getNomRue()));
         assert(parc.getAdresses().get(0).getNomVille().equals(adresses.get(0).getNomVille()));
-
-
-
 
         assert(parc.getAdresses().get(1).getNumeroHabitation() == adresses.get(1).getNumeroHabitation());
         assert(parc.getAdresses().get(1).getCodePostal()  == adresses.get(1).getCodePostal());
@@ -181,5 +177,45 @@ public class ParcTest {
 
 
     }
+
+    @DisplayName("Test de getImmatriculationsFromFile")
+    @Test
+    public void testGetImmatriculationsFromFile(){
+        Parc parc = new Parc();
+        Immatriculation i1 = new Immatriculation("AA-838-DQ");
+        Immatriculation i2 = new Immatriculation("EA-176-SS");
+
+        ArrayList<Immatriculation> immatriculations = new ArrayList<>();
+        immatriculations.add(i1);
+        immatriculations.add(i2);
+        parc.setImmatriculations(immatriculations);
+        try {
+            System.out.println("On load le fichier immatriculations");
+            parc.loadFileImmatriculations();
+            parc.setImmatriculations(new ArrayList<>());
+        } catch (IOException e){
+            System.out.println("Probleme dans la creation du fichier "+parc.getFilenameClients()+" : "+e.getMessage());
+        }
+        try {
+            parc.getImmatriculationsFromFile();
+        } catch (IOException e){
+            System.out.println("Probleme dans la creation du fichier "+parc.getFilenameClients()+" : "+e.getMessage());
+        }
+
+
+        assert(parc.getImmatriculations().get(0).getChiffres() == immatriculations.get(0).getChiffres());
+        assert(parc.getImmatriculations().get(0).getLettresAvant().equals(immatriculations.get(0).getLettresAvant()));
+        assert(parc.getImmatriculations().get(0).getLettresApres().equals(immatriculations.get(0).getLettresApres()));
+
+        assert(parc.getImmatriculations().get(1).getChiffres() == immatriculations.get(1).getChiffres());
+        assert(parc.getImmatriculations().get(1).getLettresAvant().equals(immatriculations.get(1).getLettresAvant()));
+        assert(parc.getImmatriculations().get(1).getLettresApres().equals(immatriculations.get(1).getLettresApres()));
+
+
+
+    }
+
+
+
 
 }
