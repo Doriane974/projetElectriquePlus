@@ -1,6 +1,11 @@
 package org.m1.electriquePlus;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -9,8 +14,17 @@ public class Main {
     private static List<Gestionnaire> gestionnaires = new ArrayList<>();
     public static List<Client> clients = new ArrayList<>();
     public static Client clientConnecté;
+    public static Parc parc;
 
     public static void main(String[] args) {
+        // création du parc et des borne
+        parc = new Parc(new ArrayList<Borne>());
+        parc.addBorne(new Borne(1));
+        parc.addBorne(new Borne(2));
+        parc.addBorne(new Borne(3));
+        parc.addBorne(new Borne(4));
+        parc.addBorne(new Borne(5));
+
         // création de Fred, le gestionnaire
         Gestionnaire fred = new Gestionnaire("Dupont", "Fred");
         gestionnaires.add(fred);
@@ -54,7 +68,8 @@ public class Main {
         while (true) {
             System.out.println("1. S'incrire");
             System.out.println("2. Ajouter un véhicule");
-            System.out.println("3. Retour au menu principal");
+            System.out.println("3. Faire une réservation");
+            System.out.println("4. Retour au menu principal");
             int choix = scanner.nextInt();
             scanner.nextLine();
 
@@ -66,13 +81,142 @@ public class Main {
                     break;
                 case 2:
                     if (verifClient() != null){
-                        ajouteVehicule();
+                        ajouteVehiculeClient();
                     }
                     break;
                 case 3:
+                    if (verifClient() != null){
+                        faireUneReservation();
+                    }
+                    break;
+                case 4:
                     return;
                 default:
                     System.out.println("Choix invalide");
+            }
+        }
+    }
+
+    private static void faireUneReservation() {
+        int jour = 0;
+        int mois = 0;
+        int annee = LocalDate.now().getYear();
+        int heure = 0;
+        Vehicule vehicule = null;
+        boolean valid;
+        System.out.println("Veuillez entrer une date de reservation :");
+
+        //saisie du mois de reservation
+        LocalDate maxReservationDate = LocalDate.now().plusMonths(2);
+        do {
+            System.out.println("Veuillez saisir le mois numerique ("+LocalDate.now().format(DateTimeFormatter.ofPattern("MM"))+" à "+maxReservationDate.format(DateTimeFormatter.ofPattern("MM"))+")");
+            try {
+                mois = scanner.nextInt();
+                valid = (mois < 13) && (mois > 0);
+            }catch(InputMismatchException e){
+                valid = false;
+            }
+            if(valid){
+                LocalDate reservationDate = LocalDate.of(annee, mois, 1);
+                if (reservationDate.isAfter(maxReservationDate) || reservationDate.isBefore(LocalDate.now())) {
+                    valid = false;
+                    System.out.println("Nous prenons les reservations que 3 mois à l'avance pas plus.");
+                }
+            }else{
+                System.out.println("Veuillez saisir le mois en numerique et compris entre "+LocalDate.now().format(DateTimeFormatter.ofPattern("mm"))+" à "+maxReservationDate.format(DateTimeFormatter.ofPattern("mm")));
+            }
+        } while (!valid);
+
+        //saisie du jour de reservation
+        YearMonth moisAnnee = YearMonth.of(annee, mois);
+        int nbJourMois = moisAnnee.lengthOfMonth();
+
+        do {
+            System.out.println("Veuillez saisir le jour numérique (1 à "+nbJourMois+")");
+            try{
+                jour = scanner.nextInt();
+                if (jour < 1 || jour > 31) {
+                    valid = false;
+                }else {
+                    valid = jour <= nbJourMois;
+                }
+            }catch (InputMismatchException e){
+                valid = false;
+            }
+            if (!valid) {
+                System.out.println("Veuillez saisir le jour en numerique et compris entre 1 à "+nbJourMois);
+            }
+        }while(!valid);
+
+        do{
+            System.out.println("Veuillez saisir l'heure (00h - 23h)");
+            boolean heureValid = false;
+            try{
+                heure = scanner.nextInt();
+                heureValid = true;
+            }catch (InputMismatchException e){
+                String heuretempo = scanner.nextLine();
+                if(heuretempo.toLowerCase().endsWith("h")){
+                    try {
+                        heure = Integer.parseInt(heuretempo.split("h")[0]);
+                        heureValid = true;
+                    }catch(Exception e2){
+                        valid = false;
+                    }
+                }
+            }
+            if(heureValid){
+                if(heure<24 || heure >= 0)
+                    valid = true;
+            }
+            if(!valid)
+            {
+                System.out.println("Veuillez saisir une heure en numerique et compris 00h - 23h");
+            }
+        }while(!valid);
+
+        do{
+            vehicule = clientConnecté.getVehicule();
+            if(vehicule != null) {
+                System.out.println("Veuillez Confirmé que ces bien pour se véhicule : " + vehicule.getPlaque());
+                System.out.println("1. oui");
+                System.out.println("2. non, saisir les information du véhicule");
+            }else{
+                System.out.println("Vous n'avez pas de véhicule enregistrer voulez vous l'enregistrer apres avoir saisie les informations");
+                System.out.println("1. oui");
+                System.out.println("2. non");
+            }
+            try{
+                int choix = 0;
+                choix = scanner.nextInt();
+                if(choix < 1 || choix > 2){
+                    valid = false;
+                }else{
+                    if(choix == 2){
+                        vehicule = ajouteVehicule();
+                    }else if(vehicule == null){
+                        ajouteVehiculeClient();
+                        vehicule = clientConnecté.getVehicule();
+                    }
+                    valid = true;
+                }
+            }catch (InputMismatchException e){
+                valid = false;
+            }
+            if(!valid)
+            {
+                System.out.println("Veuillez saisir 1 ou 2");
+            }
+        }while(!valid);
+
+        LocalDateTime datetime = LocalDateTime.of(annee, mois, jour, heure, 0);
+        ArrayList<Borne> bornes = parc.getDispBornes(datetime.format(DateTimeFormatter.ofPattern("dd/MM")),datetime.format(DateTimeFormatter.ofPattern("hh")));
+        if(!bornes.isEmpty()){
+            if(bornes.get(0).changeStatusBorne(datetime.format(DateTimeFormatter.ofPattern("dd/MM")),datetime.format(DateTimeFormatter.ofPattern("hh")),"RESERVE") == 1)
+            {
+                Reservation r = new Reservation(clientConnecté,vehicule,bornes.get(0),datetime,datetime.plusHours(1));
+                parc.ajouterReservation(r);
+                System.out.println("Vous aurez une reservation a la date et l'heure voulue sur la borne n°"+bornes.get(0).getNumero());
             }
         }
     }
@@ -321,15 +465,26 @@ public class Main {
         }
     }
 
-    private static void ajouteVehicule(){ //CLIENT
-        boolean valid;
-        String plaque;
-
-
+    private static void ajouteVehiculeClient(){
         if (clientConnecté.getVehicule() != null) {
             System.out.println("Ce client a déjà un véhicule enregistré.");
             return;
         }
+        Vehicule vehicule = ajouteVehicule();
+
+        clientConnecté.setVehicule(vehicule);
+
+        // Vérification de l'enregistrement du véhicule
+        if (clientConnecté.getVehicule().equals(vehicule)) {
+            System.out.println("Véhicule ajouté avec succès : " + vehicule);
+        } else {
+            System.out.println("Erreur lors de l'ajout du véhicule. Retour au menu client.");
+        }
+    }
+
+    private static Vehicule ajouteVehicule(){ //CLIENT
+        boolean valid;
+        String plaque;
 
         do {
             System.out.println("Entrez la plaque d'immatriculation : par exemple AB-123-CD");
@@ -350,15 +505,7 @@ public class Main {
         int anneeFabrication = scanner.nextInt();
         scanner.nextLine();
 
-        Vehicule vehicule = new Vehicule(plaque, marque, modele, anneeFabrication);
-        clientConnecté.setVehicule(vehicule);
-
-        // Vérification de l'enregistrement du véhicule
-        if (clientConnecté.getVehicule().equals(vehicule)) {
-            System.out.println("Véhicule ajouté avec succès : " + vehicule);
-        } else {
-            System.out.println("Erreur lors de l'ajout du véhicule. Retour au menu client.");
-        }
+        return new Vehicule(plaque, marque, modele, anneeFabrication);
     }
 
 }
