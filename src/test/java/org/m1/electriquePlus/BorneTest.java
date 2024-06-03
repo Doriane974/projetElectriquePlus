@@ -18,7 +18,7 @@ public class BorneTest {
     @Test
     public void testCheckDisponibilites(){
         Borne borne1 = new Borne(1);
-        assertThat(borne1.checkDisponibilites("01/06", "05")).isEqualTo('D');
+        assertThat(borne1.checkDisponibilites("01/08", "05")).isEqualTo('D');
     }
 
     @DisplayName("Test changeStatusBorne")
@@ -26,8 +26,8 @@ public class BorneTest {
     public void testChangeStatusBorne(){
         Borne borne1 = new Borne(1);
 
-        assertThat(borne1.changeStatusBorne("02/06", "05", "OCCUPE")).isEqualTo(0);
-        assertThat(borne1.checkDisponibilites("02/06", "05")).isEqualTo('O');
+        assertThat(borne1.changeStatusBorne("01/08", "05", "OCCUPE")).isEqualTo(0);
+        assertThat(borne1.checkDisponibilites("01/08", "05")).isEqualTo('O');
     }
 
     @DisplayName("Test changeStatusBorne with wrong status")
@@ -35,8 +35,8 @@ public class BorneTest {
     public void testChangeStatusBorneFail(){
         Borne borne1 = new Borne(1);
 
-        assertThat(borne1.changeStatusBorne("02/06", "05", "PAS DISPONIBLE")).isEqualTo(1);
-        assertThat(borne1.checkDisponibilites("02/06", "05")).isEqualTo('D');
+        assertThat(borne1.changeStatusBorne("01/08", "05", "PAS DISPONIBLE")).isEqualTo(1);
+        assertThat(borne1.checkDisponibilites("01/08", "05")).isEqualTo('D');
     }
 
 

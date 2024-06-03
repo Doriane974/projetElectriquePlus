@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Adresse {
 
+    private int id;
     private int numeroHabitation;
     private String nomRue;
     private int codePostal;
@@ -51,6 +52,8 @@ public class Adresse {
     }
 
 
+    public void setId(int id){this.id = id;}
+    public int getId(){return this.id;}
     public int getNumeroHabitation() {
         return numeroHabitation;
     }

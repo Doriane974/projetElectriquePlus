@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Reservation {
 
+    private int Id;
     private Client client;
     private Vehicule vehicule;
     private Borne borne;
@@ -47,4 +48,7 @@ public class Reservation {
     public boolean verificationImmatriculation(Vehicule vehicule, Client client) {
         return client.getVehicule().getPlaque().toString().equals(vehicule.getPlaque().toString());
     }
+
+    public void setID(int id){this.Id = id;}
+    public int getId(){return this.Id;}
 }

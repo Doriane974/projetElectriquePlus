@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Vehicule {
 
+    private int Id;
     private Immatriculation plaque;
     private String marque;
     private String modele;
@@ -43,4 +44,7 @@ public class Vehicule {
     public int getAnneeFabrication() {
         return anneeFabrication;
     }
+
+    public int getId(){return this.Id;}
+    public void setId(int id){this.Id = id;}
 }

@@ -72,6 +72,8 @@ public class Client {
 				Objects.equals(vehicule, client.vehicule);
 	}
 
+	public int getId(){return this.Id;}
+
 	public String getNom() {
 		return nom;
 	}
@@ -116,6 +118,7 @@ public class Client {
 		this.vehicule = vehicule;
 	}
 
+	public void setId(int id){this.Id = id;}
 	/*
 	public void declarerUnVehicule(String plaque, String marque, String modele, int anneeFabrication){
 		//Immatriculation plaqueClient = new Immatriculation("plaque");
