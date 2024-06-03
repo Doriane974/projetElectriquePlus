@@ -62,7 +62,7 @@ public class Main {
                 case 1:
                     if (verifClient() == null){
                         inscrireClient();
-                    }
+                    }else return; //sile client existe on le retourne au menu client
                     break;
                 case 2:
                     if (verifClient() != null){
@@ -90,13 +90,14 @@ public class Main {
         String numeroCarteDebit = "";
         boolean valid;
 
-        // Saisie et validation du nom
+        System.out.println("Il n'y a pas de compte existant, merci de vous inscrire :");
+        // Saisie et validation du nom de famille
         do {
-            System.out.println("Nom:");
+            System.out.println("Nom de famille:");
             nom = scanner.nextLine();
-            valid = nom != null && !nom.isEmpty() && nom.matches("[a-zA-Z\\s]+");
+            valid = nom != null && !nom.isEmpty() && nom.matches("[a-zA-Z\\sàâäéèêëîïôöùûüÿçÀÂÄÉÈÊËÎÏÔÖÙÛÜŸÇ-]+");
             if (!valid) {
-                System.out.println("Le nom ne doit pas être vide et ne doit contenir que des lettres. Veuillez réessayer.");
+                System.out.println("Le nom ne doit pas être vide et ne doit contenir que des lettres, des espaces, des accents ou des tirets. Veuillez réessayer.");
             }
         } while (!valid);
 
@@ -104,11 +105,12 @@ public class Main {
         do {
             System.out.println("Prénom:");
             prenom = scanner.nextLine();
-            valid = prenom != null && !prenom.isEmpty() && prenom.matches("[a-zA-Z\\s]+");
+            valid = prenom != null && !prenom.isEmpty() && prenom.matches("[a-zA-Z\\sàâäéèêëîïôöùûüÿçÀÂÄÉÈÊËÎÏÔÖÙÛÜŸÇ-]+");
             if (!valid) {
-                System.out.println("Le prénom ne doit pas être vide et ne doit contenir que des lettres. Veuillez réessayer.");
+                System.out.println("Le prénom ne doit pas être vide et ne doit contenir que des lettres, des espaces, des accents ou des tirets. Veuillez réessayer.");
             }
         } while (!valid);
+
 
         // Saisie et validation du numéro d'habitation
         do {
@@ -158,9 +160,9 @@ public class Main {
         do {
             System.out.println("Nom de la ville:");
             nomVille = scanner.nextLine();
-            valid = nomVille != null && !nomVille.isEmpty() && nomVille.matches("[a-zA-Z\\s]+");
+            valid = nomVille != null && !nomVille.isEmpty() && nomVille.matches("[a-zA-Z\\sàâäéèêëîïôöùûüÿçÀÂÄÉÈÊËÎÏÔÖÙÛÜŸÇ-]+");
             if (!valid) {
-                System.out.println("Le nom de la ville ne doit pas être vide et ne doit contenir que des lettres. Veuillez réessayer.");
+                System.out.println("Le nom de la ville ne doit pas être vide et ne doit contenir que des lettres, des espaces, des accents ou des tirets. Veuillez réessayer.");
             }
         } while (!valid);
 
@@ -280,8 +282,9 @@ public class Main {
     }
 
     private static Client verifClient() { //VERIFIE SI LE CLIENT EXISTE
+        System.out.println("Verification, si un compte existe déja.");
 
-        System.out.println("Nom:");
+        System.out.println("Nom de famille:");
         String nom = scanner.nextLine();
         System.out.println("Prénom:");
         String prenom = scanner.nextLine();
@@ -295,6 +298,7 @@ public class Main {
         for (Client c : clients) {
             if (c.getNom().equalsIgnoreCase(nom) && c.getPrenom().equalsIgnoreCase(prenom)) {
                 clientConnecté = c;
+                System.out.println("Vous etes connecté ! Bonjour " + c.getNom() + " " + c.getPrenom());
                 return c;
             }
         }
@@ -318,13 +322,23 @@ public class Main {
     }
 
     private static void ajouteVehicule(){ //CLIENT
+        boolean valid;
+        String plaque;
+
+
         if (clientConnecté.getVehicule() != null) {
             System.out.println("Ce client a déjà un véhicule enregistré.");
             return;
         }
 
-        System.out.println("Entrez la plaque d'immatriculation : par exemple AB-123-CD ");
-        String plaque = scanner.nextLine();
+        do {
+            System.out.println("Entrez la plaque d'immatriculation : par exemple AB-123-CD");
+            plaque = scanner.nextLine();
+            if (!plaque.matches("[A-Z]{2}-\\d{3}-[A-Z]{2}")) {
+                System.out.println("Format de plaque invalide. Veuillez réessayer.");
+            }
+        } while (!plaque.matches("[A-Z]{2}-\\d{3}-[A-Z]{2}"));
+
 
         System.out.println("Entrez la marque du véhicule : par exemple Tesla");
         String marque = scanner.nextLine();
