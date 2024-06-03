@@ -95,13 +95,12 @@ public class ParcTest {
         Vehicule vehicule = new Vehicule("AB-123-CD","marque","modele",2022);
         Client c1 = new Client("Dupont", "Jean", adresse, "1234567890", "jean.dupont@example.com", "1234567812345678", vehicule);
         Client c2 = new Client("Bedier", "Janick", adresse, "1234567890", "jean.dupont@example.com", "1234567812345678", vehicule);
-        Client c3 = new Client("Barale", "Monique", adresse, "1234567890", "jean.dupont@example.com", "1234567812345678", vehicule);
         ArrayList<Client> clients = new ArrayList<>();
         clients.add(c1);
         clients.add(c2);
-        clients.add(c3);
         parc.setClients(clients);
         try {
+            System.out.println("On load le fichier clients");
             parc.loadFileClients();
             parc.setClients(new ArrayList<>());
         } catch (IOException e){
@@ -113,10 +112,74 @@ public class ParcTest {
             System.out.println("Probleme dans la creation du fichier "+parc.getFilenameClients()+" : "+e.getMessage());
         }
 
+
         assert(parc.getClients().get(0).getNom().equals(clients.get(0).getNom()));
+        assert(parc.getClients().get(0).getPrenom().equals(clients.get(0).getPrenom()));
+        assert(parc.getClients().get(0).getNumeroTelephone().equals(clients.get(0).getNumeroTelephone()));
+        assert(parc.getClients().get(0).getEmail().equals(clients.get(0).getEmail()));
+        assert(parc.getClients().get(0).getNumeroCarteDebit().equals(clients.get(0).getNumeroCarteDebit()));
+        assert(parc.getClients().get(0).getVehicule().getMarque().equals(clients.get(0).getVehicule().getMarque()));
+        assert(parc.getClients().get(0).getVehicule().getAnneeFabrication() == clients.get(0).getVehicule().getAnneeFabrication());
+        assert(parc.getClients().get(0).getVehicule().getModele().equals(clients.get(0).getVehicule().getModele()));
+        assert(parc.getClients().get(0).getVehicule().getPlaque().getLettresAvant().equals(clients.get(0).getVehicule().getPlaque().getLettresAvant()));
+        assert(parc.getClients().get(0).getVehicule().getPlaque().getLettresApres().equals(clients.get(0).getVehicule().getPlaque().getLettresApres()));
+        assert(parc.getClients().get(0).getVehicule().getPlaque().getChiffres() == clients.get(0).getVehicule().getPlaque().getChiffres());
+
         assert(parc.getClients().get(1).getNom().equals(clients.get(1).getNom()));
-        assert(parc.getClients().get(2).getNom().equals(clients.get(2).getNom()));
-        //assertThat(parc.getClients().get(1)).isEqualTo(clients.get(1));
-        //assertThat(parc.getClients().get(2)).isEqualTo(clients.get(2));
+        assert(parc.getClients().get(1).getPrenom().equals(clients.get(1).getPrenom()));
+        assert(parc.getClients().get(1).getNumeroTelephone().equals(clients.get(1).getNumeroTelephone()));
+        assert(parc.getClients().get(1).getEmail().equals(clients.get(1).getEmail()));
+        assert(parc.getClients().get(1).getNumeroCarteDebit().equals(clients.get(1).getNumeroCarteDebit()));
+        assert(parc.getClients().get(1).getVehicule().getMarque().equals(clients.get(1).getVehicule().getMarque()));
+        assert(parc.getClients().get(1).getVehicule().getAnneeFabrication() == clients.get(1).getVehicule().getAnneeFabrication());
+        assert(parc.getClients().get(1).getVehicule().getModele().equals(clients.get(1).getVehicule().getModele()));
+        assert(parc.getClients().get(1).getVehicule().getPlaque().getLettresAvant().equals(clients.get(1).getVehicule().getPlaque().getLettresAvant()));
+        assert(parc.getClients().get(1).getVehicule().getPlaque().getLettresApres().equals(clients.get(1).getVehicule().getPlaque().getLettresApres()));
+        assert(parc.getClients().get(1).getVehicule().getPlaque().getChiffres() == clients.get(1).getVehicule().getPlaque().getChiffres());
+
     }
+
+    @DisplayName("Test de getAdressesFromFile")
+    @Test
+    public void testGetAdressesFromFile(){
+        Parc parc = new Parc();
+        Adresse a1 = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Adresse a2 = new Adresse(18, "Route des eucalyptus", 97417, "Saint-Denis", "France");
+
+        ArrayList<Adresse> adresses = new ArrayList<>();
+        adresses.add(a1);
+        adresses.add(a2);
+        parc.setAdresses(adresses);
+        try {
+            System.out.println("On load le fichier adresses");
+            parc.loadFileAdresses();
+            parc.setAdresses(new ArrayList<>());
+        } catch (IOException e){
+            System.out.println("Probleme dans la creation du fichier "+parc.getFilenameClients()+" : "+e.getMessage());
+        }
+        try {
+            parc.getAdressesFromFile();
+        } catch (IOException e){
+            System.out.println("Probleme dans la creation du fichier "+parc.getFilenameClients()+" : "+e.getMessage());
+        }
+
+
+        assert(parc.getAdresses().get(0).getNumeroHabitation() == adresses.get(0).getNumeroHabitation());
+        assert(parc.getAdresses().get(0).getCodePostal()  == adresses.get(0).getCodePostal());
+        assert(parc.getAdresses().get(0).getNomPays().equals(adresses.get(0).getNomPays()));
+        assert(parc.getAdresses().get(0).getNomRue().equals(adresses.get(0).getNomRue()));
+        assert(parc.getAdresses().get(0).getNomVille().equals(adresses.get(0).getNomVille()));
+
+
+
+
+        assert(parc.getAdresses().get(1).getNumeroHabitation() == adresses.get(1).getNumeroHabitation());
+        assert(parc.getAdresses().get(1).getCodePostal()  == adresses.get(1).getCodePostal());
+        assert(parc.getAdresses().get(1).getNomPays().equals(adresses.get(1).getNomPays()));
+        assert(parc.getAdresses().get(1).getNomRue().equals(adresses.get(1).getNomRue()));
+        assert(parc.getAdresses().get(1).getNomVille().equals(adresses.get(1).getNomVille()));
+
+
+    }
+
 }

@@ -97,6 +97,19 @@ public class Parc {
                 line.append(c.getAdresse().getNomVille());
                 line.append("\t");
                 line.append(c.getAdresse().getNomPays());
+                line.append("\t");
+
+                line.append(c.getVehicule().getAnneeFabrication());
+                line.append("\t");
+                line.append(c.getVehicule().getMarque());
+                line.append("\t");
+                line.append(c.getVehicule().getModele());
+                line.append("\t");
+
+                line.append(c.getVehicule().getPlaque().getLettresAvant() + "-" + c.getVehicule().getPlaque().getChiffres() + "-" + c.getVehicule().getPlaque().getLettresApres());
+                line.append("\t");
+
+
                 writer.write(line.toString());
                 writer.newLine();
             }
@@ -111,7 +124,7 @@ public class Parc {
         String line;
         while ((line = reader.readLine()) != null) {
             String[] parts = line.split("\t");
-            if (parts.length == 11) {
+            if (parts.length == 15) {
                 int id = Integer.parseInt(parts[0]);
                 String nom = parts[1];
                 String prenom = parts[2];
@@ -124,17 +137,24 @@ public class Parc {
                 String nomVille = parts[9];
                 String nomPays = parts[10];
 
+                int vehiculeAnneeFabrication = Integer.parseInt(parts[11]);
+                String vehiculeMarque = parts[12];
+                String vehiculeModele = parts[13];
+                String vehiculePlaque =parts[14];
+
+
+
                 // Créez un objet Adresse et Vehicule temporaire, car les détails ne sont pas disponibles
                 Adresse adresse = new Adresse(numeroHabitation, nomRue, codePostal, nomVille, nomPays); // Remplacez par des valeurs appropriées
-                Vehicule vehicule = new Vehicule("AB-123-CD", "inconnu", "inconnu", 1111); // Remplacez par des valeurs appropriées
+                Vehicule vehicule = new Vehicule(vehiculePlaque, vehiculeMarque, vehiculeModele, vehiculeAnneeFabrication); // Remplacez par des valeurs appropriées
                 Client client = new Client(nom, prenom, adresse, numeroTelephone, email, numeroCarteDebit, vehicule);
                 //client.setId(id); // TODO : a modifier quand le client aura un champ ID
-                this.clients.add(client);
+                this.getClients().add(client);
             }
         }
     }
     /**
-     * Verifie qu'un fichier de sauvegarde des clients n'existent pas encore, et si c'est le cas, crée un nouveau fichier contenant les clients inscrits au parc (présents dans le champ clients du parc
+     * Verifie qu'un fichier de sauvegarde des clients n'existent pas encore, et si c'est le cas, crée un nouveau fichier contenant les clients inscrits au parc (présents dans le champ clients du parc)
      * @throws IOException
      */
     public void loadFileClients() throws IOException{
@@ -192,12 +212,12 @@ public class Parc {
 
                 // Créez un objet Adresse et Vehicule temporaire, car les détails ne sont pas disponibles
                 Adresse adresse = new Adresse(numeroHabitation, nomRue, codePostal, nomVille, nomPays); // Remplacez par des valeurs appropriées
-                this.adresses.add(adresse);
+                this.getAdresses().add(adresse);
             }
         }
     }
     /**
-     * Verifie qu'un fichier de sauvegarde des clients n'existent pas encore, et si c'est le cas, crée un nouveau fichier contenant les clients inscrits au parc (présents dans le champ clients du parc
+     * Verifie qu'un fichier de sauvegarde des adresses n'existent pas encore, et si c'est le cas, crée un nouveau fichier contenant les adresses inscrites au parc (présentes dans le champ adresses du parc)
      * @throws IOException
      */
     public void loadFileAdresses() throws IOException{
@@ -248,12 +268,12 @@ public class Parc {
 
                 // Créez un objet Immatriculation
                 Immatriculation immatriculation = new Immatriculation(lettresAvant+"-"+chiffres+"-"+lettresApres); // Remplacez par des valeurs appropriées
-                this.immatriculations.add(immatriculation);
+                this.getImmatriculations().add(immatriculation);
             }
         }
     }
     /**
-     * Verifie qu'un fichier de sauvegarde des clients n'existent pas encore, et si c'est le cas, crée un nouveau fichier contenant les clients inscrits au parc (présents dans le champ clients du parc
+     * Verifie qu'un fichier de sauvegarde des immatriculations n'existent pas encore, et si c'est le cas, crée un nouveau fichier contenant les immatriculations inscrits au parc (présents dans le champ immatriculations du parc)
      * @throws IOException
      */
     public void loadFileImmatriculations() throws IOException{
@@ -265,6 +285,73 @@ public class Parc {
 
 
     //TODO : Tester fichiers Vehicules
+    /**
+     * Génère un fichier contenant les vehicules qui sont enregistrées a ce parc de rechargement.
+     * @throws IOException
+     */
+    public void generateFileVehicule() throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.getFilenameVehicules()))) {
+            int i = 0; //représente l'ID des immatriculations //TODO : implementer l'ID directement dans les vehicules et le concatener sur la ligne
+            for (Vehicule a : this.getVehicules()) {
+                Immatriculation plaque = a.getPlaque();
+                StringBuilder line = new StringBuilder(); //on commence chaque nouvelle ligne par un ID des vehicules
+                i++;
+                line.append(i);
+                line.append("\t");
+                line.append(plaque.getLettresAvant());
+                line.append("\t");
+                line.append(plaque.getChiffres());
+                line.append("\t");
+                line.append(plaque.getLettresApres());
+                line.append("\t");
+                line.append(a.getMarque());
+                line.append("\t");
+                line.append(a.getModele());
+                line.append("\t");
+                line.append(a.getAnneeFabrication());
+                writer.write(line.toString());
+                writer.newLine();
+            }
+        }
+    }
+    /**
+     * A partir du fichier filenameVehicule, on recupère les données du fichiers, et on crées les vehicules du fichier pour les mettre dans le tableau vehicules du parc
+     * @throws IOException
+     */
+    public void getVehiculesFromFile() throws IOException{
+        BufferedReader reader = new BufferedReader(new FileReader(this.getFilenameVehicules()));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split("\t");
+            if (parts.length == 7) {
+                int id = Integer.parseInt(parts[0]);
+                String lettresAvant = parts[1];
+                int chiffres = Integer.parseInt(parts[2]);
+                String lettresApres = parts[3];
+                String marque = parts[4];
+                String modele = parts[4];
+                int anneeFabrication = Integer.parseInt(parts[4]);
+
+
+                // Créez un objet Immatriculation
+                Vehicule vehicule = new Vehicule(lettresAvant+"-"+chiffres+"-"+lettresApres,marque, modele, anneeFabrication);
+                this.getVehicules().add(vehicule);
+            }
+        }
+    }
+    /**
+     * Verifie qu'un fichier de sauvegarde des vehicules n'existent pas encore, et si c'est le cas, crée un nouveau fichier contenant les vehicules inscrits au parc (présents dans le champ vehicules du parc
+     * @throws IOException
+     */
+    public void loadFileVehicules() throws IOException{
+        File file = new File(this.getFilenameVehicules());
+        if (!file.exists()) {
+            generateFileVehicule();
+        }
+    }
+
+
+
 
 
     public ArrayList<Borne> getBornes() {
