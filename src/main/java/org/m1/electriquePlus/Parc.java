@@ -3,12 +3,15 @@ package org.m1.electriquePlus;
 import java.util.ArrayList;
 
 public class Parc {
-    ArrayList<Borne> bornes ;
+    ArrayList<Borne> bornes;
+    ArrayList<Reservation> reservations;
 
     public Parc() {
+        reservations = new ArrayList<>();
     }
 
     public Parc(ArrayList<Borne> bornes) {
+        new Parc();
         this.bornes = bornes;
     }
 
@@ -24,10 +27,17 @@ public class Parc {
         this.getBornes().add(borneAAjouter);
     }
 
-    public void getDispBornes(String date, String hour){
+    public void ajouterReservation(Reservation reservation){
+        this.reservations.add(reservation);
+    }
+
+    public ArrayList<Borne> getDispBornes(String date, String hour){
         //ArrayList<char> dispos = new ArrayList<char>();
+        ArrayList<Borne> dispo = new ArrayList<>();
         for(Borne b : this.getBornes()){
-            b.checkDisponibilites(date, hour);
+            if(b.checkDisponibilites(date, hour)=='D')
+                dispo.add(b);
         }
+        return dispo;
     }
 }
