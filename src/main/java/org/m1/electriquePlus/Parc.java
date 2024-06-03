@@ -10,26 +10,26 @@ public class Parc {
     ArrayList<Adresse> adresses;
     ArrayList<Immatriculation> immatriculations;
     ArrayList<Vehicule> vehicules;
+    ArrayList<Reservation> reservations;
 
     private String filenameClients;
     private String filenameAdresses;
     private String filenameImmatriculations;
     private String filenameVehicules;
+    private String filenameReservations;
 
     public Parc() {
         this.filenameClients = "ClientsSave.txt";
         this.filenameAdresses = "AdressesSave.txt";
         this.filenameImmatriculations = "ImmatriculationsSave.txt";
         this.filenameVehicules = "VehiculesSave.txt";
+        this.filenameReservations = "ReservationsSave.txt";
     }
 
     public Parc(ArrayList<Borne> bornes) {
+        this();
         this.bornes = bornes;
-        this.filenameClients = "ClientsSave.txt";
-        this.filenameAdresses = "AdressesSave.txt";
-        this.filenameImmatriculations = "ImmatriculationsSave.txt";
-        this.filenameVehicules = "VehiculesSave.txt";
-    }
+   }
 
     public String getFilenameClients(){
         return this.filenameClients;
@@ -64,6 +64,11 @@ public class Parc {
     }
     public void setVehicules(ArrayList<Vehicule> vehicules){this.vehicules=vehicules;}
     public ArrayList<Vehicule> getVehicules(){ return this.vehicules;}
+
+    public String getFilenameReservations(){ return  this.filenameReservations;}
+    public void setFilenameReservations(String filenameReservations){this.filenameReservations = filenameReservations; }
+    public void setReservations(ArrayList<Reservation> reservations){this.reservations=reservations;}
+    public ArrayList<Reservation> getReservations(){ return this.reservations;}
 
 
     /**
@@ -165,7 +170,7 @@ public class Parc {
     }
 
 
-    //TODO : Tester fichiers Adresses
+
     /**
      * Genere un fichiet contenant les adresses qui sont enregistrées a ce parc de rechargement.
      * @throws IOException
@@ -227,7 +232,7 @@ public class Parc {
         }
     }
 
-    //TODO : Tester fichiers Immatriculations
+
     /**
      * Genere un fichier contenant les immatriculations qui sont enregistrées a ce parc de rechargement.
      * @throws IOException
@@ -284,7 +289,6 @@ public class Parc {
     }
 
 
-    //TODO : Tester fichiers Vehicules
     /**
      * Génère un fichier contenant les vehicules qui sont enregistrées a ce parc de rechargement.
      * @throws IOException
@@ -349,6 +353,72 @@ public class Parc {
             generateFileVehicule();
         }
     }
+
+
+//    /**
+//     * Génère un fichier contenant les reservations qui sont enregistrées a ce parc de rechargement.
+//     * @throws IOException
+//     */
+//    public void generateFileReservation() throws IOException {
+//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.getFilenameReservations()))) {
+//            int i = 0; //représente l'ID des reservations //TODO : implementer l'ID directement dans les reservations et le concatener sur la ligne
+//            for (Reservation r : this.getReservations()) {
+//
+//                StringBuilder line = new StringBuilder(); //on commence chaque nouvelle ligne par un ID des reservations
+//                i++;
+//                line.append(i);
+//                line.append("\t");
+//                line.append(plaque.getLettresAvant());
+//                line.append("\t");
+//                line.append(plaque.getChiffres());
+//                line.append("\t");
+//                line.append(plaque.getLettresApres());
+//                line.append("\t");
+//                line.append(a.getMarque());
+//                line.append("\t");
+//                line.append(a.getModele());
+//                line.append("\t");
+//                line.append(a.getAnneeFabrication());
+//                writer.write(line.toString());
+//                writer.newLine();
+//            }
+//        }
+//    }
+//    /**
+//     * A partir du fichier filenameVehicule, on recupère les données du fichiers, et on crées les vehicules du fichier pour les mettre dans le tableau vehicules du parc
+//     * @throws IOException
+//     */
+//    public void getVehiculesFromFile() throws IOException{
+//        BufferedReader reader = new BufferedReader(new FileReader(this.getFilenameVehicules()));
+//        String line;
+//        while ((line = reader.readLine()) != null) {
+//            String[] parts = line.split("\t");
+//            if (parts.length == 7) {
+//                int id = Integer.parseInt(parts[0]);
+//                String lettresAvant = parts[1];
+//                int chiffres = Integer.parseInt(parts[2]);
+//                String lettresApres = parts[3];
+//                String marque = parts[4];
+//                String modele = parts[5];
+//                int anneeFabrication = Integer.parseInt(parts[6]);
+//
+//
+//                // Créez un objet Immatriculation
+//                Vehicule vehicule = new Vehicule(lettresAvant+"-"+chiffres+"-"+lettresApres,marque, modele, anneeFabrication);
+//                this.getVehicules().add(vehicule);
+//            }
+//        }
+//    }
+//    /**
+//     * Verifie qu'un fichier de sauvegarde des vehicules n'existent pas encore, et si c'est le cas, crée un nouveau fichier contenant les vehicules inscrits au parc (présents dans le champ vehicules du parc
+//     * @throws IOException
+//     */
+//    public void loadFileVehicules() throws IOException{
+//        File file = new File(this.getFilenameVehicules());
+//        if (!file.exists()) {
+//            generateFileVehicule();
+//        }
+//    }
 
 
 
