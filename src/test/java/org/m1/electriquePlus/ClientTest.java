@@ -28,6 +28,29 @@ public class ClientTest {
         assertThat(client.getEmail()).isEqualTo("jean.dupont@example.com");
         assertThat(client.getNumeroCarteDebit()).isEqualTo("1234567812345678");
     }
+    public void testEquals_SameValues() {
+        Adresse adresse1 = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Vehicule vehicule1 = new Vehicule("AB-123-CD", "Toyota", "Corolla", 2010);
+
+        Client client1 = new Client("Dupont", "Jean", adresse1, "1234567890", "jean.dupont@example.com", "1234567812345678", vehicule1);
+        Client client2 = new Client("Dupont", "Jean", adresse1, "1234567890", "jean.dupont@example.com", "1234567812345678", vehicule1);
+
+        assertThat(client1).isEqualTo(client2);
+    }
+
+    @Test
+    public void testEquals_DifferentValues() {
+        Adresse adresse1 = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Adresse adresse2 = new Adresse(124, "Avenue des Champs-Élysées", 75008, "Paris", "France");
+
+        Vehicule vehicule1 = new Vehicule("AB-123-CD", "Toyota", "Corolla", 2010);
+        Vehicule vehicule2 = new Vehicule("XY-456-ZY", "Honda", "Civic", 2015);
+
+        Client client1 = new Client("Dupont", "Jean", adresse1, "1234567890", "jean.dupont@example.com", "1234567812345678", vehicule1);
+        Client client2 = new Client("Bedier", "Janick", adresse2, "0987654321", "janick.bedier@example.com", "8765432187654321", vehicule2);
+
+        assertThat(client1).isNotEqualTo(client2);
+    }
 
     @DisplayName("Test création d'un client avec un nom vide")
     @Test

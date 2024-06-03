@@ -1,5 +1,7 @@
 package org.m1.electriquePlus;
 
+import java.util.Objects;
+
 public class Vehicule {
 
     private Immatriculation plaque;
@@ -16,6 +18,16 @@ public class Vehicule {
         this.anneeFabrication = anneeFabrication;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vehicule vehicule = (Vehicule) o;
+        return anneeFabrication == vehicule.anneeFabrication &&
+                Objects.equals(plaque, vehicule.plaque) &&
+                Objects.equals(marque, vehicule.marque) &&
+                Objects.equals(modele, vehicule.modele);
+    }
     public Immatriculation getPlaque() {
         return plaque;
     }

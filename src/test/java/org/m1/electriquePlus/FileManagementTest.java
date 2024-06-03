@@ -18,7 +18,7 @@ public class FileManagementTest {
     @BeforeAll
     public static void setup() {
         try {
-            generateFile("output.txt");
+            generateFileBorne("output.txt");
             System.out.println("File generated successfully.");
         } catch (IOException e) {
             System.err.println("Error generating file: " + e.getMessage());
@@ -39,12 +39,13 @@ public class FileManagementTest {
     @Test
     public void testCheckStatus(){
         try{
-            changeStatus("R", "29/05", "02", "output.txt");
-            assertThat(checkStatus("29/05", "02", "output.txt")).isEqualTo('R');
+            changeStatus("R", "01/08", "02", "output.txt");
+            assertThat(checkStatus("01/08", "02", "output.txt")).isEqualTo('R');
         }catch(IOException e) {
             System.err.println("Error modifying file: " + e.getMessage());
         }
     }
+
 
 
 }

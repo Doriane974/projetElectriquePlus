@@ -1,5 +1,7 @@
 package org.m1.electriquePlus;
 
+import java.util.Objects;
+
 public class Adresse {
 
     private int numeroHabitation;
@@ -36,6 +38,17 @@ public class Adresse {
         this.nomPays = nomPays;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Adresse adresse = (Adresse) o;
+        return numeroHabitation == adresse.numeroHabitation &&
+                codePostal == adresse.codePostal &&
+                Objects.equals(nomRue, adresse.nomRue) &&
+                Objects.equals(nomVille, adresse.nomVille) &&
+                Objects.equals(nomPays, adresse.nomPays);
+    }
 
 
     public int getNumeroHabitation() {
