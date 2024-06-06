@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Adresse {
 
+    private int id;
     private int numeroHabitation;
     private String nomRue;
     private int codePostal;
@@ -69,6 +70,14 @@ public class Adresse {
 
     public String getNomVille() {
         return nomVille;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override

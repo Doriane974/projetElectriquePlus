@@ -7,8 +7,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="tdd" />
-        <module name="projetElectiquePlus" />
+        <module name="electriquePlus" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="projetElectiquePlus" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

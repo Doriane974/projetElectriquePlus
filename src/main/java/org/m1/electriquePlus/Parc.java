@@ -80,8 +80,8 @@ public class Parc {
             int i = 0; //représente l'ID des clients //TODO : implementer l'ID directement dans le client et le concatener sur la ligne
             for (Client c : this.getClients()) {
                 StringBuilder line = new StringBuilder(); //on commence chaque nouvelle ligne par un ID des clients
-                i++;
-                line.append(i);
+                //i++;
+                line.append(c.getId());
                 line.append("\t");
                 line.append(c.getNom());
                 line.append("\t");
@@ -153,7 +153,7 @@ public class Parc {
                 Adresse adresse = new Adresse(numeroHabitation, nomRue, codePostal, nomVille, nomPays); // Remplacez par des valeurs appropriées
                 Vehicule vehicule = new Vehicule(vehiculePlaque, vehiculeMarque, vehiculeModele, vehiculeAnneeFabrication); // Remplacez par des valeurs appropriées
                 Client client = new Client(nom, prenom, adresse, numeroTelephone, email, numeroCarteDebit, vehicule);
-                //client.setId(id); // TODO : a modifier quand le client aura un champ ID
+                client.setId(id); 
                 this.getClients().add(client);
             }
         }
@@ -180,8 +180,8 @@ public class Parc {
             int i = 0; //représente l'ID des adresses //TODO : implementer l'ID directement dans l'adresse et le concatener sur la ligne
             for (Adresse a : this.getAdresses()) {
                 StringBuilder line = new StringBuilder(); //on commence chaque nouvelle ligne par un ID des clients
-                i++;
-                line.append(i);
+                //i++;
+                line.append(a.getId());
                 line.append("\t");
                 line.append(a.getNumeroHabitation());
                 line.append("\t");
@@ -217,6 +217,7 @@ public class Parc {
 
                 // Créez un objet Adresse et Vehicule temporaire, car les détails ne sont pas disponibles
                 Adresse adresse = new Adresse(numeroHabitation, nomRue, codePostal, nomVille, nomPays); // Remplacez par des valeurs appropriées
+                adresse.setId(id);
                 this.getAdresses().add(adresse);
             }
         }
@@ -239,17 +240,16 @@ public class Parc {
      */
     public void generateFileImmatriculations() throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.getFilenameImmatriculations()))) {
-            int i = 0; //représente l'ID des immatriculations //TODO : implementer l'ID directement dans l'immatriculation et le concatener sur la ligne
-            for (Immatriculation a : this.getImmatriculations()) {
+            for (Immatriculation i : this.getImmatriculations()) {
                 StringBuilder line = new StringBuilder(); //on commence chaque nouvelle ligne par un ID des immatriculations
-                i++;
-                line.append(i);
+                //i++;
+                line.append(i.getId());
                 line.append("\t");
-                line.append(a.getLettresAvant());
+                line.append(i.getLettresAvant());
                 line.append("\t");
-                line.append(a.getChiffres());
+                line.append(i.getChiffres());
                 line.append("\t");
-                line.append(a.getLettresApres());
+                line.append(i.getLettresApres());
                 writer.write(line.toString());
                 writer.newLine();
             }
@@ -273,6 +273,7 @@ public class Parc {
 
                 // Créez un objet Immatriculation
                 Immatriculation immatriculation = new Immatriculation(lettresAvant+"-"+chiffres+"-"+lettresApres); // Remplacez par des valeurs appropriées
+                immatriculation.setId(id);
                 this.getImmatriculations().add(immatriculation);
             }
         }
@@ -295,12 +296,10 @@ public class Parc {
      */
     public void generateFileVehicule() throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.getFilenameVehicules()))) {
-            int i = 0; //représente l'ID des immatriculations //TODO : implementer l'ID directement dans les vehicules et le concatener sur la ligne
-            for (Vehicule a : this.getVehicules()) {
-                Immatriculation plaque = a.getPlaque();
+           for (Vehicule v : this.getVehicules()) {
+                Immatriculation plaque = v.getPlaque();
                 StringBuilder line = new StringBuilder(); //on commence chaque nouvelle ligne par un ID des vehicules
-                i++;
-                line.append(i);
+                line.append(v.getId());
                 line.append("\t");
                 line.append(plaque.getLettresAvant());
                 line.append("\t");
@@ -308,11 +307,11 @@ public class Parc {
                 line.append("\t");
                 line.append(plaque.getLettresApres());
                 line.append("\t");
-                line.append(a.getMarque());
+                line.append(v.getMarque());
                 line.append("\t");
-                line.append(a.getModele());
+                line.append(v.getModele());
                 line.append("\t");
-                line.append(a.getAnneeFabrication());
+                line.append(v.getAnneeFabrication());
                 writer.write(line.toString());
                 writer.newLine();
             }
@@ -339,6 +338,7 @@ public class Parc {
 
                 // Créez un objet Immatriculation
                 Vehicule vehicule = new Vehicule(lettresAvant+"-"+chiffres+"-"+lettresApres,marque, modele, anneeFabrication);
+                vehicule.setId(id);
                 this.getVehicules().add(vehicule);
             }
         }

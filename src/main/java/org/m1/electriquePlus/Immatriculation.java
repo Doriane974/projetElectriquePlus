@@ -3,6 +3,7 @@ package org.m1.electriquePlus;
 
 public class Immatriculation {
 
+    int id;
     private String lettresAvant;
     private int chiffres;
     private String lettresApres;
@@ -46,5 +47,11 @@ public class Immatriculation {
         return lettresApres;
     }
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 }
