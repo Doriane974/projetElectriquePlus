@@ -221,6 +221,7 @@ public class Main {
         }
     }
 
+
     private static void inscrireClient() {
         String nom = "";
         String prenom = "";

@@ -98,13 +98,6 @@ public class Client {
 		return numeroCarteDebit;
 	}
 
-	public int getId() {
-		return Id;
-	}
-
-	public void setId(int id) {
-		Id = id;
-	}
 
 	@Override
 	public String toString() {

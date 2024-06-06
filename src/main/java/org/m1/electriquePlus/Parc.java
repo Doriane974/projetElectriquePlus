@@ -436,10 +436,18 @@ public class Parc {
         this.getBornes().add(borneAAjouter);
     }
 
-    public void getDispBornes(String date, String hour){
+    public void ajouterReservation(Reservation reservation){
+        this.reservations.add(reservation);
+    }
+
+    public ArrayList<Borne> getDispBornes(String date, String hour){
         //ArrayList<char> dispos = new ArrayList<char>();
+        ArrayList<Borne> dispo = new ArrayList<>();
         for(Borne b : this.getBornes()){
             b.checkDisponibilites(date, hour);
+            if(b.checkDisponibilites(date, hour)=='D')
+                dispo.add(b);
         }
+        return dispo;
     }
 }
