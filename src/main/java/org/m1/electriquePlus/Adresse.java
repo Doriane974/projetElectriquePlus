@@ -21,7 +21,7 @@ public class Adresse {
             throw new IllegalArgumentException("Le nom de rue ne doit pas être vide");
         }
 
-        if (String.valueOf(codePostal).length() != 5) {
+        if (codePostal.length() != 5 || !codePostal.matches("\\d+")) {
             throw new IllegalArgumentException("Le code postal doit contenir 5 chiffres");
         }
 
@@ -32,6 +32,8 @@ public class Adresse {
         if (nomPays == null || nomPays.isEmpty()) {
             throw new IllegalArgumentException("Le pays ne doit pas être vide");
         }
+
+
 
         this.numeroHabitation = numeroHabitation;
         this.nomRue = nomRue;
