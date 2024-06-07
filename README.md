@@ -2,25 +2,18 @@
 
 Ce projet est un système de gestion de parc de rechargement électrique pour les véhicules électriques. Il offre des fonctionnalités pour gérer les bornes de recharge, les clients, les véhicules, les réservations, etc.
 
-## Installation 
-
-Instructions détaillées sur la manière d'installer et de configurer le système sur différentes plateformes. Incluez les exigences logicielles et matérielles nécessaires.
-
 ## Utilisation 
 
-Expliquez comment utiliser votre projet, en fournissant des exemples d'utilisation, des captures d'écran et des instructions sur l'exécution du système.
+Lors de l'execution de la classe Main, nous pouvons choisir si nous sommes le gestionnaire du parc ou un client.
+Pour ouvrir la partie du gestionnaire nous devons nous connecter en tant que gestionnaire.
+Le nom de famille a entré est Dupont et le prenom est Fred.
+Le gestionnaire peux voir la liste des clients.
 
-# Exemples d'utilisation
+  ![Exemple d'utilisation de l'application](https://github.com/Doriane974/projetElectriquePlus/blob/master/utilisationAppli.png?raw=true)
 
-Des exemples concrets d'utilisation du système avec des captures d'écran ou des commandes. Montrez aux utilisateurs comment ils peuvent interagir avec les fonctionnalités principales de votre projet.
-
-# Configuration avancée
-
-Des informations sur la configuration avancée du système, si nécessaire. Expliquez comment les utilisateurs peuvent personnaliser les paramètres ou les options en fonction de leurs besoins spécifiques
-
-# Dépannage
-
-Des conseils pour résoudre les problèmes courants rencontrés lors de l'utilisation du système. Fournissez des solutions aux erreurs ou aux difficultés que les utilisateurs pourraient rencontrer.
+Si le gestionnaire n'est pas reconnu alors l'utilisateur retourne au menu principal.
+Un visiteur peux faire un compte et inscrire ou non sa voiture lors de l'inscription.
+Pour ajouter un vehicule ou faire une reservation, le client est inviter à se connecter.
 
 ## Contenu du projet
 
