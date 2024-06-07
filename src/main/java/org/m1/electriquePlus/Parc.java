@@ -5,11 +5,29 @@ import java.util.ArrayList;
 
 public class Parc {
 
+    /**
+     * Liste des bornes de recharge.
+     */
     ArrayList<Borne> bornes ;
+    /**
+     *  Liste des clients enregistrés.
+     */
     ArrayList<Client> clients;
+    /**
+     * Liste des adresses des clients.
+     */
     ArrayList<Adresse> adresses;
+    /**
+     * Liste des immatriculations des véhicules enregistrés dans l'application
+     */
     ArrayList<Immatriculation> immatriculations;
+    /**
+     * Liste des véhicules enregistrés.
+     */
     ArrayList<Vehicule> vehicules;
+    /**
+     * Liste des réservations effectuées.
+     */
     ArrayList<Reservation> reservations;
 
     private String filenameClients;
@@ -18,6 +36,9 @@ public class Parc {
     private String filenameVehicules;
     private String filenameReservations;
 
+    /**
+     * Constructeur par défaut qui initialise les noms des fichiers de sauvegarde avec des valeurs par défaut.
+     */
     public Parc() {
         this.filenameClients = "ClientsSave.txt";
         this.filenameAdresses = "AdressesSave.txt";
@@ -26,54 +47,118 @@ public class Parc {
         this.filenameReservations = "ReservationsSave.txt";
     }
 
+    /**
+     * Constructeur qui initialise le parc avec une liste de bornes spécifique et utilise les noms de fichiers par défaut.
+     * @param bornes : liste des bornes avec lesquelles on veut initialiser le parc
+     */
     public Parc(ArrayList<Borne> bornes) {
         this();
         this.bornes = bornes;
    }
 
+    /**
+     *  Retourne le nom du fichier de sauvegarde des clients.
+     * @return String : le nom du fichier de sauvegarde
+     */
     public String getFilenameClients(){
         return this.filenameClients;
     }
-    public void setFilenameClients(String filenameClients){
-        this.filenameClients = filenameClients;
-    }
+
+
+    /**
+     * Définit la liste des clients.
+     * @param clients : ArrayList<Client>
+     */
     public void setClients(ArrayList<Client> clients){
         this.clients = clients;
     }
+
+    /**
+     * Retourne la liste des clients.
+     * @return ArrayList<Client>
+     */
     public ArrayList<Client> getClients() {
         return this.clients;
     }
 
+    /**
+     * Retourne le nom du fichier de sauvegarde des adresses.
+     * @return String : le nom du fichier de sauvegarde.
+     */
     public String getFilenameAdresses(){ return  this.filenameAdresses;}
     public void setFilenameAdresses(String filenameAdresses){
         this.filenameAdresses = filenameAdresses;
     }
+
+    /**
+     * Définit la liste des adresses.
+     * @param adresses : ArrayList<Adresse> liste des adresses.
+     */
     public void setAdresses(ArrayList<Adresse> adresses){this.adresses=adresses;}
     public ArrayList<Adresse> getAdresses(){ return this.adresses;}
 
+    /**
+     * Retourne le nom du fichier de sauvegarde des immatriculations.
+     * @return le nom du fichier de sauvegarde.
+     */
     public String getFilenameImmatriculations(){ return  this.filenameImmatriculations;}
     public void setFilenameImmatriculations(String filenameImmatriculations){
         this.filenameImmatriculations = filenameImmatriculations;
     }
+
+    /**
+     * Définit la liste des immatriculations.
+     * @param immatriculations liste des immatriculations.
+     */
     public void setImmatriculations(ArrayList<Immatriculation> immatriculations){this.immatriculations=immatriculations;}
     public ArrayList<Immatriculation> getImmatriculations(){ return this.immatriculations;}
 
+    /**
+     * Retourne le nom du fichier de sauvegarde des véhicules.
+     * @return le nom du fichier de sauvegarde.
+     */
     public String getFilenameVehicules(){ return  this.filenameVehicules;}
     public void setFilenameVehicules(String filenameVehicules){
         this.filenameVehicules = filenameVehicules;
     }
+
+    /**
+     * Définit la liste des véhicules.
+     * @param vehicules liste des véhicules.
+     */
     public void setVehicules(ArrayList<Vehicule> vehicules){this.vehicules=vehicules;}
+
+
+    /**
+     * Retourne la liste des véhicules.
+     * @return liste des véhicules.
+     */
     public ArrayList<Vehicule> getVehicules(){ return this.vehicules;}
 
+    /**
+     * Retourne le nom du fichier de sauvegarde des réservations.
+     * @return le nom du fichier de sauvegarde.
+     */
     public String getFilenameReservations(){ return  this.filenameReservations;}
+
+
+    /**
+     * Définit le nom du fichier de sauvegarde des réservations.
+     * @param filenameReservations le nom du fichier de sauvegarde.
+     */
     public void setFilenameReservations(String filenameReservations){this.filenameReservations = filenameReservations; }
+
+    /**
+     * Définit la liste des réservations.
+     * @param reservations liste des réservations.
+     */
     public void setReservations(ArrayList<Reservation> reservations){this.reservations=reservations;}
     public ArrayList<Reservation> getReservations(){ return this.reservations;}
 
 
     /**
      * Genere une liste de clients qui sont inscrit a ce parc de rechargement.
-     * @throws IOException
+     * @throws IOException si une erreur d'entrée/sortie se produit.
      */
     public void generateFileClients() throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.getFilenameClients()))) {
@@ -122,7 +207,7 @@ public class Parc {
     }
     /**
      * A partir du fichier filenameclients, on recupère les données du fichiers, et on crées les nouveaux clients pour les mettre dans le tableau clients de parc
-     * @throws IOException
+     * @throws IOException si une erreur d'entrée/sortie se produit.
      */
     public void getClientsFromFile() throws IOException{
         BufferedReader reader = new BufferedReader(new FileReader(this.getFilenameClients()));
@@ -160,7 +245,7 @@ public class Parc {
     }
     /**
      * Verifie qu'un fichier de sauvegarde des clients n'existent pas encore, et si c'est le cas, crée un nouveau fichier contenant les clients inscrits au parc (présents dans le champ clients du parc)
-     * @throws IOException
+     * @throws IOException si une erreur d'entrée/sortie se produit.
      */
     public void loadFileClients() throws IOException{
         File file = new File(this.getFilenameClients());
@@ -173,7 +258,7 @@ public class Parc {
 
     /**
      * Genere un fichiet contenant les adresses qui sont enregistrées a ce parc de rechargement.
-     * @throws IOException
+     * @throws IOException si une erreur d'entrée/sortie se produit.
      */
     public void generateFileAdresses() throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.getFilenameAdresses()))) {
@@ -199,7 +284,7 @@ public class Parc {
     }
     /**
      * A partir du fichier filenameAdresses, on recupère les données du fichiers, et on crées les adresses du fichier pour les mettre dans le tableau adresses du parc
-     * @throws IOException
+     * @throws IOException si une erreur d'entrée/sortie se produit.
      */
     public void getAdressesFromFile() throws IOException{
         BufferedReader reader = new BufferedReader(new FileReader(this.getFilenameAdresses()));
@@ -224,7 +309,7 @@ public class Parc {
     }
     /**
      * Verifie qu'un fichier de sauvegarde des adresses n'existent pas encore, et si c'est le cas, crée un nouveau fichier contenant les adresses inscrites au parc (présentes dans le champ adresses du parc)
-     * @throws IOException
+     * @throws IOException si une erreur d'entrée/sortie se produit.
      */
     public void loadFileAdresses() throws IOException{
         File file = new File(this.getFilenameAdresses());
@@ -236,7 +321,7 @@ public class Parc {
 
     /**
      * Genere un fichier contenant les immatriculations qui sont enregistrées a ce parc de rechargement.
-     * @throws IOException
+     * @throws IOException si une erreur d'entrée/sortie se produit.
      */
     public void generateFileImmatriculations() throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.getFilenameImmatriculations()))) {
@@ -257,7 +342,7 @@ public class Parc {
     }
     /**
      * A partir du fichier filenameImmatriculation, on recupère les données du fichiers, et on crées les immatriculations du fichier pour les mettre dans le tableau immatriculations du parc
-     * @throws IOException
+     * @throws IOException si une erreur d'entrée/sortie se produit.
      */
     public void getImmatriculationsFromFile() throws IOException{
         BufferedReader reader = new BufferedReader(new FileReader(this.getFilenameImmatriculations()));
@@ -280,7 +365,7 @@ public class Parc {
     }
     /**
      * Verifie qu'un fichier de sauvegarde des immatriculations n'existent pas encore, et si c'est le cas, crée un nouveau fichier contenant les immatriculations inscrits au parc (présents dans le champ immatriculations du parc)
-     * @throws IOException
+     * @throws IOException si une erreur d'entrée/sortie se produit.
      */
     public void loadFileImmatriculations() throws IOException{
         File file = new File(this.getFilenameImmatriculations());
@@ -292,7 +377,7 @@ public class Parc {
 
     /**
      * Génère un fichier contenant les vehicules qui sont enregistrées a ce parc de rechargement.
-     * @throws IOException
+     * @throws IOException si une erreur d'entrée/sortie se produit.
      */
     public void generateFileVehicule() throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.getFilenameVehicules()))) {
@@ -319,7 +404,7 @@ public class Parc {
     }
     /**
      * A partir du fichier filenameVehicule, on recupère les données du fichiers, et on crées les vehicules du fichier pour les mettre dans le tableau vehicules du parc
-     * @throws IOException
+     * @throws IOException si une erreur d'entrée/sortie se produit.
      */
     public void getVehiculesFromFile() throws IOException{
         BufferedReader reader = new BufferedReader(new FileReader(this.getFilenameVehicules()));
@@ -345,7 +430,7 @@ public class Parc {
     }
     /**
      * Verifie qu'un fichier de sauvegarde des vehicules n'existent pas encore, et si c'est le cas, crée un nouveau fichier contenant les vehicules inscrits au parc (présents dans le champ vehicules du parc
-     * @throws IOException
+     * @throws IOException si une erreur d'entrée/sortie se produit.
      */
     public void loadFileVehicules() throws IOException{
         File file = new File(this.getFilenameVehicules());
@@ -421,25 +506,44 @@ public class Parc {
 //    }
 
 
-
-
-
+    /**
+     * Retourne la liste des bornes de recharge.
+     * @return
+     */
     public ArrayList<Borne> getBornes() {
         return bornes;
     }
 
+    /**
+     * Définit la liste des bornes.
+     * @param bornes
+     */
     public void setBornes(ArrayList<Borne> bornes) {
         this.bornes = bornes;
     }
 
+    /**
+     * Ajoute une borne de recharge à la liste des bornes.
+     * @param borneAAjouter
+     */
     public void addBorne(Borne borneAAjouter){
         this.getBornes().add(borneAAjouter);
     }
 
+    /**
+     *  Ajoute une réservation à la liste des réservations du parc.
+     * @param reservation
+     */
     public void ajouterReservation(Reservation reservation){
         this.reservations.add(reservation);
     }
 
+    /**
+     *  Cette méthode vérifie la disponibilité de chaque borne et ajoute les bornes disponibles à une liste.
+     * @param date : format dd/mm, date a laquelle on veut verifier la disponibilité de la borne
+     * @param hour : format HH (par exemple 04 ou 11), heure a laquelle on veut vérifier la disponibilité de chaque bornes.
+     * @return ArrayList<Borne> : liste des bornes disponibles
+     */
     public ArrayList<Borne> getDispBornes(String date, String hour){
         //ArrayList<char> dispos = new ArrayList<char>();
         ArrayList<Borne> dispo = new ArrayList<>();
