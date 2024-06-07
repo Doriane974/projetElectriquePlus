@@ -47,7 +47,7 @@ public class Client {
 			throw new IllegalArgumentException("Aucun champ ne doit être vide");
 		}
 
-		if (numeroTelephone.length() != 10 || !numeroTelephone.matches("\\d+")) {
+		if (numeroTelephone.length() != 10 || !numeroTelephone.matches("^[0-9]{10}$")) {
 			throw new IllegalArgumentException("Le numéro de téléphone doit contenir 10 chiffres");
 		}
 
@@ -124,6 +124,32 @@ public class Client {
 	}
 
 	public void setId(int id){this.Id = id;}
+
+	public void setEmail(String email){
+		if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+			throw new IllegalArgumentException("Adresse mail invalide");
+		}
+		this.email = email;
+	}
+
+	public void setNumeroTelephone(String numeroTelephone){
+		if (numeroTelephone.length() != 10 && !numeroTelephone.matches("^[0-9]{10}$")) {
+			throw new IllegalArgumentException("Le numéro de téléphone doit contenir 10 chiffres");
+		}
+		this.numeroTelephone = numeroTelephone;
+	}
+
+	public void setNumeroCarteDebit(String numeroCarteDebit){
+		if(!numeroCarteDebit.matches("^[0-9]{16}$") && !numeroCarteDebit.matches("^[0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}$")){
+			throw new IllegalArgumentException("Le numéro de carte de debit n'est pas valide");
+		}
+		this.numeroCarteDebit = numeroCarteDebit;
+	}
+
+	public void setAdresse(Adresse adresse){
+		this.adresse = adresse;
+	}
+
 	/*
 	public void declarerUnVehicule(String plaque, String marque, String modele, int anneeFabrication){
 		//Immatriculation plaqueClient = new Immatriculation("plaque");

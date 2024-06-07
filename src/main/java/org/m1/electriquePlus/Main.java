@@ -67,6 +67,11 @@ public class Main {
                     }
                     break;
                 case 5:
+                    if (verifClient() != null){
+                        modifierClient();
+                    }
+                    break;
+                case 6:
                     return;
                 default:
                     System.out.println("Choix invalide");
@@ -400,6 +405,53 @@ public class Main {
         return new Vehicule(plaque, marque, modele, anneeFabrication);
     }
 
+    private static void modifierClient() {
+        System.out.println("Saisir le numéro de ce que vous voulez modifier :");
+        int choix;
+        do {
+            System.out.println("1. Modifier votre email (Actuellement : " + clientConnecté.getEmail() + " )");
+            System.out.println("2. Modifier votre numéro de téléphone (Actuellement : " + clientConnecté.getNumeroTelephone() + " )");
+            System.out.println("3. Modifier votre numéro de Carte ");
+            System.out.println("4. Modifier votre adresse (Actuellement : " + clientConnecté.getAdresse() + " )");
+            System.out.println("0. Retour au menu principal");
+            choix = verifChoix(0, 4);
+
+            switch (choix) {
+                case 1:
+                    String newEmail = saisieString("Saisir votre nouveau email :", "^[A-Za-z0-9+_.-]+@(.+)$", "Adresse mail invalide. Veuillez réessayer.");
+                    clientConnecté.setEmail(newEmail);
+                    System.out.println("Email modifié avec succès!");
+                    break;
+                case 2:
+                    String newTelephone = saisieTelephoneCodePostalCarteDebit("Saisir votre nouveau numéro de téléphone : ", "\\d+", "Le numéro de téléphone doit contenir 10 chiffres. Veuillez réessayer", 10);
+                    clientConnecté.setNumeroTelephone(newTelephone);
+                    System.out.println("Numéro de téléphone modifié avec succès!");
+                    break;
+                case 3:
+                    String newNumeroCarte = saisieTelephoneCodePostalCarteDebit("Saisir votre nouvelle carte de crédit : ", "\\d+", "Le numéro de carte de crédit doit contenir 16 chiffres. Veuillez réessayer", 16);
+                    clientConnecté.setNumeroCarteDebit(newNumeroCarte);
+                    System.out.println("Numéro de carte de crédit modifié avec succès!");
+                    break;
+                case 4:
+                    System.out.println("Saisir votre nouvelle adresse : ");
+                    int numeroHabitation = saisieNumHabitation();
+                    String nomRue = saisieNomRue();
+                    String codePostal = saisieTelephoneCodePostalCarteDebit("Code postal : ", "\\d+", "Le code postal doit contenir 5 chiffres. Veuillez réessayer.", 5);
+                    String nomVille = saisieNomPrenomVillePays("Ville");
+                    String nomPays = saisieNomPrenomVillePays("Pays");
+                    Adresse updateAdresse = new Adresse(numeroHabitation, nomRue, codePostal, nomVille, nomPays);
+                    clientConnecté.setAdresse(updateAdresse);
+                    System.out.println("Adresse modifiée avec succès!");
+                    break;
+                case 0:
+                    return;
+                default:
+                    System.out.println("Choix invalide");
+            }
+        } while (choix != 0);
+    }
+
+
 
     //-------------------------------------
     //            Verifications
@@ -606,7 +658,8 @@ public class Main {
                 "2. Ajouter un véhicule",
                 "3. Faire une réservation",
                 "4. Prendre une borne sans reservation",
-                "5. Retour au menu principal"
+                "5. Modifier son profil",
+                "6. Retour au menu principal"
 
         );
         for (String option : options) System.out.println(option);

@@ -297,7 +297,7 @@ public class ClientTest {
         Adresse adresse = new Adresse(10, "Rue de l'exemple", "12345", "Ville", "Pays");
         assertThatThrownBy(() -> new Client("Nom", "Prenom", adresse, "0123456789", "email@example.com", "12345678"))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Le numéro de carte de débit doit contenir 10 chiffres");
+                .hasMessageContaining("Le numéro de carte de débit doit contenir 16 chiffres");
     }
 
     @Test
@@ -347,6 +347,73 @@ public class ClientTest {
         assertThatThrownBy(() -> new Client("Nom", "Prenom", adresse, "0123456789", "email.com", "1234567890123456"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Adresse mail invalide");
+    }
+
+    @Test
+    @DisplayName("Modification de l'email avec une adresse valide")
+    public void testSetEmailValide() {
+        Client client = createValidClient();
+        client.setEmail("nouvel.email@example.com");
+        assertThat(client.getEmail()).isEqualTo("nouvel.email@example.com");
+    }
+
+    @Test
+    @DisplayName("Modification de l'email avec une adresse invalide lève une exception")
+    public void testSetEmailInvalide() {
+        Client client = createValidClient();
+        assertThatThrownBy(() -> client.setEmail("email-invalid"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Adresse mail invalide");
+    }
+
+    @Test
+    @DisplayName("Modification du numéro de téléphone avec un numéro valide")
+    public void testSetNumeroTelephoneValide() {
+        Client client = createValidClient();
+        client.setNumeroTelephone("0987654321");
+        assertThat(client.getNumeroTelephone()).isEqualTo("0987654321");
+    }
+
+    @Test
+    @DisplayName("Modification du numéro de téléphone avec un numéro invalide lève une exception")
+    public void testSetNumeroTelephoneInvalide() {
+        Client client = createValidClient();
+        assertThatThrownBy(() -> client.setNumeroTelephone("09876"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Le numéro de téléphone doit contenir 10 chiffres");
+    }
+
+    @Test
+    @DisplayName("Modification du numéro de carte de débit avec un numéro valide")
+    public void testSetNumeroCarteDebitValide() {
+        Client client = createValidClient();
+        client.setNumeroCarteDebit("8765432187654321");
+        assertThat(client.getNumeroCarteDebit()).isEqualTo("8765432187654321");
+    }
+
+    @Test
+    @DisplayName("Modification du numéro de carte de débit avec un numéro invalide lève une exception")
+    public void testSetNumeroCarteDebitInvalide() {
+        Client client = createValidClient();
+        assertThatThrownBy(() -> client.setNumeroCarteDebit("1234"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Le numéro de carte de debit n'est pas valide");
+    }
+
+    @Test
+    @DisplayName("Modification de l'adresse avec une adresse valide")
+    public void testSetAdresseValide() {
+        Client client = createValidClient();
+        Adresse nouvelleAdresse = new Adresse(456, "Nouvelle Rue", "75002", "Paris", "France");
+        client.setAdresse(nouvelleAdresse);
+        assertThat(client.getAdresse()).isEqualTo(nouvelleAdresse);
+    }
+
+    // Méthode utilitaire pour créer un client valide
+    private Client createValidClient() {
+        Adresse adresse = new Adresse(123, "Rue de la Paix", "75001", "Paris", "France");
+        Vehicule vehicule = new Vehicule("AB-123-CD", "marque", "modele", 2022);
+        return new Client("Dupont", "Jean", adresse, "1234567890", "jean.dupont@example.com", "1234567812345678", vehicule);
     }
 }
 
