@@ -13,10 +13,15 @@ import java.util.Scanner;
  * La classe principale de l'application. On trouve notamment dans cette classe l'interface en ligne de commande de l'application
  */
 public class Main {
+    /**Scanner permettant de lire les entrées en lignes de commandes de l'utilisateur*/
     private static Scanner scanner = new Scanner(System.in);
+    /**Liste des gestionnaires du parc*/
     private static List<Gestionnaire> gestionnaires = new ArrayList<>();
+    /**Liste de clients*/
     public static List<Client> clients = new ArrayList<>();
+    /**Le clients connecté a l'application*/
     public static Client clientConnecté;
+    /**Le parc de recharge de voiture electriques*/
     public static Parc parc;
 
     /**

@@ -72,7 +72,7 @@ public class Parc {
 
     /**
      * Définit la liste des clients.
-     * @param clients : ArrayList<Client>
+     * @param clients : ArrayList de Clients
      */
     public void setClients(ArrayList<Client> clients){
         this.clients = clients;
@@ -80,7 +80,7 @@ public class Parc {
 
     /**
      * Retourne la liste des clients.
-     * @return ArrayList<Client>
+     * @return ArrayList de Clients
      */
     public ArrayList<Client> getClients() {
         return this.clients;
@@ -91,15 +91,26 @@ public class Parc {
      * @return String : le nom du fichier de sauvegarde.
      */
     public String getFilenameAdresses(){ return  this.filenameAdresses;}
+
+    /**
+     * Definit le nom du fichiet contenant l'enregistrement des adresses
+     * @param filenameAdresses String : nom du fichier voulu
+     */
     public void setFilenameAdresses(String filenameAdresses){
         this.filenameAdresses = filenameAdresses;
     }
 
     /**
      * Définit la liste des adresses.
-     * @param adresses : ArrayList<Adresse> liste des adresses.
+     * @param adresses : liste des adresses.
      */
     public void setAdresses(ArrayList<Adresse> adresses){this.adresses=adresses;}
+
+
+    /**
+     * Retourne la liste des adresses enregistrées dans le parc
+     * @return la liste des adresses
+     */
     public ArrayList<Adresse> getAdresses(){ return this.adresses;}
 
     /**
@@ -107,6 +118,11 @@ public class Parc {
      * @return le nom du fichier de sauvegarde.
      */
     public String getFilenameImmatriculations(){ return  this.filenameImmatriculations;}
+
+    /**
+     * Définit le nom du fichier contenant l'enregistrement des immatriculations
+     * @param filenameImmatriculations String
+     */
     public void setFilenameImmatriculations(String filenameImmatriculations){
         this.filenameImmatriculations = filenameImmatriculations;
     }
@@ -116,6 +132,11 @@ public class Parc {
      * @param immatriculations liste des immatriculations.
      */
     public void setImmatriculations(ArrayList<Immatriculation> immatriculations){this.immatriculations=immatriculations;}
+
+    /**
+     * Retourne la liste des immatriculations enregistrées dans le parc
+     * @return la liste des immatriculations
+     */
     public ArrayList<Immatriculation> getImmatriculations(){ return this.immatriculations;}
 
     /**
@@ -123,6 +144,11 @@ public class Parc {
      * @return le nom du fichier de sauvegarde.
      */
     public String getFilenameVehicules(){ return  this.filenameVehicules;}
+
+    /**
+     * Définit le nom du fichier contenant les enregistrements des vehicules dans le parc
+     * @param filenameVehicules String
+     */
     public void setFilenameVehicules(String filenameVehicules){
         this.filenameVehicules = filenameVehicules;
     }
@@ -158,6 +184,11 @@ public class Parc {
      * @param reservations liste des réservations.
      */
     public void setReservations(ArrayList<Reservation> reservations){this.reservations=reservations;}
+
+    /**
+     * retourne la liste des reservations enregistrées dans le parc
+     * @return la liste des reservations
+     */
     public ArrayList<Reservation> getReservations(){ return this.reservations;}
 
 
@@ -513,7 +544,7 @@ public class Parc {
 
     /**
      * Retourne la liste des bornes de recharge.
-     * @return
+     * @return Liste des bornes
      */
     public ArrayList<Borne> getBornes() {
         return bornes;
@@ -521,7 +552,7 @@ public class Parc {
 
     /**
      * Définit la liste des bornes.
-     * @param bornes
+     * @param bornes Liste des bornes
      */
     public void setBornes(ArrayList<Borne> bornes) {
         this.bornes = bornes;
@@ -529,7 +560,7 @@ public class Parc {
 
     /**
      * Ajoute une borne de recharge à la liste des bornes.
-     * @param borneAAjouter
+     * @param borneAAjouter Borne
      */
     public void addBorne(Borne borneAAjouter){
         this.getBornes().add(borneAAjouter);
@@ -537,7 +568,7 @@ public class Parc {
 
     /**
      *  Ajoute une réservation à la liste des réservations du parc.
-     * @param reservation
+     * @param reservation Reservation à ajouter
      */
     public void ajouterReservation(Reservation reservation){
         this.reservations.add(reservation);
@@ -547,7 +578,7 @@ public class Parc {
      *  Cette méthode vérifie la disponibilité de chaque borne et ajoute les bornes disponibles à une liste.
      * @param date : format dd/mm, date a laquelle on veut verifier la disponibilité de la borne
      * @param hour : format HH (par exemple 04 ou 11), heure a laquelle on veut vérifier la disponibilité de chaque bornes.
-     * @return ArrayList<Borne> : liste des bornes disponibles
+     * @return liste des bornes disponibles
      */
     public ArrayList<Borne> getDispBornes(String date, String hour){
         //ArrayList<char> dispos = new ArrayList<char>();

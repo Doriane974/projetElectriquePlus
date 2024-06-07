@@ -40,6 +40,7 @@ public class FileManagement {
         }
     }
 
+    /*
     public static void loadFileClient(String filename){}
 
     public static void generateFileVehicule(String filename){}
@@ -50,7 +51,7 @@ public class FileManagement {
 
     public static void generateFileAddresse(){}
     public static void loadFileAddresse(){}
-
+    */
 
 
 
