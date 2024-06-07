@@ -364,7 +364,7 @@ public class Main {
         String nomPays = saisieNomPrenomVillePays("Pays");
         String numeroTelephone = saisieTelephoneCodePostalCarteDebit("Numéro de téléphone: par exemple 0607080901","\\d+","Le numéro de téléphone doit contenir 10 chiffres. Veuillez réessayer", 10);
         String email = saisieString("Email: par exemple jean@gmail.com","^[A-Za-z0-9+_.-]+@(.+)$", "Adresse mail invalide. Veuillez réessayer." );
-        String numeroCarteDebit = saisieTelephoneCodePostalCarteDebit("Numéro de carte de débit: par exemple 1234567890","\\d+","Le numéro de carte de débit ne doit pas être vide et doit contenir uniquement des chiffres. Veuillez réessayer.", 10 );
+        String numeroCarteDebit = saisieTelephoneCodePostalCarteDebit("Numéro de carte de débit: par exemple 1234567890","\\d+","Le numéro de carte de débit ne doit pas être vide et doit contenir uniquement des chiffres. Veuillez réessayer.", 16 );
 
         Adresse adresse = new Adresse(numeroHabitation, nomRue, codePostal, nomVille, nomPays);
         Client client = new Client(nom, prenom, adresse, numeroTelephone, email, numeroCarteDebit);

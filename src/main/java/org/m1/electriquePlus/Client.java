@@ -47,13 +47,17 @@ public class Client {
 			throw new IllegalArgumentException("Aucun champ ne doit être vide");
 		}
 
-		if (numeroTelephone.length() != 10) {
+		if (numeroTelephone.length() != 10 || !numeroTelephone.matches("\\d+")) {
 			throw new IllegalArgumentException("Le numéro de téléphone doit contenir 10 chiffres");
 		}
 
 		if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
 			throw new IllegalArgumentException("Adresse mail invalide");
 		}
+		if (numeroCarteDebit.length() != 16 || !numeroCarteDebit.matches("\\d+")) {
+			throw new IllegalArgumentException("Le numéro de carte de débit doit contenir 10 chiffres");
+		}
+
 
 		return true;
 	}

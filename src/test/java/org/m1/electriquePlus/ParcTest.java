@@ -70,7 +70,7 @@ public class ParcTest {
     @Test
     public void testLoadClients(){
         Parc parc = new Parc();
-        Adresse adresse = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Adresse adresse = new Adresse(123, "Rue de la Paix", "75001", "Paris", "France");
         Vehicule vehicule = new Vehicule("AB-123-CD","marque","modele",2022);
         Client c1 = new Client("Dupont", "Jean", adresse, "1234567890", "jean.dupont@example.com", "1234567812345678", vehicule);
         Client c2 = new Client("Bedier", "Janick", adresse, "1234567890", "jean.dupont@example.com", "1234567812345678", vehicule);
@@ -91,7 +91,7 @@ public class ParcTest {
     @Test
     public void testGetClientsFromFile(){
         Parc parc = new Parc();
-        Adresse adresse = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Adresse adresse = new Adresse(123, "Rue de la Paix", "75001", "Paris", "France");
         Vehicule vehicule = new Vehicule("AB-123-CD","marque","modele",2022);
         Client c1 = new Client("Dupont", "Jean", adresse, "1234567890", "jean.dupont@example.com", "1234567812345678", vehicule);
         Client c2 = new Client("Bedier", "Janick", adresse, "1234567890", "jean.dupont@example.com", "1234567812345678", vehicule);
@@ -143,8 +143,8 @@ public class ParcTest {
     @Test
     public void testGetAdressesFromFile(){
         Parc parc = new Parc();
-        Adresse a1 = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
-        Adresse a2 = new Adresse(18, "Route des eucalyptus", 97417, "Saint-Denis", "France");
+        Adresse a1 = new Adresse(123, "Rue de la Paix", "75001", "Paris", "France");
+        Adresse a2 = new Adresse(18, "Route des eucalyptus", "97417", "Saint-Denis", "France");
 
         ArrayList<Adresse> adresses = new ArrayList<>();
         adresses.add(a1);

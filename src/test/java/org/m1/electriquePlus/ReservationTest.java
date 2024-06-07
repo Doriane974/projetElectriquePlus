@@ -18,7 +18,7 @@ public class ReservationTest {
     @Test
     public void testReservationSuccess() {
         borne = new Borne(1);
-        Adresse a = new Adresse(5,"Rue d'une rue",54000,"ville","France");
+        Adresse a = new Adresse(5,"Rue d'une rue","54000","ville","France");
         vehicule = new Vehicule("AA-123-AA","marque","modele",1999);
         client = new Client("test","testeur",a,"6460428820","email@email.email","1234123412341234",vehicule);
         dateTimeDebut = LocalDateTime.of(2024, 06, 28, 10, 0);
@@ -33,7 +33,7 @@ public class ReservationTest {
     @Test
     public void testReservationEchecDueADuration() {
         borne = new Borne(1);
-        Adresse a = new Adresse(5,"Rue d'une rue",54000,"ville","France");
+        Adresse a = new Adresse(5,"Rue d'une rue","54000","ville","France");
         vehicule = new Vehicule("AA-123-AA","marque","modele",1999);
         client = new Client("test","testeur",a,"6460428820","email@email.email","1234123412341234",vehicule);
         dateTimeDebut = LocalDateTime.of(2024, 06, 28, 10, 0);
@@ -49,11 +49,11 @@ public class ReservationTest {
     @Test
     public void testReservationFailureDueToUnavailability() {
         borne = new Borne(1);
-        Adresse adresse = new Adresse(5,"Rue d'une rue",54000,"ville","France");
+        Adresse adresse = new Adresse(5,"Rue d'une rue","54000","ville","France");
         vehicule = new Vehicule("AA-123-AA","marque","modele",2020);
         client = new Client("test","testeur",adresse,"6460428820","email@email.email","1234123412341234",vehicule);
 
-        Adresse adresse2 = new Adresse(7,"Rue d'une rue",54000,"ville","France");
+        Adresse adresse2 = new Adresse(7,"Rue d'une rue","54000","ville","France");
         Vehicule vehicule2 = new Vehicule("AA-456-AA","marque","modele",2020);
         Client client2 = new Client("test2","testeur2",adresse2,"1234567890","email2@email.email","1234123412341234",vehicule2);
 
