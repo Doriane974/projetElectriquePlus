@@ -64,19 +64,30 @@ Le système de gestion de parc de rechargement électrique offre les fonctionnal
    - Charger les informations à partir des fichiers lors du démarrage du système.
   
 
-  ## Contributions
+  ## Tâches 
 
-  Des instructions sur la manière de contribuer au projet, y compris la façon de soumettre des bugs, des problèmes ou des demandes de fonctionnalités. Incluez également des directives pour la soumission de pull requests et les normes de codage.
+  ### User-Stories
+
+  Nous avons organiser le developpement de ce projet grâce à des user storys, qui nous guident dans l'implémentations de fonctionnalité. 
+Nous avons 4 catégories d'User stories, chaque catégorie est illustrée par une couleur différente sur le trello du projet. 
+
+* Facturation (gris)
+* Base de données (vert)
+* Utilisation des bornes (rose)
+* Gestion du parc (rouge)
+
+
+ ### Sprints
+ 
+ Nous avons pu réaliser 2 sprints pour l'instant, chacun d'une durée d'une semaine et demis environ.
+
+  ![Burndown Chart](https://github.com/Doriane974/projetElectriquePlus/blob/master/Burndown.png?raw=true)
+  
 
   ## Licence
 
   Le projet est sous license MIT, il est donc possible d'utiliser, de modifier et de distribuer ce code.
   
-  ## Crédits 
 
-  Reconnaissance des personnes ou des organisations ayant contribué au projet. Attribuez également les ressources tierces utilisées dans le projet.
 
-  ## Tâches restantes
-
-  ![Burndown Chart](https://github.com/Doriane974/projetElectriquePlus/blob/master/Burndown.png?raw=true)
 
