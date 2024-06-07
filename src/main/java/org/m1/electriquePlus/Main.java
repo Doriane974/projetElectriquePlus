@@ -1,5 +1,6 @@
 package org.m1.electriquePlus;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -8,8 +9,8 @@ import java.util.*;
 
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
-    private static List<Gestionnaire> gestionnaires = new ArrayList<>();
-    public static List<Client> clients = new ArrayList<>();
+    private static ArrayList<Gestionnaire> gestionnaires = new ArrayList<>();
+    public static ArrayList<Client> clients = new ArrayList<>();
     public static Client clientConnecté;
     public static Parc parc;
 
@@ -33,6 +34,7 @@ public class Main {
                     pageClient();
                     break;
                 case 3:
+                    saveAllData();
                     System.exit(0);
                     break;
                 default:
@@ -63,12 +65,12 @@ public class Main {
                     break;
                 case 4:
                     if (verifClient() != null){
-                        prendreBorneSansReserv();
+                        modifierClient();
                     }
                     break;
                 case 5:
                     if (verifClient() != null){
-                        modifierClient();
+                        signalerRetrait();
                     }
                     break;
                 case 6:
@@ -108,232 +110,137 @@ public class Main {
         parc.addBorne(new Borne(5));
 
         // création de Fred, le gestionnaire
-        Gestionnaire fred = new Gestionnaire("Dupont", "Fred");
-        gestionnaires.add(fred);
+        try {
+            parc.loadFileGestionnaires();
+            parc.getGestionnairesFromFile();
+            if(parc.getGestionnaires().isEmpty())
+            {
+                Gestionnaire fred = new Gestionnaire("Dupont", "Fred");
+                gestionnaires.add(fred);
+            }
+            else
+                gestionnaires = parc.getGestionnaires();
+        }catch (IOException e)
+        {
+            System.out.println("erreur lors de la lecture du fichier Gestionnaire");
+        }
 
         // création d'un client lambda
-        Adresse adressePaul = new Adresse(71, "Rue du bois", "54000", "Nancy", "France");
-        Vehicule vehicule = new Vehicule("AB-123-CD", "marque", "modele", 2022);
-        Client paul = new Client("Dupont", "Paul", adressePaul, "0601020304", "Dupont.Fred@ElectriquePlus.fr", "1234567854735390", vehicule);
-        clients.add(paul);
-    }
-
-    private static void infoBorneSansReserv(){
-        LocalDateTime auj = LocalDateTime.now();
-        System.out.println("---------------------");
-        System.out.println("Bonjour " +clientConnecté.getPrenom()+ " " +clientConnecté.getNom() +"nous allons rechercher dans notre base de données si une place est disponible pour vous");
-        System.out.println("Sachez que toute heure entamé doit etre payé ! Il est " + auj.getHour() +" : " + auj.getMinute());
-    }
-
-
-    public static void prendreBorneSansReserv(){
-        infoBorneSansReserv();
-
-        System.out.println("Merci de fournir la place d'immatriculation du véhicule:");
-        String plaque = scanner.nextLine();
-
-
-
-        //pas besoin de saisir l'heure d'arrivé on prend l'heure actuelle
-
-/*
-        if (!borneDisponible()) {
-            System.out.println("Aucune borne de recharge n'est disponible.");
-            return;
-        }
-
-        System.out.println("Numéro d'immatriculation du véhicule:");
-        String plaque = scanner.nextLine();
-
-        Vehicule vehicule = client.getVehicule();
-        if (vehicule != null && vehicule.getPlaque().equalsIgnoreCase(plaque) && !vehiculeEstReserve(plaque)) {
-            demanderDureeRechargeOuHeureDepart();
-        } else {
-            System.out.println("Véhicule non reconnu. Est-ce votre véhicule personnel ? (oui/non)");
-            String reponse = scanner.nextLine();
-            if (reponse.equalsIgnoreCase("oui")) {
-                System.out.println("Numéro de téléphone:");
-                String numeroTelephone = scanner.nextLine();
-                if (numeroTelephone.equals(client.getNumeroTelephone())) {
-                    System.out.println("Véhicule ajouté au profil.");
-                    client.setVehicule(new Vehicule(plaque, "marque", "modele", 2022)); // Demander plus de détails si nécessaire
-                    demanderDureeRechargeOuHeureDepart();
-                } else {
-                    System.out.println("Numéro de téléphone incorrect.");
-                }
-            } else {
-                System.out.println("Numéro de téléphone:");
-                String numeroTelephone = scanner.nextLine();
-                if (verifClientParTelephone(numeroTelephone)) {
-                    demanderDureeRechargeOuHeureDepart();
-                } else {
-                    System.out.println("Numéro de téléphone non reconnu. Créer un compte.");
-                    inscrireClientAvecTelephone(numeroTelephone);
-                }
-            }
-        }
-        //ET qu’une borne de recharge est disponible
-
-        //
-        //rechercher si le numéro d’immatriculation du véhicule est identique au profil et qu’aucune réservation est en cours sur cette plaque. Demander la durée de recharge ou l’heure de départ.
-        //
-        //si véhicule n’est pas reconnu, demander si c’est son véhicule personnel (-> entrer dans la bdd, demander le numero de telephone pour justifier l’identité) si le vehicule est pas le véhicule personnel, entrer le numéro de tel et la duré de charge, si tel non reconnu => créer un compte.
-   */ }
-
-    public void confirmationVehicule(Client c){//a changer
-       /* Vehicule vehicule = clientConnecté.getVehicule();
-        if(vehicule != null) {
-            System.out.println("Veuillez Confirmer que c'est bien pour ce véhicule : " + vehicule.getPlaque());
-            System.out.println("1. oui");
-            System.out.println("2. non, saisir les informations du véhicule");
-        }else{
-            System.out.println("Vous n'avez pas de véhicule enregistré, voulez-vous l'enregistrer apres avoir saisie les informations");
-            System.out.println("1. oui");
-            System.out.println("2. non");
-        }
-        try{
-            int choix = 0;
-            choix = scanner.nextInt();
-            if(choix < 1 || choix > 2){
-                valid = false;
+        try {
+            parc.loadFileClients();
+            parc.getClientsFromFile();
+            if(parc.getClients().isEmpty())
+            {
+                Adresse adressePaul = new Adresse(71, "Rue du bois", "54000", "Nancy", "France");
+                Vehicule vehicule = new Vehicule("AB-123-CD", "marque", "modele", 2022);
+                Client paul = new Client("Dupont", "Paul", adressePaul, "0601020304", "Dupont.Fred@ElectriquePlus.fr", "1234567854735390", vehicule);
+                clients.add(paul);
             }else{
-                if(choix == 2){
-                    vehicule = ajouteVehicule();
-                }else if(vehicule == null){
-                    ajouteVehiculeClient();
-                    vehicule = clientConnecté.getVehicule();
-                }
-                valid = true;
+                clients = parc.getClients();
             }
-        }catch (InputMismatchException e){
-            valid = false;
-        }
-        if(!valid)
+        }catch (IOException e)
         {
-            System.out.println("Veuillez saisir 1 ou 2");
-        }*/
+            System.out.println("erreur lors de la lecture du fichier Client");
+        }
+
+        // Load fichier Vehicule et adresse et Immatricule
+        try {
+            parc.loadFileImmatriculations();
+            parc.loadFileVehicules();
+            parc.loadFileAdresses();
+            parc.getImmatriculationsFromFile();
+            parc.getVehiculesFromFile();
+            parc.getAdressesFromFile();
+        }catch (IOException e)
+        {
+            System.out.println("erreur lors de la lecture du fichier Immatriculation, Vehicule ou Adresses");
+        }
     }
 
-    //refaire absolument
+    private static void saveAllData() {
+        try {
+            parc.setClients(clients);
+            parc.setGestionnaire(gestionnaires);
+            if (!parc.getGestionnaires().isEmpty())
+                parc.generateFileGestionnaires();
+            if (!parc.getClients().isEmpty())
+                parc.generateFileClients();
+            if (!parc.getAdresses().isEmpty())
+                parc.generateFileAdresses();
+            if (!parc.getImmatriculations().isEmpty())
+                parc.generateFileImmatriculations();
+            if (!parc.getVehicules().isEmpty())
+                parc.generateFileVehicule();
+        }catch (IOException ignored) {
+            System.out.println("erreur lors de la sauvegarde des données");
+        }
+
+    }
+
     private static void faireUneReservation() {
         int jour = 0;
         int mois = 0;
         int annee = LocalDate.now().getYear();
         int heure = 0;
         Vehicule vehicule = null;
-        boolean valid=true;
+        boolean valid = true;
         System.out.println("Veuillez entrer une date de reservation :");
 
-        //saisie du mois de reservation
+        // Saisie du mois de reservation
         LocalDate maxReservationDate = LocalDate.now().plusMonths(2);
         do {
-            System.out.println("Veuillez saisir le mois numerique ("+LocalDate.now().format(DateTimeFormatter.ofPattern("MM"))+" à "+maxReservationDate.format(DateTimeFormatter.ofPattern("MM"))+")");
-            mois = verifChoix(1,12);//mettre directement todaymonth à todaymonth+3 @romain
+            System.out.println("Veuillez saisir le mois numerique (" + LocalDate.now().format(DateTimeFormatter.ofPattern("MM")) + " à " + maxReservationDate.format(DateTimeFormatter.ofPattern("MM")) + ")");
+            mois = verifChoix(LocalDate.now().getMonthValue(), maxReservationDate.getMonthValue());
             LocalDate reservationDate = LocalDate.of(annee, mois, 1);
-                if (reservationDate.isAfter(maxReservationDate) || reservationDate.isBefore(LocalDate.now())) {
-                    valid = false;
-                    System.out.println("Nous prenons les reservations que 3 mois à l'avance pas plus.");
-                }
-            //else{
-                System.out.println("Veuillez saisir le mois en numerique et compris entre "+LocalDate.now().format(DateTimeFormatter.ofPattern("mm"))+" à "+maxReservationDate.format(DateTimeFormatter.ofPattern("mm")));
-
+            if (reservationDate.isAfter(maxReservationDate) || reservationDate.isBefore(LocalDate.now())) {
+                valid = false;
+                System.out.println("Nous prenons les reservations que 3 mois à l'avance pas plus.");
+            } else {
+                valid = true;
+            }
         } while (!valid);
 
-        //saisie du jour de reservation
+        // Saisie du jour de reservation
         YearMonth moisAnnee = YearMonth.of(annee, mois);
         int nbJourMois = moisAnnee.lengthOfMonth();
+        jour = verifChoix(1, nbJourMois);
 
+        // Saisie de l'heure de reservation
+        heure = verifChoix(0, 23);
+
+        // Vérification du véhicule
+        valid = false;
         do {
-            System.out.println("Veuillez saisir le jour numérique (1 à "+nbJourMois+")");
-            //int jour = choix() //faire le cas si il choisi le mois en cours ou sinon dire au dessu que c'est pas possible le choix du mois en cours
-            try{
-                jour = scanner.nextInt();
-                if (jour < 1 || jour > 31) {
-                    valid = false;
-                }else {
-                    valid = jour <= nbJourMois;
-                }
-            }catch (InputMismatchException e){
-                valid = false;
-            }
-            if (!valid) {
-                System.out.println("Veuillez saisir le jour en numerique et compris entre 1 à "+nbJourMois);
-            }
-        }while(!valid);
-
-        do{
-            System.out.println("Veuillez saisir l'heure (00h - 23h)");
-            //int heure2 = verifChoix(0, 23); //tout simplement
-            boolean heureValid = false;
-            try{
-                heure = scanner.nextInt();
-                heureValid = true;
-            }catch (InputMismatchException e){
-                String heuretempo = scanner.nextLine();
-                if(heuretempo.toLowerCase().endsWith("h")){
-                    try {
-                        heure = Integer.parseInt(heuretempo.split("h")[0]);
-                        heureValid = true;
-                    }catch(Exception e2){
-                        valid = false;
-                    }
-                }
-            }
-            if(heureValid){
-                if(heure<24 || heure >= 0)
-                    valid = true;
-            }
-            if(!valid)
-            {
-                System.out.println("Veuillez saisir une heure en numerique et compris 00h - 23h");
-            }
-        }while(!valid);
-
-        do{
             vehicule = clientConnecté.getVehicule();
-            if(vehicule != null) {
-                System.out.println("Veuillez Confirmer que c'est bien pour ce véhicule : " + vehicule.getPlaque());
+            if (vehicule != null) {
+                System.out.println("Veuillez confirmer que c'est bien pour ce véhicule : " + vehicule.getPlaque());
                 System.out.println("1. oui");
                 System.out.println("2. non, saisir les informations du véhicule");
-            }else{
-                System.out.println("Vous n'avez pas de véhicule enregistré. Voulez-vous l'enregistrer après avoir saisie les informations");
+            } else {
+                System.out.println("Vous n'avez pas de véhicule enregistré. Voulez-vous l'enregistrer après avoir saisi les informations ?");
                 System.out.println("1. oui");
                 System.out.println("2. non");
             }
-            //la fait juste verifierChoix(1,2); @romain
-            //puis un case
-            try{
-                int choix = 0;
-                choix = scanner.nextInt();
-                if(choix < 1 || choix > 2){
-                    valid = false;
-                }else{
-                    if(choix == 2){
-                        vehicule = ajouteVehicule();
-                    }else if(vehicule == null){
-                        ajouteVehiculeClient();
-                        vehicule = clientConnecté.getVehicule();
-                    }
-                    valid = true;
-                }
-            }catch (InputMismatchException e){
-                valid = false;
+            int choix = verifChoix(1, 2);
+            if (choix == 2) {
+                vehicule = ajouteVehicule();
+            } else if (vehicule == null) {
+                ajouteVehiculeClient();
+                vehicule = clientConnecté.getVehicule();
             }
-            if(!valid)
-            {
-                System.out.println("Veuillez saisir 1 ou 2");
-            }
-        }while(!valid);
+            valid = true;
+        } while (!valid);
 
         LocalDateTime datetime = LocalDateTime.of(annee, mois, jour, heure, 0);
-        ArrayList<Borne> bornes = parc.getDispBornes(datetime.format(DateTimeFormatter.ofPattern("dd/MM")),datetime.format(DateTimeFormatter.ofPattern("hh")));
-        if(!bornes.isEmpty()){
-            if(bornes.get(0).changeStatusBorne(datetime.format(DateTimeFormatter.ofPattern("dd/MM")),datetime.format(DateTimeFormatter.ofPattern("hh")),"RESERVE") == 1)
-            {
-                Reservation r = new Reservation(clientConnecté,vehicule,bornes.get(0),datetime,datetime.plusHours(1));
+        ArrayList<Borne> bornes = parc.getDispBornes(datetime.format(DateTimeFormatter.ofPattern("dd/MM")), datetime.format(DateTimeFormatter.ofPattern("HH")));
+        if (!bornes.isEmpty()) {
+            if (bornes.get(0).changeStatusBorne(datetime.format(DateTimeFormatter.ofPattern("dd/MM")), datetime.format(DateTimeFormatter.ofPattern("HH")), "RESERVE") == 1) {
+                Reservation r = new Reservation(clientConnecté, vehicule, bornes.get(0), datetime, datetime.plusHours(1));
                 parc.ajouterReservation(r);
-                System.out.println("Vous aurez une reservation a la date et l'heure voulue sur la borne n°"+bornes.get(0).getNumero());
+                System.out.println("Vous aurez une reservation à la date et l'heure voulues sur la borne n°" + bornes.get(0).getNumero());
             }
+        } else {
+            System.out.println("Aucune borne disponible pour cette date et heure.");
         }
     }
 
@@ -451,6 +358,15 @@ public class Main {
         } while (choix != 0);
     }
 
+    private static void signalerRetrait(){
+        System.out.println("Saisir le numéro de votre borne (1 - "+parc.getBornes().size()+")");
+        int choix = verifChoix(0, parc.getBornes().size());
+        Borne borne = parc.getById(choix);
+        if(borne != null)
+            borne.changeStatusBorne(LocalDate.now().format(DateTimeFormatter.ofPattern("jj/MM")),LocalDate.now().format(DateTimeFormatter.ofPattern("hh")),"DISPONIBLE");
+        else
+            System.out.println("La borne que vous avez choisie n'est pas correcte");
+    }
 
 
     //-------------------------------------
@@ -528,6 +444,8 @@ public class Main {
         }
         return null;
     }
+
+
 
     //-------------------------------------
     //            SAISIES
@@ -657,8 +575,8 @@ public class Main {
                 "1. S'inscrire",
                 "2. Ajouter un véhicule",
                 "3. Faire une réservation",
-                "4. Prendre une borne sans reservation",
-                "5. Modifier son profil",
+                "4. Modifier son profil",
+                "5. Signaler un retrait anticipé du véhicule",
                 "6. Retour au menu principal"
 
         );

@@ -164,13 +164,13 @@ public class ParcTest {
         }
 
         assert(parc.getAdresses().get(0).getNumeroHabitation() == adresses.get(0).getNumeroHabitation());
-        assert(parc.getAdresses().get(0).getCodePostal()  == adresses.get(0).getCodePostal());
+        assert(parc.getAdresses().get(0).getCodePostal().equals(adresses.get(0).getCodePostal()));
         assert(parc.getAdresses().get(0).getNomPays().equals(adresses.get(0).getNomPays()));
         assert(parc.getAdresses().get(0).getNomRue().equals(adresses.get(0).getNomRue()));
         assert(parc.getAdresses().get(0).getNomVille().equals(adresses.get(0).getNomVille()));
 
         assert(parc.getAdresses().get(1).getNumeroHabitation() == adresses.get(1).getNumeroHabitation());
-        assert(parc.getAdresses().get(1).getCodePostal()  == adresses.get(1).getCodePostal());
+        assert(parc.getAdresses().get(1).getCodePostal().equals(adresses.get(1).getCodePostal()));
         assert(parc.getAdresses().get(1).getNomPays().equals(adresses.get(1).getNomPays()));
         assert(parc.getAdresses().get(1).getNomRue().equals(adresses.get(1).getNomRue()));
         assert(parc.getAdresses().get(1).getNomVille().equals(adresses.get(1).getNomVille()));
