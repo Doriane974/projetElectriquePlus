@@ -9,6 +9,9 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * La classe principale de l'application. On trouve notamment dans cette classe l'interface en ligne de commande de l'application
+ */
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
     private static List<Gestionnaire> gestionnaires = new ArrayList<>();
@@ -16,6 +19,12 @@ public class Main {
     public static Client clientConnecté;
     public static Parc parc;
 
+    /**
+     * Méthode principale démarrant l'application.
+     * Crée le parc, les bornes, un gestionnaire et un client de test, puis affiche le menu principal.
+     *
+     * @param args Les arguments de la ligne de commande (non utilisés).
+     */
     public static void main(String[] args) {
         // création du parc et des borne
         parc = new Parc(new ArrayList<Borne>());
@@ -64,6 +73,9 @@ public class Main {
         }
     }
 
+    /**
+     * Méthode affichant le menu client et permettant au client de choisir parmi plusieurs actions.
+     */
     private static void menuClient() {
         while (true) {
             System.out.println("1. S'incrire");
@@ -97,6 +109,9 @@ public class Main {
         }
     }
 
+    /**
+     * Méthode permettant au client de faire une réservation de borne de recharge.
+     */
     private static void faireUneReservation() {
         int jour = 0;
         int mois = 0;
@@ -222,6 +237,9 @@ public class Main {
     }
 
 
+    /**
+     * Méthode permettant à un client de s'inscrire dans le système en fournissant ses informations personnelles.
+     */
     private static void inscrireClient() {
         String nom = "";
         String prenom = "";
@@ -359,7 +377,9 @@ public class Main {
     }
 
 
-
+    /**
+     * Méthode permettant au gestionnaire d'afficher le menu de gestionnaire et d'effectuer diverses actions.
+     */
     private static void menuGestionnaire() {
         while (true) {
             System.out.println("______MENU DU GESTIONNAIRE_____________");
@@ -384,6 +404,13 @@ public class Main {
         }
     }
 
+    /**
+     * Méthode permettant de vérifier si le choix de l'utilisateur est compris entre deux bornes spécifiées.
+     *
+     * @param choixmin La borne inférieure de l'intervalle des choix valides.
+     * @param choixmax La borne supérieure de l'intervalle des choix valides.
+     * @return Le choix de l'utilisateur validé.
+     */
     public static int verifChoix(int choixmin, int choixmax){ //verifie si le choix est entre les deux bornes
         int choix = -1;
         do {
@@ -402,6 +429,11 @@ public class Main {
         return choix;
     }
 
+    /**
+     * Méthode permettant de vérifier l'identité du gestionnaire en demandant son nom et son prénom.
+     *
+     * @return true si l'identité du gestionnaire est vérifiée avec succès, sinon false.
+     */
     private static boolean verifGestionnaire() {
         System.out.println("________VERIFICATION DE L'IDENTITE______");
         System.out.println("Nom du gestionnaire:");
@@ -426,6 +458,11 @@ public class Main {
         return true;
     }
 
+    /**
+     * Méthode permettant de vérifier si un client existe déjà en demandant son nom et son prénom.
+     *
+     * @return Le client s'il est trouvé, sinon null.
+     */
     private static Client verifClient() { //VERIFIE SI LE CLIENT EXISTE
         System.out.println("Verification, si un compte existe déja.");
 
@@ -450,6 +487,13 @@ public class Main {
         return null;
     }
 
+    /**
+     * Méthode permettant de récupérer un client à partir de son nom et de son prénom.
+     *
+     * @param nom    Le nom du client à rechercher.
+     * @param prenom Le prénom du client à rechercher.
+     * @return Le client correspondant s'il est trouvé, sinon null.
+     */
     private static Client getClient(String nom, String prenom) { //RETOURNE LE CLIENT CONNECTE
         for (Client c : clients) {
             if (c.getNom().equalsIgnoreCase(nom) && c.getPrenom().equalsIgnoreCase(prenom)) {
@@ -459,6 +503,10 @@ public class Main {
         return null;
     }
 
+    /**
+     * Méthode permettant d'afficher la liste des clients enregistrés dans le système.
+     * Utilisée par les gestionnaires.
+     */
     private static void afficherListeClients() { //GESTIONNAIRE
         System.out.println("Voici la liste des clients inscrit dans le parc:");
         for (Client c : clients) {
@@ -466,6 +514,10 @@ public class Main {
         }
     }
 
+    /**
+     * Méthode permettant à un client d'ajouter un véhicule à son profil.
+     * Si le client n'a pas encore de véhicule enregistré, il peut en ajouter un.
+     */
     private static void ajouteVehiculeClient(){
         if (clientConnecté.getVehicule() != null) {
             System.out.println("Ce client a déjà un véhicule enregistré.");
@@ -483,6 +535,12 @@ public class Main {
         }
     }
 
+    /**
+     * Méthode permettant à un client d'ajouter un véhicule en saisissant ses informations.
+     * Utilisée lors de l'inscription ou de l'ajout d'un véhicule.
+     *
+     * @return Le véhicule créé.
+     */
     private static Vehicule ajouteVehicule(){ //CLIENT
         boolean valid;
         String plaque;
