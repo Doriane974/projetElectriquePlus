@@ -49,7 +49,7 @@ public class Main {
                 case 1:
                     if (verifClient() == null){
                         inscrireClient();
-                    }else return; //si le client existe on le retourne au menu client
+                    } //si le client existe on le retourne au menu client
                     break;
                 case 2:
                     if (verifClient() != null){
@@ -66,7 +66,7 @@ public class Main {
                         prendreBorneSansReserv();
                     }
                     break;
-                case (:
+                case 5:
                     return;
                 default:
                     System.out.println("Choix invalide");
@@ -107,32 +107,19 @@ public class Main {
         gestionnaires.add(fred);
 
         // création d'un client lambda
-        Adresse adressePaul = new Adresse(71, "Rue du bois", 54000, "Nancy", "France");
+        Adresse adressePaul = new Adresse(71, "Rue du bois", "54000", "Nancy", "France");
         Vehicule vehicule = new Vehicule("AB-123-CD", "marque", "modele", 2022);
         Client paul = new Client("Dupont", "Paul", adressePaul, "0601020304", "Dupont.Fred@ElectriquePlus.fr", "1234567890", vehicule);
         clients.add(paul);
     }
 
     private static void infoBorneSansReserv(){
-        LocalDateTime auj = new LocalDateTime();
+        LocalDateTime auj = LocalDateTime.now();
         System.out.println("---------------------");
         System.out.println("Bonjour " +clientConnecté.getPrenom()+ " " +clientConnecté.getNom() +"nous allons rechercher dans notre base de données si une place est disponible pour vous");
         System.out.println("Sachez que toute heure entamé doit etre payé ! Il est " + auj.getHour() +" : " + auj.getMinute());
     }
 
-    private static Immatriculation saisirPlaque(){
-        //Immatriculation plaque;
-        String saisie;
-        do {
-            System.out.println("Entrez la plaque d'immatriculation : par exemple AB-123-CD");
-            saisie = scanner.nextLine();
-            if (!saisie.matches("[A-Z]{2}-\\d{3}-[A-Z]{2}")) {
-                System.out.println("Format de plaque invalide. Veuillez réessayer.");
-            }
-        } while (!saisie.matches("[A-Z]{2}-\\d{3}-[A-Z]{2}"));
-
-        return new Immatriculation(saisie);
-    }
 
     public static void prendreBorneSansReserv(){
         infoBorneSansReserv();
@@ -222,34 +209,29 @@ public class Main {
         }*/
     }
 
+    //refaire absolument
     private static void faireUneReservation() {
         int jour = 0;
         int mois = 0;
         int annee = LocalDate.now().getYear();
         int heure = 0;
         Vehicule vehicule = null;
-        boolean valid;
+        boolean valid=true;
         System.out.println("Veuillez entrer une date de reservation :");
 
         //saisie du mois de reservation
         LocalDate maxReservationDate = LocalDate.now().plusMonths(2);
         do {
             System.out.println("Veuillez saisir le mois numerique ("+LocalDate.now().format(DateTimeFormatter.ofPattern("MM"))+" à "+maxReservationDate.format(DateTimeFormatter.ofPattern("MM"))+")");
-            try {
-                mois = scanner.nextInt();
-                valid = (mois < 13) && (mois > 0);
-            }catch(InputMismatchException e){
-                valid = false;
-            }
-            if(valid){
-                LocalDate reservationDate = LocalDate.of(annee, mois, 1);
+            mois = verifChoix(1,12);//mettre directement todaymonth à todaymonth+3 @romain
+            LocalDate reservationDate = LocalDate.of(annee, mois, 1);
                 if (reservationDate.isAfter(maxReservationDate) || reservationDate.isBefore(LocalDate.now())) {
                     valid = false;
                     System.out.println("Nous prenons les reservations que 3 mois à l'avance pas plus.");
                 }
-            }else{
+            //else{
                 System.out.println("Veuillez saisir le mois en numerique et compris entre "+LocalDate.now().format(DateTimeFormatter.ofPattern("mm"))+" à "+maxReservationDate.format(DateTimeFormatter.ofPattern("mm")));
-            }
+
         } while (!valid);
 
         //saisie du jour de reservation
@@ -258,6 +240,7 @@ public class Main {
 
         do {
             System.out.println("Veuillez saisir le jour numérique (1 à "+nbJourMois+")");
+            //int jour = choix() //faire le cas si il choisi le mois en cours ou sinon dire au dessu que c'est pas possible le choix du mois en cours
             try{
                 jour = scanner.nextInt();
                 if (jour < 1 || jour > 31) {
@@ -275,6 +258,7 @@ public class Main {
 
         do{
             System.out.println("Veuillez saisir l'heure (00h - 23h)");
+            //int heure2 = verifChoix(0, 23); //tout simplement
             boolean heureValid = false;
             try{
                 heure = scanner.nextInt();
@@ -303,14 +287,16 @@ public class Main {
         do{
             vehicule = clientConnecté.getVehicule();
             if(vehicule != null) {
-                System.out.println("Veuillez Confirmé que ces bien pour se véhicule : " + vehicule.getPlaque());
+                System.out.println("Veuillez Confirmer que c'est bien pour ce véhicule : " + vehicule.getPlaque());
                 System.out.println("1. oui");
-                System.out.println("2. non, saisir les information du véhicule");
+                System.out.println("2. non, saisir les informations du véhicule");
             }else{
-                System.out.println("Vous n'avez pas de véhicule enregistrer voulez vous l'enregistrer apres avoir saisie les informations");
+                System.out.println("Vous n'avez pas de véhicule enregistré. Voulez-vous l'enregistrer après avoir saisie les informations");
                 System.out.println("1. oui");
                 System.out.println("2. non");
             }
+            //la fait juste verifierChoix(1,2); @romain
+            //puis un case
             try{
                 int choix = 0;
                 choix = scanner.nextInt();
@@ -346,135 +332,39 @@ public class Main {
         }
     }
 
-
-    private static void inscrireClient() {
-        String nom = "";
-        String prenom = "";
-        int numeroHabitation = 0;
-        String nomRue = "";
-        int codePostal = 0;
-        String nomVille = "";
-        String nomPays = "";
-        String numeroTelephone = "";
-        String email = "";
-        String numeroCarteDebit = "";
+    private static int saisieCodePostal(){
+        int saisie=0;
         boolean valid;
-
-        System.out.println("Il n'y a pas de compte existant, merci de vous inscrire :");
-        // Saisie et validation du nom de famille
-        do {
-            System.out.println("Nom de famille:");
-            nom = scanner.nextLine();
-            valid = nom != null && !nom.isEmpty() && nom.matches("[a-zA-Z\\sàâäéèêëîïôöùûüÿçÀÂÄÉÈÊËÎÏÔÖÙÛÜŸÇ-]+");
-            if (!valid) {
-                System.out.println("Le nom ne doit pas être vide et ne doit contenir que des lettres, des espaces, des accents ou des tirets. Veuillez réessayer.");
-            }
-        } while (!valid);
-
-        // Saisie et validation du prénom
-        do {
-            System.out.println("Prénom:");
-            prenom = scanner.nextLine();
-            valid = prenom != null && !prenom.isEmpty() && prenom.matches("[a-zA-Z\\sàâäéèêëîïôöùûüÿçÀÂÄÉÈÊËÎÏÔÖÙÛÜŸÇ-]+");
-            if (!valid) {
-                System.out.println("Le prénom ne doit pas être vide et ne doit contenir que des lettres, des espaces, des accents ou des tirets. Veuillez réessayer.");
-            }
-        } while (!valid);
-
-
-        // Saisie et validation du numéro d'habitation
-        do {
-            System.out.println("Numéro d'habitation:");
-            if (scanner.hasNextInt()) {
-                numeroHabitation = scanner.nextInt();
-                scanner.nextLine(); // Consomme la nouvelle ligne
-                valid = numeroHabitation > 0;
-                if (!valid) {
-                    System.out.println("Le numéro d'habitation doit être supérieur à 0. Veuillez réessayer.");
-                }
-            } else {
-                System.out.println("Veuillez entrer un numéro valide.");
-                valid = false;
-                scanner.next(); // Consomme l'entrée invalide
-            }
-        } while (!valid);
-
-        // Saisie et validation du nom de la rue
-        do {
-            System.out.println("Nom de la rue:");
-            nomRue = scanner.nextLine();
-            valid = nomRue != null && !nomRue.isEmpty();
-            if (!valid) {
-                System.out.println("Le nom de la rue ne doit pas être vide. Veuillez réessayer.");
-            }
-        } while (!valid);
-
-        // Saisie et validation du code postal
         do {
             System.out.println("Code postal:");
             if (scanner.hasNextInt()) {
-                codePostal = scanner.nextInt();
-                scanner.nextLine(); // Consomme la nouvelle ligne
-                valid = String.valueOf(codePostal).length() == 5;
+                saisie = scanner.nextInt();
+                scanner.nextLine();
+                valid = String.valueOf(saisie).length() == 5;
                 if (!valid) {
                     System.out.println("Le code postal doit contenir 5 chiffres. Veuillez réessayer.");
                 }
             } else {
                 System.out.println("Veuillez entrer un code postal valide.");
                 valid = false;
-                scanner.next(); // Consomme l'entrée invalide
+                scanner.next();
             }
         } while (!valid);
+        return saisie;
+    }
 
-        // Saisie et validation du nom de la ville
-        do {
-            System.out.println("Nom de la ville:");
-            nomVille = scanner.nextLine();
-            valid = nomVille != null && !nomVille.isEmpty() && nomVille.matches("[a-zA-Z\\sàâäéèêëîïôöùûüÿçÀÂÄÉÈÊËÎÏÔÖÙÛÜŸÇ-]+");
-            if (!valid) {
-                System.out.println("Le nom de la ville ne doit pas être vide et ne doit contenir que des lettres, des espaces, des accents ou des tirets. Veuillez réessayer.");
-            }
-        } while (!valid);
-
-        // Saisie et validation du nom du pays
-        do {
-            System.out.println("Nom du pays:");
-            nomPays = scanner.nextLine();
-            valid = nomPays != null && !nomPays.isEmpty() && nomPays.matches("[a-zA-Z\\s]+");
-            if (!valid) {
-                System.out.println("Le nom du pays ne doit pas être vide et ne doit contenir que des lettres. Veuillez réessayer.");
-            }
-        } while (!valid);
-
-        // Saisie et validation du numéro de téléphone
-        do {
-            System.out.println("Numéro de téléphone: par exemple 0607080901");
-            numeroTelephone = scanner.nextLine();
-            valid = numeroTelephone.length() == 10 && numeroTelephone.matches("\\d+");
-            if (!valid) {
-                System.out.println("Le numéro de téléphone doit contenir 10 chiffres. Veuillez réessayer.");
-            }
-        } while (!valid);
-
-        // Saisie et validation de l'email
-        do {
-            System.out.println("Email: par exemple jean@gmail.com");
-            email = scanner.nextLine();
-            valid = email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
-            if (!valid) {
-                System.out.println("Adresse mail invalide. Veuillez réessayer.");
-            }
-        } while (!valid);
-
-        // Saisie et validation du numéro de carte de débit
-        do {
-            System.out.println("Numéro de carte de débit: par exemple 1234567890");
-            numeroCarteDebit = scanner.nextLine();
-            valid = numeroCarteDebit.matches("\\d+");
-            if (!valid) {
-                System.out.println("Le numéro de carte de débit ne doit pas être vide et doit contenir uniquement des chiffres. Veuillez réessayer.");
-            }
-        } while (!valid);
+    private static void inscrireClient() {
+        System.out.println("Il n'y a pas de compte existant, merci de vous inscrire :");
+        String nom = saisieNomPrenomVillePays("Nom de famille");
+        String prenom = saisieNomPrenomVillePays("Prénom");
+        int numeroHabitation = saisieNumHabitation();
+        String nomRue = saisieNomRue();
+        String codePostal = saisieTelephoneCodePostalCarteDebit("Code postal:","\\d+", "Le code postal doit contenir 5 chiffres. Veuillez réessayer.", 5);
+        String nomVille = saisieNomPrenomVillePays("Ville");
+        String nomPays = saisieNomPrenomVillePays("Pays");
+        String numeroTelephone = saisieTelephoneCodePostalCarteDebit("Numéro de téléphone: par exemple 0607080901","\\d+","Le numéro de téléphone doit contenir 10 chiffres. Veuillez réessayer", 10);
+        String email = saisieString("Email: par exemple jean@gmail.com","^[A-Za-z0-9+_.-]+@(.+)$", "Adresse mail invalide. Veuillez réessayer." );
+        String numeroCarteDebit = saisieTelephoneCodePostalCarteDebit("Numéro de carte de débit: par exemple 1234567890","\\d+","Le numéro de carte de débit ne doit pas être vide et doit contenir uniquement des chiffres. Veuillez réessayer.", 10 );
 
         Adresse adresse = new Adresse(numeroHabitation, nomRue, codePostal, nomVille, nomPays);
         Client client = new Client(nom, prenom, adresse, numeroTelephone, email, numeroCarteDebit);
@@ -482,6 +372,8 @@ public class Main {
 
         System.out.println("Compte créé avec succès!");
     }
+
+
 
 
     private static void afficherListeClients() { //GESTIONNAIRE
@@ -497,7 +389,6 @@ public class Main {
             return;
         }
         Vehicule vehicule = ajouteVehicule();
-
         clientConnecté.setVehicule(vehicule);
 
         // Vérification de l'enregistrement du véhicule
@@ -508,12 +399,9 @@ public class Main {
         }
     }
 
-    private static Vehicule ajouteVehicule(){ //CLIENT
+    private static Vehicule ajouteVehicule(){ //CLIENT FAIRE LES MODIFS
         boolean valid;
-        String plaque = saisirPlaque();
-
-
-
+        String plaque = saisieString("Entrez la plaque d'immatriculation : par exemple AB-123-CD", "[A-Z]{2}-\\d{3}-[A-Z]{2}","Format de plaque invalide. Veuillez réessayer." );
 
         System.out.println("Entrez la marque du véhicule : par exemple Tesla");
         String marque = scanner.nextLine();
@@ -553,10 +441,8 @@ public class Main {
 
     private static boolean verifGestionnaire() {
         System.out.println("________VERIFICATION DE L'IDENTITE______");
-        System.out.println("Nom du gestionnaire:");
-        String nom = scanner.nextLine();
-        System.out.println("Prénom du gestionnaire:");
-        String prenom = scanner.nextLine();
+        String nom = saisieNomPrenomVillePays("Nom de famille");
+        String prenom = saisieNomPrenomVillePays("Prénom");
 
         //recherche si le gestionnaire existe
         Gestionnaire gestionnaire = null;
@@ -576,12 +462,9 @@ public class Main {
     }
 
     private static Client verifClient() { //VERIFIE SI LE CLIENT EXISTE
-        System.out.println("-----VERIFICATION DE L'IDENTITE DE LA PERSONNE : ");
-
-        System.out.println("Nom de famille:");
-        String nom = scanner.nextLine();
-        System.out.println("Prénom:");
-        String prenom = scanner.nextLine();
+        System.out.println("________VERIFICATION DE L'IDENTITE______");
+        String nom = saisieNomPrenomVillePays("Nom de famille");
+        String prenom = saisieNomPrenomVillePays("Prénom");
 
         Client client = getClient(nom, prenom);
         if (client == null) {
@@ -609,6 +492,88 @@ public class Main {
         return null;
     }
 
+    //-------------------------------------
+    //            SAISIES
+    //-------------------------------------
+
+    private static String saisieNomPrenomVillePays(String type){
+        String saisie;
+        boolean valid;
+        do {
+            System.out.println("Saisir votre " +type);
+            saisie = scanner.nextLine();
+            valid = saisie != null && !saisie.isEmpty() && saisie.matches("[a-zA-Z\\sàâäéèêëîïôöùûüÿçÀÂÄÉÈÊËÎÏÔÖÙÛÜŸÇ-]+");
+            if (!valid) {
+                System.out.println("Le " +type+ " ne doit pas être vide, il doit contenir que des lettres, des espaces, des accents ou des tirets. Veuillez réessayer.");
+            }
+        } while (!valid);
+        return saisie;
+    }
+
+    private static int saisieNumHabitation(){
+        int saisie=0;
+        boolean valid;
+        do {
+            System.out.println("Numéro d'habitation:");
+            if (scanner.hasNextInt()) {
+                saisie = scanner.nextInt();
+                scanner.nextLine();
+                valid = saisie > 0;
+                if (!valid) {
+                    System.out.println("Le numéro d'habitation doit être supérieur à 0. Veuillez réessayer.");
+                }
+            } else {
+                System.out.println("Veuillez entrer un numéro valide.");
+                valid = false;
+                scanner.next();
+            }
+        } while (!valid);
+        return saisie;
+    }
+
+
+
+    private static String saisieTelephoneCodePostalCarteDebit(String demande, String regex, String erreur, int taille) {
+        String saisie="";
+        boolean valid;
+        do {
+            System.out.println(demande);
+            saisie = scanner.nextLine();
+            valid = saisie.length() == taille && saisie.matches(regex);
+            if (!valid) {
+                System.out.println(erreur);
+            }
+        } while (!valid);
+        return saisie;
+    }
+    private static String saisieNomRue(){
+        String saisie="";
+        boolean valid;
+        do {
+            System.out.println("Nom de la rue: ");
+            saisie = scanner.nextLine();
+            valid = saisie != null && !saisie.isEmpty();
+            if (!valid) {
+                System.out.println("Le nom de la rue ne doit pas être vide. Veuillez réessayer.");
+            }
+        } while (!valid);
+        return saisie;
+    }
+
+    //pour email , plaque, ...
+    private static String saisieString(String demande, String regex, String erreur){
+        String saisie="";
+        boolean valid;
+        do {
+            System.out.println(demande);
+            saisie = scanner.nextLine();
+            valid = saisie.matches(regex);
+            if (!valid) {
+                System.out.println(erreur);
+            }
+        } while (!valid);
+        return saisie;
+    }
 
     //-------------------------------------
     //            AFFICHAGE MENU

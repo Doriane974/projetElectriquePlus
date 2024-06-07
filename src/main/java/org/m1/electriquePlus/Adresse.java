@@ -1,5 +1,6 @@
 package org.m1.electriquePlus;
 
+import javax.lang.model.element.NestingKind;
 import java.util.Objects;
 
 public class Adresse {
@@ -7,11 +8,11 @@ public class Adresse {
     private int id;
     private int numeroHabitation;
     private String nomRue;
-    private int codePostal;
+    private String codePostal;
     private String nomVille;
     private String nomPays;
 
-    public Adresse(int numeroHabitation, String nomRue, int codePostal, String nomVille, String nomPays) {
+    public Adresse(int numeroHabitation, String nomRue, String codePostal, String nomVille, String nomPays) {
         if (numeroHabitation <= 0) {
             throw new IllegalArgumentException("Le numéro d'habitation doit être supérieur à 0");
         }
@@ -66,7 +67,7 @@ public class Adresse {
         return nomRue;
     }
 
-    public int getCodePostal() {
+    public String getCodePostal() {
         return codePostal;
     }
 

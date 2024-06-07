@@ -138,7 +138,7 @@ public class Parc {
                 String numeroCarteDebit = parts[5];
                 int numeroHabitation = Integer.parseInt(parts[6]);
                 String nomRue = parts[7];
-                int codePostal = Integer.parseInt(parts[8]);
+                //String codePostal = Integer.parseInt(parts[8]);
                 String nomVille = parts[9];
                 String nomPays = parts[10];
 
@@ -150,11 +150,11 @@ public class Parc {
 
 
                 // Créez un objet Adresse et Vehicule temporaire, car les détails ne sont pas disponibles
-                Adresse adresse = new Adresse(numeroHabitation, nomRue, codePostal, nomVille, nomPays); // Remplacez par des valeurs appropriées
+                //Adresse adresse = new Adresse(numeroHabitation, nomRue, codePostal, nomVille, nomPays); // Remplacez par des valeurs appropriées
                 Vehicule vehicule = new Vehicule(vehiculePlaque, vehiculeMarque, vehiculeModele, vehiculeAnneeFabrication); // Remplacez par des valeurs appropriées
-                Client client = new Client(nom, prenom, adresse, numeroTelephone, email, numeroCarteDebit, vehicule);
-                client.setId(id); 
-                this.getClients().add(client);
+                //Client client = new Client(nom, prenom, adresse, numeroTelephone, email, numeroCarteDebit, vehicule);
+                //client.setId(id);
+                //this.getClients().add(client);
             }
         }
     }
@@ -216,9 +216,9 @@ public class Parc {
 
 
                 // Créez un objet Adresse et Vehicule temporaire, car les détails ne sont pas disponibles
-                Adresse adresse = new Adresse(numeroHabitation, nomRue, codePostal, nomVille, nomPays); // Remplacez par des valeurs appropriées
-                adresse.setId(id);
-                this.getAdresses().add(adresse);
+               // Adresse adresse = new Adresse(numeroHabitation, nomRue, codePostal, nomVille, nomPays); // Remplacez par des valeurs appropriées
+              //  adresse.setId(id);
+               // this.getAdresses().add(adresse);
             }
         }
     }

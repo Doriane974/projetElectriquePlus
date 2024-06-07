@@ -13,7 +13,7 @@ public class AdresseTest {
     @DisplayName("Test création d'une adresse avec des informations valides")
     @Test
     public void testAdresseCreationValide() {
-        Adresse adresse = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Adresse adresse = new Adresse(123, "Rue de la Paix", "75001", "Paris", "France");
         assertThat(adresse.getNumeroHabitation()).isEqualTo(123);
         assertThat(adresse.getNomRue()).isEqualTo("Rue de la Paix");
         assertThat(adresse.getCodePostal()).isEqualTo(75001);
@@ -25,7 +25,7 @@ public class AdresseTest {
     @Test
     public void testAdresseCreationNumeroHabitationInvalide() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Adresse(0, "Rue de la Paix", 75001, "Paris", "France");
+            new Adresse(0, "Rue de la Paix", "75001", "Paris", "France");
         });
         assertThat(exception.getMessage()).isEqualTo("Le numéro d'habitation doit être supérieur à 0");
     }
@@ -34,7 +34,7 @@ public class AdresseTest {
     @Test
     public void testAdresseNomVide() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Adresse(123, "", 75001, "Paris", "France");
+            new Adresse(123, "", "75001", "Paris", "France");
         });
         assertThat(exception.getMessage()).isEqualTo("Le nom de rue ne doit pas être vide");
     }
@@ -43,16 +43,25 @@ public class AdresseTest {
     @Test
     public void testAdresseCPCourt() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Adresse(123, "Rue de la Paix", 7501, "Paris", "France");
+            new Adresse(123, "Rue de la Paix", "7501", "Paris", "France");
         });
         assertThat(exception.getMessage()).isEqualTo("Le code postal doit contenir 5 chiffres");
+    }
+
+    @DisplayName("Test création d'une adresse avec un code postal commence par 0")
+    @Test
+    public void testAdresseCPdebut0() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Adresse(123, "Rue de la Paix", "07501", "Paris", "France");
+        });
+        //assertThat(exception.getMessage()).isEqualTo("Le code postal doit contenir 5 chiffres");
     }
 
     @DisplayName("Test création d'une adresse avec un nom de ville vide")
     @Test
     public void testAdresseVilleVide() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Adresse(123, "Rue de la Paix", 75001, "", "France");
+            new Adresse(123, "Rue de la Paix", "75001", "", "France");
         });
         assertThat(exception.getMessage()).isEqualTo("Le nom de ville ne doit pas être vide");
     }
@@ -61,23 +70,23 @@ public class AdresseTest {
     @Test
     public void testAdressePaysVide() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Adresse(123, "Rue de la Paix", 75001, "Paris", "");
+            new Adresse(123, "Rue de la Paix", "75001", "Paris", "");
         });
         assertThat(exception.getMessage()).isEqualTo("Le pays ne doit pas être vide");
     }
 
     @Test
     public void testEquals_SameValues() {
-        Adresse adresse1 = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
-        Adresse adresse2 = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
+        Adresse adresse1 = new Adresse(123, "Rue de la Paix", "75001", "Paris", "France");
+        Adresse adresse2 = new Adresse(123, "Rue de la Paix", "75001", "Paris", "France");
 
         assertThat(adresse1).isEqualTo(adresse2);
     }
 
     @Test
     public void testEquals_DifferentValues() {
-        Adresse adresse1 = new Adresse(123, "Rue de la Paix", 75001, "Paris", "France");
-        Adresse adresse2 = new Adresse(124, "Avenue des Champs-Élysées", 75008, "Paris", "France");
+        Adresse adresse1 = new Adresse(123, "Rue de la Paix", "75001", "Paris", "France");
+        Adresse adresse2 = new Adresse(124, "Avenue des Champs-Élysées", "75008", "Paris", "France");
 
         assertThat(adresse1).isNotEqualTo(adresse2);
     }
