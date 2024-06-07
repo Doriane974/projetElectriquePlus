@@ -3,6 +3,11 @@ package org.m1.electriquePlus;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * La classe {@code Parc} représente un ensemble de bornes de recharge,
+ * de clients, d'adresses, de véhicules et de réservations.
+ * Elle permet de gérer ces entités et de les sauvegarder dans des fichiers.
+ */
 public class Parc {
 
     /**
