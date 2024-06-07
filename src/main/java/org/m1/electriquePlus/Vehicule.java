@@ -13,6 +13,9 @@ public class Vehicule {
 
     // Constructeur
     public Vehicule(String plaque, String marque, String modele, int anneeFabrication) {
+        if (anneeFabrication < 1950 || anneeFabrication > java.time.Year.now().getValue()) {
+            throw new IllegalArgumentException("L'année de fabrication doit être comprise entre 1950 et l'année en cours.");
+        }
         this.plaque = new Immatriculation(plaque);
         this.marque = marque;
         this.modele = modele;

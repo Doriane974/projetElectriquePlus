@@ -55,7 +55,7 @@ public class Client {
 			throw new IllegalArgumentException("Adresse mail invalide");
 		}
 		if (numeroCarteDebit.length() != 16 || !numeroCarteDebit.matches("\\d+")) {
-			throw new IllegalArgumentException("Le numéro de carte de débit doit contenir 10 chiffres");
+			throw new IllegalArgumentException("Le numéro de carte de débit doit contenir 16 chiffres");
 		}
 
 

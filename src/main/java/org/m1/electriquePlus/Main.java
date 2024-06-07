@@ -109,7 +109,7 @@ public class Main {
         // création d'un client lambda
         Adresse adressePaul = new Adresse(71, "Rue du bois", "54000", "Nancy", "France");
         Vehicule vehicule = new Vehicule("AB-123-CD", "marque", "modele", 2022);
-        Client paul = new Client("Dupont", "Paul", adressePaul, "0601020304", "Dupont.Fred@ElectriquePlus.fr", "1234567890", vehicule);
+        Client paul = new Client("Dupont", "Paul", adressePaul, "0601020304", "Dupont.Fred@ElectriquePlus.fr", "1234567854735390", vehicule);
         clients.add(paul);
     }
 
@@ -332,26 +332,6 @@ public class Main {
         }
     }
 
-    private static int saisieCodePostal(){
-        int saisie=0;
-        boolean valid;
-        do {
-            System.out.println("Code postal:");
-            if (scanner.hasNextInt()) {
-                saisie = scanner.nextInt();
-                scanner.nextLine();
-                valid = String.valueOf(saisie).length() == 5;
-                if (!valid) {
-                    System.out.println("Le code postal doit contenir 5 chiffres. Veuillez réessayer.");
-                }
-            } else {
-                System.out.println("Veuillez entrer un code postal valide.");
-                valid = false;
-                scanner.next();
-            }
-        } while (!valid);
-        return saisie;
-    }
 
     private static void inscrireClient() {
         System.out.println("Il n'y a pas de compte existant, merci de vous inscrire :");
@@ -364,12 +344,19 @@ public class Main {
         String nomPays = saisieNomPrenomVillePays("Pays");
         String numeroTelephone = saisieTelephoneCodePostalCarteDebit("Numéro de téléphone: par exemple 0607080901","\\d+","Le numéro de téléphone doit contenir 10 chiffres. Veuillez réessayer", 10);
         String email = saisieString("Email: par exemple jean@gmail.com","^[A-Za-z0-9+_.-]+@(.+)$", "Adresse mail invalide. Veuillez réessayer." );
-        String numeroCarteDebit = saisieTelephoneCodePostalCarteDebit("Numéro de carte de débit: par exemple 1234567890","\\d+","Le numéro de carte de débit ne doit pas être vide et doit contenir uniquement des chiffres. Veuillez réessayer.", 16 );
+        String numeroCarteDebit = saisieTelephoneCodePostalCarteDebit("Numéro de carte de débit: par exemple 1234567890123456","\\d+","Le numéro de carte de débit ne doit pas être vide et doit contenir uniquement des chiffres. Veuillez réessayer.", 16 );
 
         Adresse adresse = new Adresse(numeroHabitation, nomRue, codePostal, nomVille, nomPays);
         Client client = new Client(nom, prenom, adresse, numeroTelephone, email, numeroCarteDebit);
         clients.add(client);
-
+        clientConnecté=client;
+        System.out.println("Voulez vous inscrire un véhicule");
+        System.out.println("1 oui");
+        System.out.println("2 non");
+        int choix = verifChoix(1,2);
+        if (choix == 1){
+            ajouteVehiculeClient();
+        }
         System.out.println("Compte créé avec succès!");
     }
 
@@ -393,13 +380,13 @@ public class Main {
 
         // Vérification de l'enregistrement du véhicule
         if (clientConnecté.getVehicule().equals(vehicule)) {
-            System.out.println("Véhicule ajouté avec succès : " + vehicule);
+            System.out.println("Véhicule ajouté avec succès : " + vehicule.toString());
         } else {
             System.out.println("Erreur lors de l'ajout du véhicule. Retour au menu client.");
         }
     }
 
-    private static Vehicule ajouteVehicule(){ //CLIENT FAIRE LES MODIFS
+    private static Vehicule ajouteVehicule(){ //CLIENT
         boolean valid;
         String plaque = saisieString("Entrez la plaque d'immatriculation : par exemple AB-123-CD", "[A-Z]{2}-\\d{3}-[A-Z]{2}","Format de plaque invalide. Veuillez réessayer." );
 
@@ -409,12 +396,10 @@ public class Main {
         System.out.println("Entrez le modèle du véhicule : par exemple Model S");
         String modele = scanner.nextLine();
 
-        System.out.println("Entrez l'année de fabrication du véhicule : par exemple 2020");
-        int anneeFabrication = scanner.nextInt();
-        scanner.nextLine();
-
+        int anneeFabrication = saisieAnnee();
         return new Vehicule(plaque, marque, modele, anneeFabrication);
     }
+
 
     //-------------------------------------
     //            Verifications
@@ -570,6 +555,29 @@ public class Main {
             valid = saisie.matches(regex);
             if (!valid) {
                 System.out.println(erreur);
+            }
+        } while (!valid);
+        return saisie;
+    }
+
+    private static int saisieAnnee(){
+        int saisie=0;
+        boolean valid;
+        int currentYear = 2024;
+        do {
+            System.out.println("Entrez l'année de fabrication du véhicule : par exemple 2020 : ");
+            if (scanner.hasNextInt()) {
+                saisie = scanner.nextInt();
+                scanner.nextLine();
+                
+                valid = saisie >= 1950 && saisie <= currentYear;
+                if (!valid) {
+                    System.out.println("L'année de fabrication doit être comprise entre 1950 et " + currentYear + ". Veuillez réessayer.");
+                }
+            } else {
+                System.out.println("Veuillez entrer une année valide.");
+                valid = false;
+                scanner.next();
             }
         } while (!valid);
         return saisie;
