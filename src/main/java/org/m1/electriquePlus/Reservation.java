@@ -49,6 +49,15 @@ public class Reservation {
         return client.getVehicule().getPlaque().toString().equals(vehicule.getPlaque().toString());
     }
 
+    /**
+     * Definit l'id de la reservation
+     * @param id
+     */
     public void setID(int id){this.Id = id;}
+
+    /**
+     * Retourne l'Id de la reservation
+     * @return
+     */
     public int getId(){return this.Id;}
 }
