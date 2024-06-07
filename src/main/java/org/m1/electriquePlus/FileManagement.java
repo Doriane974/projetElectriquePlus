@@ -11,8 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+/**
+ * La classe {@code FileManagement} gère les opérations de génération, de lecture et de modification de fichiers.
+ */
 public class FileManagement {
 
+    /**
+     * Génère un fichier avec des données de bornes pour une période de 3 mois à partir de la date actuelle.
+     *
+     * @param filename Le nom du fichier à générer.
+     * @throws IOException Si une erreur d'entrée/sortie se produit.
+     */
     public static void generateFileBorne(String filename) throws IOException {
         LocalDate startDate = LocalDate.now();
         LocalDate endDate = startDate.plusMonths(3);
@@ -48,6 +58,15 @@ public class FileManagement {
 
 
 
+    /**
+     * Change le statut d'une borne à une date et heure spécifiées dans un fichier.
+     *
+     * @param statusToChange Le statut à changer.
+     * @param date           La date pour laquelle changer le statut (format "dd/MM").
+     * @param hour           L'heure pour laquelle changer le statut (de 0 à 23).
+     * @param filename       Le nom du fichier contenant les données des bornes.
+     * @throws IOException Si une erreur d'entrée/sortie se produit.
+     */
     public static void changeStatus(String statusToChange, String date, String hour, String filename) throws IOException {
         // Lire toutes les lignes du fichier
         List<String> lines = Files.readAllLines(Paths.get(filename));
@@ -82,6 +101,16 @@ public class FileManagement {
         }
     }
 
+    /**
+     * Vérifie le statut d'une borne à une date et heure spécifiées dans un fichier.
+     *
+     * @param date     La date pour laquelle vérifier le statut (format "dd/MM").
+     * @param hour     L'heure pour laquelle vérifier le statut (de 0 à 23).
+     * @param filename Le nom du fichier contenant les données des bornes.
+     * @return Le statut de la borne à la date et heure spécifiées.
+     * @throws IOException                Si une erreur d'entrée/sortie se produit.
+     * @throws IllegalArgumentException   Si la date ou l'heure n'est pas valide.
+     */
     public static char checkStatus(String date, String hour, String filename) throws IOException {
         List<String> lines = Files.readAllLines(Paths.get(filename));
 
