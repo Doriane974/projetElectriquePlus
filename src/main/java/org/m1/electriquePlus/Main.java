@@ -62,6 +62,11 @@ public class Main {
                     }
                     break;
                 case 4:
+                    if (verifClient() != null){
+                        prendreBorneSansReserv();
+                    }
+                    break;
+                case (:
                     return;
                 default:
                     System.out.println("Choix invalide");
@@ -108,19 +113,32 @@ public class Main {
         clients.add(paul);
     }
 
+    private static void infoBorneSansReserv(){
+        LocalDateTime auj = new LocalDateTime();
+        System.out.println("---------------------");
+        System.out.println("Bonjour " +clientConnecté.getPrenom()+ " " +clientConnecté.getNom() +"nous allons rechercher dans notre base de données si une place est disponible pour vous");
+        System.out.println("Sachez que toute heure entamé doit etre payé ! Il est " + auj.getHour() +" : " + auj.getMinute());
+    }
+
+    private static Immatriculation saisirPlaque(){
+        //Immatriculation plaque;
+        String saisie;
+        do {
+            System.out.println("Entrez la plaque d'immatriculation : par exemple AB-123-CD");
+            saisie = scanner.nextLine();
+            if (!saisie.matches("[A-Z]{2}-\\d{3}-[A-Z]{2}")) {
+                System.out.println("Format de plaque invalide. Veuillez réessayer.");
+            }
+        } while (!saisie.matches("[A-Z]{2}-\\d{3}-[A-Z]{2}"));
+
+        return new Immatriculation(saisie);
+    }
 
     public static void prendreBorneSansReserv(){
+        infoBorneSansReserv();
 
-        System.out.println("Nom:");
-        String nom = scanner.nextLine();
-        System.out.println("Prénom:");
-        String prenom = scanner.nextLine();
-
-        Client client = getClient(nom, prenom);
-        if (client == null) {
-            System.out.println("Client non trouvé. Veuillez créer un compte d'abord.");
-            return;
-        }
+        System.out.println("Merci de fournir la place d'immatriculation du véhicule:");
+        String plaque = scanner.nextLine();
 
 
 
@@ -492,15 +510,9 @@ public class Main {
 
     private static Vehicule ajouteVehicule(){ //CLIENT
         boolean valid;
-        String plaque;
+        String plaque = saisirPlaque();
 
-        do {
-            System.out.println("Entrez la plaque d'immatriculation : par exemple AB-123-CD");
-            plaque = scanner.nextLine();
-            if (!plaque.matches("[A-Z]{2}-\\d{3}-[A-Z]{2}")) {
-                System.out.println("Format de plaque invalide. Veuillez réessayer.");
-            }
-        } while (!plaque.matches("[A-Z]{2}-\\d{3}-[A-Z]{2}"));
+
 
 
         System.out.println("Entrez la marque du véhicule : par exemple Tesla");
@@ -520,7 +532,8 @@ public class Main {
     //            Verifications
     //-------------------------------------
 
-    public static int verifChoix(int choixmin, int choixmax){ //verifie si le choix est entre les deux bornes
+    //verifie si le choix est entre les deux bornes
+    public static int verifChoix(int choixmin, int choixmax){
         int choix = -1;
         do {
             System.out.print("Veuillez entrer votre choix (entre " + choixmin + " et " + choixmax + ") : ");
@@ -563,7 +576,7 @@ public class Main {
     }
 
     private static Client verifClient() { //VERIFIE SI LE CLIENT EXISTE
-        System.out.println("Verification, si un compte existe déja.");
+        System.out.println("-----VERIFICATION DE L'IDENTITE DE LA PERSONNE : ");
 
         System.out.println("Nom de famille:");
         String nom = scanner.nextLine();
@@ -586,7 +599,8 @@ public class Main {
         return null;
     }
 
-    private static Client getClient(String nom, String prenom) { //RETOURNE LE CLIENT CONNECTE
+    //retourne le client connecté
+    private static Client getClient(String nom, String prenom) {
         for (Client c : clients) {
             if (c.getNom().equalsIgnoreCase(nom) && c.getPrenom().equalsIgnoreCase(prenom)) {
                 return c;
@@ -618,7 +632,9 @@ public class Main {
                 "1. S'inscrire",
                 "2. Ajouter un véhicule",
                 "3. Faire une réservation",
-                "4. Retour au menu principal"
+                "4. Prendre une borne sans reservation",
+                "5. Retour au menu principal"
+
         );
         for (String option : options) System.out.println(option);
         System.out.println("_________________________________________");
