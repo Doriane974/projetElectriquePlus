@@ -4,10 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
@@ -16,44 +13,24 @@ public class Main {
     public static Client clientConnecté;
     public static Parc parc;
 
-    public static void main(String[] args) {
-        // création du parc et des borne
-        parc = new Parc(new ArrayList<Borne>());
-        parc.addBorne(new Borne(1));
-        parc.addBorne(new Borne(2));
-        parc.addBorne(new Borne(3));
-        parc.addBorne(new Borne(4));
-        parc.addBorne(new Borne(5));
-
-        // création de Fred, le gestionnaire
-        Gestionnaire fred = new Gestionnaire("Dupont", "Fred");
-        gestionnaires.add(fred);
-
-        // création d'un client lambda
-        Adresse adressePaul = new Adresse(71, "Rue du bois", 54000, "Nancy", "France");
-        Vehicule vehicule = new Vehicule("AB-123-CD", "marque", "modele", 2022);
-        Client paul = new Client("Dupont", "Paul", adressePaul, "0601020304", "Dupont.Fred@ElectriquePlus.fr", "1234567890", vehicule);
-        clients.add(paul);
+    //-------------------------------------
+    //            AFFICHAGE PAGES
+    //-------------------------------------
+    public static void main(String[] args) { //affiche la page principale
+        initialisation();
 
         // création de l'application en ligne de commande
         while (true) {
-            System.out.println("____________MENU PRINCIPAL______________");
-            System.out.println("1. Se connecter en tant que gestionnaire");
-            System.out.println("2. Se connecter en tant que client");
-            System.out.println("3. Quitter");
-            System.out.println("_________________________________________");
-
-
-            int choix = verifChoix(1, 3);
+            int choix = verifChoix(1, afficheMenuPrincipal());
 
             switch (choix) {
                 case 1: // le gestionnaire
                     if (verifGestionnaire()) {
-                        menuGestionnaire();
+                        pageGestionnaire();
                     }
                     break;
                 case 2: // le client
-                    menuClient();
+                    pageClient();
                     break;
                 case 3:
                     System.exit(0);
@@ -64,20 +41,15 @@ public class Main {
         }
     }
 
-    private static void menuClient() {
+    private static void pageClient() {
         while (true) {
-            System.out.println("1. S'incrire");
-            System.out.println("2. Ajouter un véhicule");
-            System.out.println("3. Faire une réservation");
-            System.out.println("4. Retour au menu principal");
-            int choix = scanner.nextInt();
-            scanner.nextLine();
+            int choix = verifChoix(1, afficheMenuClient());
 
             switch (choix) {
                 case 1:
                     if (verifClient() == null){
                         inscrireClient();
-                    }else return; //sile client existe on le retourne au menu client
+                    }else return; //si le client existe on le retourne au menu client
                     break;
                 case 2:
                     if (verifClient() != null){
@@ -95,6 +67,141 @@ public class Main {
                     System.out.println("Choix invalide");
             }
         }
+    }
+
+    private static void pageGestionnaire() {
+        while (true) {
+            int choix = verifChoix(1, afficheMenuGestionnaire());
+            switch (choix) {
+                case 1:
+                    afficherListeClients();
+                    break;
+                case 2:
+                    return;
+                default:
+                    System.out.println("Choix invalide");
+            }
+        }
+    }
+
+    //-------------------------------------
+    //            Fonctionnalités
+    //-------------------------------------
+
+    private static void initialisation(){
+        // création du parc et des borne
+        parc = new Parc(new ArrayList<Borne>());
+        parc.addBorne(new Borne(1));
+        parc.addBorne(new Borne(2));
+        parc.addBorne(new Borne(3));
+        parc.addBorne(new Borne(4));
+        parc.addBorne(new Borne(5));
+
+        // création de Fred, le gestionnaire
+        Gestionnaire fred = new Gestionnaire("Dupont", "Fred");
+        gestionnaires.add(fred);
+
+        // création d'un client lambda
+        Adresse adressePaul = new Adresse(71, "Rue du bois", 54000, "Nancy", "France");
+        Vehicule vehicule = new Vehicule("AB-123-CD", "marque", "modele", 2022);
+        Client paul = new Client("Dupont", "Paul", adressePaul, "0601020304", "Dupont.Fred@ElectriquePlus.fr", "1234567890", vehicule);
+        clients.add(paul);
+    }
+
+
+    public static void prendreBorneSansReserv(){
+
+        System.out.println("Nom:");
+        String nom = scanner.nextLine();
+        System.out.println("Prénom:");
+        String prenom = scanner.nextLine();
+
+        Client client = getClient(nom, prenom);
+        if (client == null) {
+            System.out.println("Client non trouvé. Veuillez créer un compte d'abord.");
+            return;
+        }
+
+
+
+        //pas besoin de saisir l'heure d'arrivé on prend l'heure actuelle
+
+/*
+        if (!borneDisponible()) {
+            System.out.println("Aucune borne de recharge n'est disponible.");
+            return;
+        }
+
+        System.out.println("Numéro d'immatriculation du véhicule:");
+        String plaque = scanner.nextLine();
+
+        Vehicule vehicule = client.getVehicule();
+        if (vehicule != null && vehicule.getPlaque().equalsIgnoreCase(plaque) && !vehiculeEstReserve(plaque)) {
+            demanderDureeRechargeOuHeureDepart();
+        } else {
+            System.out.println("Véhicule non reconnu. Est-ce votre véhicule personnel ? (oui/non)");
+            String reponse = scanner.nextLine();
+            if (reponse.equalsIgnoreCase("oui")) {
+                System.out.println("Numéro de téléphone:");
+                String numeroTelephone = scanner.nextLine();
+                if (numeroTelephone.equals(client.getNumeroTelephone())) {
+                    System.out.println("Véhicule ajouté au profil.");
+                    client.setVehicule(new Vehicule(plaque, "marque", "modele", 2022)); // Demander plus de détails si nécessaire
+                    demanderDureeRechargeOuHeureDepart();
+                } else {
+                    System.out.println("Numéro de téléphone incorrect.");
+                }
+            } else {
+                System.out.println("Numéro de téléphone:");
+                String numeroTelephone = scanner.nextLine();
+                if (verifClientParTelephone(numeroTelephone)) {
+                    demanderDureeRechargeOuHeureDepart();
+                } else {
+                    System.out.println("Numéro de téléphone non reconnu. Créer un compte.");
+                    inscrireClientAvecTelephone(numeroTelephone);
+                }
+            }
+        }
+        //ET qu’une borne de recharge est disponible
+
+        //
+        //rechercher si le numéro d’immatriculation du véhicule est identique au profil et qu’aucune réservation est en cours sur cette plaque. Demander la durée de recharge ou l’heure de départ.
+        //
+        //si véhicule n’est pas reconnu, demander si c’est son véhicule personnel (-> entrer dans la bdd, demander le numero de telephone pour justifier l’identité) si le vehicule est pas le véhicule personnel, entrer le numéro de tel et la duré de charge, si tel non reconnu => créer un compte.
+   */ }
+
+    public void confirmationVehicule(Client c){//a changer
+       /* Vehicule vehicule = clientConnecté.getVehicule();
+        if(vehicule != null) {
+            System.out.println("Veuillez Confirmer que c'est bien pour ce véhicule : " + vehicule.getPlaque());
+            System.out.println("1. oui");
+            System.out.println("2. non, saisir les informations du véhicule");
+        }else{
+            System.out.println("Vous n'avez pas de véhicule enregistré, voulez-vous l'enregistrer apres avoir saisie les informations");
+            System.out.println("1. oui");
+            System.out.println("2. non");
+        }
+        try{
+            int choix = 0;
+            choix = scanner.nextInt();
+            if(choix < 1 || choix > 2){
+                valid = false;
+            }else{
+                if(choix == 2){
+                    vehicule = ajouteVehicule();
+                }else if(vehicule == null){
+                    ajouteVehiculeClient();
+                    vehicule = clientConnecté.getVehicule();
+                }
+                valid = true;
+            }
+        }catch (InputMismatchException e){
+            valid = false;
+        }
+        if(!valid)
+        {
+            System.out.println("Veuillez saisir 1 ou 2");
+        }*/
     }
 
     private static void faireUneReservation() {
@@ -359,43 +466,72 @@ public class Main {
     }
 
 
-
-    private static void menuGestionnaire() {
-        while (true) {
-            System.out.println("______MENU DU GESTIONNAIRE_____________");
-            System.out.println("1. Afficher la liste des clients");
-            System.out.println("2. ...");
-            System.out.println("3. Retour au menu principal");
-
-            int choix = verifChoix(1, 3);
-
-            switch (choix) {
-                case 1:
-                    afficherListeClients();
-                    break;
-                case 2:
-                    //...();
-                    break;
-                case 3:
-                    return;
-                default:
-                    System.out.println("Choix invalide");
-            }
+    private static void afficherListeClients() { //GESTIONNAIRE
+        System.out.println("Voici la liste des clients inscrit dans le parc:");
+        for (Client c : clients) {
+            System.out.println(c.toString());
         }
     }
+
+    private static void ajouteVehiculeClient(){
+        if (clientConnecté.getVehicule() != null) {
+            System.out.println("Ce client a déjà un véhicule enregistré.");
+            return;
+        }
+        Vehicule vehicule = ajouteVehicule();
+
+        clientConnecté.setVehicule(vehicule);
+
+        // Vérification de l'enregistrement du véhicule
+        if (clientConnecté.getVehicule().equals(vehicule)) {
+            System.out.println("Véhicule ajouté avec succès : " + vehicule);
+        } else {
+            System.out.println("Erreur lors de l'ajout du véhicule. Retour au menu client.");
+        }
+    }
+
+    private static Vehicule ajouteVehicule(){ //CLIENT
+        boolean valid;
+        String plaque;
+
+        do {
+            System.out.println("Entrez la plaque d'immatriculation : par exemple AB-123-CD");
+            plaque = scanner.nextLine();
+            if (!plaque.matches("[A-Z]{2}-\\d{3}-[A-Z]{2}")) {
+                System.out.println("Format de plaque invalide. Veuillez réessayer.");
+            }
+        } while (!plaque.matches("[A-Z]{2}-\\d{3}-[A-Z]{2}"));
+
+
+        System.out.println("Entrez la marque du véhicule : par exemple Tesla");
+        String marque = scanner.nextLine();
+
+        System.out.println("Entrez le modèle du véhicule : par exemple Model S");
+        String modele = scanner.nextLine();
+
+        System.out.println("Entrez l'année de fabrication du véhicule : par exemple 2020");
+        int anneeFabrication = scanner.nextInt();
+        scanner.nextLine();
+
+        return new Vehicule(plaque, marque, modele, anneeFabrication);
+    }
+
+    //-------------------------------------
+    //            Verifications
+    //-------------------------------------
 
     public static int verifChoix(int choixmin, int choixmax){ //verifie si le choix est entre les deux bornes
         int choix = -1;
         do {
-            System.out.print("Veuillez entrer votre choix (entre " + choixmin + " et " + choixmax + ")");
+            System.out.print("Veuillez entrer votre choix (entre " + choixmin + " et " + choixmax + ") : ");
             if (scanner.hasNextInt()) {
                 choix = scanner.nextInt();
                 scanner.nextLine();
                 if (choix < choixmin || choix > choixmax) {
-                    System.out.println("Choix invalide. Veuillez réessayer.");
+                    System.out.println("Choix invalide. Veuillez réessayer!");
                 }
             } else {
-                System.out.println("Entrée non valide. Veuillez entrer un chiffre.");
+                System.out.println("Entrée non valide. Veuillez entrer un chiffre!");
                 scanner.next();
             }
         } while (choix < choixmin || choix > choixmax);
@@ -459,54 +595,44 @@ public class Main {
         return null;
     }
 
-    private static void afficherListeClients() { //GESTIONNAIRE
-        System.out.println("Voici la liste des clients inscrit dans le parc:");
-        for (Client c : clients) {
-            System.out.println(c.toString());
-        }
+
+    //-------------------------------------
+    //            AFFICHAGE MENU
+    //-------------------------------------
+
+    public static int afficheMenuPrincipal(){ //affiche et retourne le nombre de choix
+        System.out.println("____________MENU PRINCIPAL______________");
+        List<String> options = Arrays.asList(
+                "1. Se connecter en tant que gestionnaire",
+                "2. Se connecter en tant que client",
+                "3. Quitter"
+        );
+        for (String option : options) System.out.println(option);
+        System.out.println("_________________________________________");
+        return options.size();
     }
 
-    private static void ajouteVehiculeClient(){
-        if (clientConnecté.getVehicule() != null) {
-            System.out.println("Ce client a déjà un véhicule enregistré.");
-            return;
-        }
-        Vehicule vehicule = ajouteVehicule();
-
-        clientConnecté.setVehicule(vehicule);
-
-        // Vérification de l'enregistrement du véhicule
-        if (clientConnecté.getVehicule().equals(vehicule)) {
-            System.out.println("Véhicule ajouté avec succès : " + vehicule);
-        } else {
-            System.out.println("Erreur lors de l'ajout du véhicule. Retour au menu client.");
-        }
+    public static int afficheMenuClient(){ //affiche et retourne le nombre de choix
+        System.out.println("____________MENU CLIENT______________");
+        List<String> options = Arrays.asList(
+                "1. S'inscrire",
+                "2. Ajouter un véhicule",
+                "3. Faire une réservation",
+                "4. Retour au menu principal"
+        );
+        for (String option : options) System.out.println(option);
+        System.out.println("_________________________________________");
+        return options.size();
     }
 
-    private static Vehicule ajouteVehicule(){ //CLIENT
-        boolean valid;
-        String plaque;
-
-        do {
-            System.out.println("Entrez la plaque d'immatriculation : par exemple AB-123-CD");
-            plaque = scanner.nextLine();
-            if (!plaque.matches("[A-Z]{2}-\\d{3}-[A-Z]{2}")) {
-                System.out.println("Format de plaque invalide. Veuillez réessayer.");
-            }
-        } while (!plaque.matches("[A-Z]{2}-\\d{3}-[A-Z]{2}"));
-
-
-        System.out.println("Entrez la marque du véhicule : par exemple Tesla");
-        String marque = scanner.nextLine();
-
-        System.out.println("Entrez le modèle du véhicule : par exemple Model S");
-        String modele = scanner.nextLine();
-
-        System.out.println("Entrez l'année de fabrication du véhicule : par exemple 2020");
-        int anneeFabrication = scanner.nextInt();
-        scanner.nextLine();
-
-        return new Vehicule(plaque, marque, modele, anneeFabrication);
+    private static int afficheMenuGestionnaire(){
+        System.out.println("______MENU DU GESTIONNAIRE_____________");
+        List<String> options = Arrays.asList(
+                "1. Afficher la liste des clients",
+                "2. Retour au menu principal"
+        );
+        for (String option : options) System.out.println(option);
+        System.out.println("_________________________________________");
+        return options.size();
     }
-
 }
