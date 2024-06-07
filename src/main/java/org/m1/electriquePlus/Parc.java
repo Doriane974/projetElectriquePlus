@@ -5,21 +5,26 @@ import java.util.ArrayList;
 
 public class Parc {
 
-    ArrayList<Borne> bornes ;
-    ArrayList<Client> clients;
-    ArrayList<Adresse> adresses;
-    ArrayList<Immatriculation> immatriculations;
-    ArrayList<Vehicule> vehicules;
-    ArrayList<Reservation> reservations;
+
+    ArrayList<Borne> bornes = new ArrayList<>();
+    ArrayList<Client> clients = new ArrayList<>();
+    ArrayList<Adresse> adresses = new ArrayList<>();
+    ArrayList<Immatriculation> immatriculations = new ArrayList<>();
+    ArrayList<Vehicule> vehicules = new ArrayList<>();
+    ArrayList<Reservation> reservations = new ArrayList<>();
+    ArrayList<Gestionnaire> gestionnaires = new ArrayList<>();
 
     private String filenameClients;
     private String filenameAdresses;
     private String filenameImmatriculations;
     private String filenameVehicules;
     private String filenameReservations;
+    private String filenameGestionnaire;
+
 
     public Parc() {
         this.filenameClients = "ClientsSave.txt";
+        this.filenameGestionnaire = "GestionnaireSave.txt";
         this.filenameAdresses = "AdressesSave.txt";
         this.filenameImmatriculations = "ImmatriculationsSave.txt";
         this.filenameVehicules = "VehiculesSave.txt";
@@ -42,6 +47,17 @@ public class Parc {
     }
     public ArrayList<Client> getClients() {
         return this.clients;
+    }
+
+    public String getFilenameGestionnaire(){
+        return this.filenameGestionnaire;
+    }
+    public void setFilenameGestionnaire(String filenameGestionnaire){ this.filenameGestionnaire = filenameGestionnaire; }
+    public void setGestionnaire(ArrayList<Gestionnaire> gestionnaires){
+        this.gestionnaires = gestionnaires;
+    }
+    public ArrayList<Gestionnaire> getGestionnaires() {
+        return this.gestionnaires;
     }
 
     public String getFilenameAdresses(){ return  this.filenameAdresses;}
@@ -104,16 +120,18 @@ public class Parc {
                 line.append(c.getAdresse().getNomPays());
                 line.append("\t");
 
-                line.append(c.getVehicule().getAnneeFabrication());
-                line.append("\t");
-                line.append(c.getVehicule().getMarque());
-                line.append("\t");
-                line.append(c.getVehicule().getModele());
-                line.append("\t");
+                if(c.getVehicule()!=null)
+                {
+                    line.append(c.getVehicule().getAnneeFabrication());
+                    line.append("\t");
+                    line.append(c.getVehicule().getMarque());
+                    line.append("\t");
+                    line.append(c.getVehicule().getModele());
+                    line.append("\t");
 
-                line.append(c.getVehicule().getPlaque().getLettresAvant() + "-" + c.getVehicule().getPlaque().getChiffres() + "-" + c.getVehicule().getPlaque().getLettresApres());
-                line.append("\t");
-
+                    line.append(c.getVehicule().getPlaque().getLettresAvant() + "-" + c.getVehicule().getPlaque().getChiffres() + "-" + c.getVehicule().getPlaque().getLettresApres());
+                    line.append("\t");
+                }
 
                 writer.write(line.toString());
                 writer.newLine();
@@ -129,32 +147,42 @@ public class Parc {
         String line;
         while ((line = reader.readLine()) != null) {
             String[] parts = line.split("\t");
-            if (parts.length == 15) {
+            if (parts.length == 15 || parts.length == 11) {
                 int id = Integer.parseInt(parts[0]);
                 String nom = parts[1];
                 String prenom = parts[2];
                 String numeroTelephone = parts[3];
                 String email = parts[4];
                 String numeroCarteDebit = parts[5];
+                //adresse client
                 int numeroHabitation = Integer.parseInt(parts[6]);
                 String nomRue = parts[7];
-                //String codePostal = Integer.parseInt(parts[8]);
+                String codePostal = parts[8];
                 String nomVille = parts[9];
                 String nomPays = parts[10];
+                String vehiculePlaque = "";
+                String vehiculeModele = "";
+                String vehiculeMarque = "";
+                int vehiculeAnneeFabrication = 0;
+                if(!(parts.length == 11))
+                {
+                    //vehicule client
+                    vehiculeAnneeFabrication = Integer.parseInt(parts[11]);
+                    vehiculeMarque = parts[12];
+                    vehiculeModele = parts[13];
+                    vehiculePlaque =parts[14];
 
-                int vehiculeAnneeFabrication = Integer.parseInt(parts[11]);
-                String vehiculeMarque = parts[12];
-                String vehiculeModele = parts[13];
-                String vehiculePlaque =parts[14];
+                }
 
-
-
-                // Créez un objet Adresse et Vehicule temporaire, car les détails ne sont pas disponibles
-                //Adresse adresse = new Adresse(numeroHabitation, nomRue, codePostal, nomVille, nomPays); // Remplacez par des valeurs appropriées
-                Vehicule vehicule = new Vehicule(vehiculePlaque, vehiculeMarque, vehiculeModele, vehiculeAnneeFabrication); // Remplacez par des valeurs appropriées
-                //Client client = new Client(nom, prenom, adresse, numeroTelephone, email, numeroCarteDebit, vehicule);
-                //client.setId(id);
-                //this.getClients().add(client);
+                Adresse adresse = new Adresse(numeroHabitation, nomRue, codePostal, nomVille, nomPays);
+                Vehicule vehicule;
+                if(parts.length == 11)
+                    vehicule = null;
+                else
+                    vehicule = new Vehicule(vehiculePlaque, vehiculeMarque, vehiculeModele, vehiculeAnneeFabrication);
+                Client client = new Client(nom, prenom, adresse, numeroTelephone, email, numeroCarteDebit, vehicule);
+                client.setId(id);
+                this.getClients().add(client);
             }
         }
     }
@@ -166,6 +194,61 @@ public class Parc {
         File file = new File(this.getFilenameClients());
         if (!file.exists()) {
             generateFileClients();
+        }
+    }
+
+    /**
+     * Genere une liste de Gestionnaire qui sont inscrit a ce parc de rechargement.
+     * @throws IOException
+     */
+    public void generateFileGestionnaires() throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.getFilenameGestionnaire()))) {
+            if(!this.getGestionnaires().isEmpty())
+            {
+                for (Gestionnaire g : this.getGestionnaires()) {
+                    StringBuilder line = new StringBuilder();
+                    line.append(g.getId());
+                    line.append("\t");
+                    line.append(g.getNom());
+                    line.append("\t");
+                    line.append(g.getPrenom());
+                    writer.write(line.toString());
+                    writer.newLine();
+                }
+            }else{
+                gestionnaires = new ArrayList<Gestionnaire>();
+            }
+        }
+    }
+
+    /**
+     * A partir du fichier filenamegestionnaire, on recupère les données du fichiers, et on crées les nouveaux Gestionnaire pour les mettre dans le tableau gestionnaire de parc
+     * @throws IOException
+     */
+    public void getGestionnairesFromFile() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(this.getFilenameGestionnaire()));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split("\t");
+            if (parts.length == 3) {
+                int id = Integer.parseInt(parts[0]);
+                String nom = parts[1];
+                String prenom = parts[2];
+                Gestionnaire gestionnaire = new Gestionnaire(nom, prenom);
+                gestionnaire.setId(id);
+                this.getGestionnaires().add(gestionnaire);
+            }
+        }
+    }
+
+    /**
+     * Verifie qu'un fichier de sauvegarde des gestionnaires n'existent pas encore, et si c'est le cas, crée un nouveau fichier contenant les gestionnaires inscrits au parc (présents dans le champ gestionnaires du parc)
+     * @throws IOException
+     */
+    public void loadFileGestionnaires() throws IOException {
+        File file = new File(this.getFilenameGestionnaire());
+        if (!file.exists()) {
+            generateFileGestionnaires();
         }
     }
 
@@ -210,15 +293,13 @@ public class Parc {
                 int id = Integer.parseInt(parts[0]);
                 int numeroHabitation = Integer.parseInt(parts[1]);
                 String nomRue = parts[2];
-                int codePostal = Integer.parseInt(parts[3]);
+                String codePostal = parts[3];
                 String nomVille = parts[4];
                 String nomPays = parts[5];
 
-
-                // Créez un objet Adresse et Vehicule temporaire, car les détails ne sont pas disponibles
-               // Adresse adresse = new Adresse(numeroHabitation, nomRue, codePostal, nomVille, nomPays); // Remplacez par des valeurs appropriées
-              //  adresse.setId(id);
-               // this.getAdresses().add(adresse);
+                Adresse adresse = new Adresse(numeroHabitation, nomRue, codePostal, nomVille, nomPays);
+                adresse.setId(id);
+                this.getAdresses().add(adresse);
             }
         }
     }
@@ -449,5 +530,9 @@ public class Parc {
                 dispo.add(b);
         }
         return dispo;
+    }
+
+    public Borne getById(int choix) {
+        return this.getBornes().stream().filter(b -> b.getNumero() == choix).findFirst().orElse(null);
     }
 }
