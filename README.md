@@ -9,7 +9,7 @@ Pour ouvrir la partie du gestionnaire nous devons nous connecter en tant que ges
 Le nom de famille a entré est Dupont et le prenom est Fred.
 Le gestionnaire peux voir la liste des clients.
 
-  ![Exemple d'utilisation de l'application](https://github.com/Doriane974/projetElectriquePlus/blob/master/utilisationAppli.png?raw=true)
+  ![Exemple d'utilisation de l'application](https://github.com/Doriane974/projetElectriquePlus/blob/master/UtilisationAppli.png?raw=true)
 
 Si le gestionnaire n'est pas reconnu alors l'utilisateur retourne au menu principal.
 Un visiteur peux faire un compte et inscrire ou non sa voiture lors de l'inscription.
